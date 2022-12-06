@@ -6,11 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MachPortsServer.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        MachPortsServer * server = [MachPortsServer new];
+        [server initiate];
     }
     return 0;
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		90079EBF293E780A00F0C5AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EBE293E780A00F0C5AB /* main.m */; };
+		90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EC6293E786B00F0C5AB /* MachPortsServer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		90079EBB293E780A00F0C5AB /* MachPortsServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MachPortsServer; sourceTree = BUILT_PRODUCTS_DIR; };
 		90079EBE293E780A00F0C5AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		90079EC5293E786B00F0C5AB /* MachPortsServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachPortsServer.h; sourceTree = "<group>"; };
+		90079EC6293E786B00F0C5AB /* MachPortsServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachPortsServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				90079EBE293E780A00F0C5AB /* main.m */,
+				90079EC5293E786B00F0C5AB /* MachPortsServer.h */,
+				90079EC6293E786B00F0C5AB /* MachPortsServer.m */,
 			);
 			path = MachPortsServer;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
