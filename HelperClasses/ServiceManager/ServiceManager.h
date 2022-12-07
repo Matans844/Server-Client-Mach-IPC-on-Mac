@@ -6,15 +6,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Service.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ServiceManager : NSObject
 
-@property NSMutableDictionary<NSPort*, NSObject<NSPortDelegate>*> * dictPortToService;
+@property NSMutableDictionary<NSPort*, Service*> * dictPortToService;
 
 - (void) initiate;
-- (void) addService:(NSPort *) portToListen withDelegate:(NSObject<NSPortDelegate> *) serviceListener;
+- (void) addService:(Service *) service;
 
 @end
 

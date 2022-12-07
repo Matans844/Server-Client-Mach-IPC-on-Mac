@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Service : NSObject<NSPortDelegate>
 
 @property NSPort * port;
+@property NSString * const serviceName;
 
 - (void) setPort: (NSPort *) portToListen withName: (const NSString *) serviceName;
 - (NSPort *) getPort;

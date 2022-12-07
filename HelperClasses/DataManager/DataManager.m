@@ -11,11 +11,22 @@
 
 #define MAX_SIZE_MSG 1024;
 
+@interface DataManager()
+
+// Trying to make properties private
+// Idea: Can NSMapTable help with weak references to deactivated clients?
+@property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
+@property (atomic, retain, getter=getDictHashToComponents) NSMutableDictionary<NSData*, NSArray*> * dictHashToComponents;
+
+@end
+
 @implementation DataManager : NSObject
 
+/*
 + (NSData *) toNSData:(NSArray *)array{
     return [NSKeyedArchiver archivedDataWithRootObject:array requiringSecureCoding:TRUE error:nil];
 }
+ */
 
 + (NSData *) doSha256:(NSData *)dataIn{
     NSMutableData * macOut = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
@@ -26,24 +37,29 @@
 
 + (NSData *) machMessageToSha256:(NSPortMessage *)message{
     NSArray * components = message.components;
-    NSData * serializedComponents = [DataManager toNSData:components];
+    NSData * serializedComponents = [NSKeyedArchiver archivedDataWithRootObject:components requiringSecureCoding:TRUE error:nil];
+    // NSData * serializedComponents = [DataManager toNSData:components];
     
     return [DataManager doSha256:serializedComponents];
 }
 
 - (void) initiate{
-    self.dictSenderToHash = [[NSMutableDictionary<NSPortMessage*, NSData*> alloc] init];
+    self.dictSenderToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
     self.dictHashToComponents = [[NSMutableDictionary<NSData*, NSArray*> alloc] init];
     // self.dictMsgDataHashToMsg = [NSMutableDictionary dictionary];
 }
 
+/*
 - (NSMutableDictionary *) getDictSenderToHash{
     return self.dictSenderToHash;
 }
+*/
 
+/*
 - (NSMutableDictionary *) getDictHashToComponents{
     return self.dictHashToComponents;
 }
+ */
 
 - (void) addToDictSenderToHash: (NSPortMessage *) message{
     NSPort * senderPort = message.sendPort;
