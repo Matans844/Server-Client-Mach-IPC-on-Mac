@@ -59,7 +59,27 @@
 }
 
 - (void) testDataManagerGetData{
+    NSPortMessage * exampleMessage = [_messageMaker createStringMessage:@"test1"];
+    NSArray * originalComponent = exampleMessage.components;
     
+    XCTAssertTrue([_dataManager saveData:exampleMessage]);
+    NSArray * receivedComponent = [_dataManager getData:exampleMessage.sendPort];
+    
+    XCTAssertEqualObjects(receivedComponent[0], originalComponent[0]);
+}
+
+- (void) testDataManagerRemoveData{
+    NSPortMessage * exampleMessage = [_messageMaker createStringMessage:@"test1"];
+    NSPort * sender = exampleMessage.sendPort;
+    
+    XCTAssertTrue([_dataManager isStorageVacant:exampleMessage.sendPort]);
+    
+    XCTAssertTrue([_dataManager saveData:exampleMessage]);
+    
+    XCTAssertFalse([_dataManager isStorageVacant:exampleMessage.sendPort]);
+    
+    [_dataManager removeData:sender];
+    XCTAssertTrue([_dataManager isStorageVacant:sender]);
 }
 
 - (void)testPerformanceExample {

@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DataManager : NSObject
 
 // Can NSMapTable help with weak references to deactivated clients?
-@property NSMutableDictionary * dictSenderToHash;
-@property NSMutableDictionary * dictHashToComponents;
+@property NSMutableDictionary<NSPortMessage*, NSData*> * dictSenderToHash;
+@property NSMutableDictionary<NSData*, NSArray*> * dictHashToComponents;
 
 + (NSData *) doSha256: (NSData *) dataIn;
 + (NSData *) toNSData: (NSArray *) array;
@@ -27,7 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 */
  
 - (BOOL) saveData: (NSPortMessage *) message;
-- (NSData * _Nullable) getData: (NSPort *) sender;
+- (NSArray * _Nullable) getData: (NSPort *) sender;
+- (void) removeData: (NSPort *) sender;
 
 - (BOOL) isStorageVacant: (NSPort *) senderPort;
 - (BOOL) isDataValid: (NSPortMessage *) message;

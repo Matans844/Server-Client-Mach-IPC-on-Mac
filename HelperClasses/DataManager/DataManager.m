@@ -31,17 +31,17 @@
     return [DataManager doSha256:serializedComponents];
 }
 
--(void) initiate{
-    self.dictSenderToHash = [[NSMutableDictionary alloc] init];
-    self.dictHashToComponents = [[NSMutableDictionary alloc] init];
+- (void) initiate{
+    self.dictSenderToHash = [[NSMutableDictionary<NSPortMessage*, NSData*> alloc] init];
+    self.dictHashToComponents = [[NSMutableDictionary<NSData*, NSArray*> alloc] init];
     // self.dictMsgDataHashToMsg = [NSMutableDictionary dictionary];
 }
 
--(NSMutableDictionary *) getDictSenderToHash{
+- (NSMutableDictionary *) getDictSenderToHash{
     return self.dictSenderToHash;
 }
 
--(NSMutableDictionary *) getDictHashToComponents{
+- (NSMutableDictionary *) getDictHashToComponents{
     return self.dictHashToComponents;
 }
 
@@ -57,7 +57,7 @@
     [[self getDictHashToComponents] setObject:components forKey:hashCode];
 }
 
--(BOOL) saveData:(NSPortMessage *)message{
+- (BOOL) saveData:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;
     BOOL result = FALSE;
     
@@ -70,23 +70,30 @@
     return result;
 }
 
--(NSData * _Nullable) getData:(NSPort *)sender{
+- (NSArray * _Nullable) getData:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
-
-    return [[self getDictHashToComponents] objectForKey:hashCode];
+    NSArray * _Nullable target = [[self getDictHashToComponents] objectForKey:hashCode];
+    
+    return target;
 }
 
--(BOOL) isStorageVacant:(NSPort *)senderPort{
+- (void) removeData:(NSPort *)sender{
+    NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
+    [[self getDictHashToComponents] removeObjectForKey:hashCode];
+    [[self getDictSenderToHash] removeObjectForKey:sender];
+}
+
+- (BOOL) isStorageVacant:(NSPort *)senderPort{
     BOOL result = ![[self getDictSenderToHash] objectForKey:senderPort];
     return result;
 }
 
--(BOOL) isDataValid:(NSPortMessage *)message{
+- (BOOL) isDataValid:(NSPortMessage *)message{
     BOOL sizeRequirement = malloc_size((__bridge const void *) message.components[0]) <= MAX_SIZE_MSG;
     return sizeRequirement;
 }
 
--(BOOL) isSenderActive:(NSPort *)senderPort{
+- (BOOL) isSenderActive:(NSPort *)senderPort{
     return senderPort != nil;
 }
 
