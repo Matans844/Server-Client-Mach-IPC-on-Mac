@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MachPortsServer : NSObject<NSPortDelegate>
 
 @property NSPort * port;
+
+// NSMapTable should help with weak references to deactivated clients
+@property NSMutableDictionary * dictSenderPortToMsgIDs;
+@property NSMutableDictionary * dictMsgIDToMsg;
+@property NSMutableDictionary * dictMsgDataHashToMsgID;
+
 - (void) initiate;
 
 @end

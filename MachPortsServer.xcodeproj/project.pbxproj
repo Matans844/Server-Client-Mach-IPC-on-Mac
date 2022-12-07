@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		90079EBF293E780A00F0C5AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EBE293E780A00F0C5AB /* main.m */; };
 		90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EC6293E786B00F0C5AB /* MachPortsServer.m */; };
+		9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
+		9007A0262940F92900F0C5AB /* UnitTestDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A0252940F92900F0C5AB /* UnitTestDataManager.m */; };
+		9007A02D2940FE4500F0C5AB /* MessageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageMaker.m */; };
+		9007A0302941039C00F0C5AB /* MessageMaker.h in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02B2940FE4500F0C5AB /* MessageMaker.h */; };
+		9007A031294103A000F0C5AB /* DataManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01A293FA62E00F0C5AB /* DataManager.h */; };
+		9007A032294103BB00F0C5AB /* MessageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageMaker.m */; };
+		9007A033294103BE00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,10 +35,23 @@
 		90079EBE293E780A00F0C5AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		90079EC5293E786B00F0C5AB /* MachPortsServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachPortsServer.h; sourceTree = "<group>"; };
 		90079EC6293E786B00F0C5AB /* MachPortsServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachPortsServer.m; sourceTree = "<group>"; };
+		9007A01A293FA62E00F0C5AB /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		9007A01B293FA62E00F0C5AB /* DataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTestDataManager.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9007A0252940F92900F0C5AB /* UnitTestDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTestDataManager.m; sourceTree = "<group>"; };
+		9007A02B2940FE4500F0C5AB /* MessageMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageMaker.h; sourceTree = "<group>"; };
+		9007A02C2940FE4500F0C5AB /* MessageMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageMaker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		90079EB8293E780A00F0C5AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9007A0202940F92800F0C5AB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -44,7 +64,12 @@
 		90079EB2293E780A00F0C5AB = {
 			isa = PBXGroup;
 			children = (
+				90079EBE293E780A00F0C5AB /* main.m */,
 				90079EBD293E780A00F0C5AB /* MachPortsServer */,
+				9007A019293FA60B00F0C5AB /* Services */,
+				9007A02A2940FDD500F0C5AB /* MessageMaker */,
+				9007A013293F92BE00F0C5AB /* DataManager */,
+				9007A0242940F92900F0C5AB /* UnitTests */,
 				90079EBC293E780A00F0C5AB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				90079EBB293E780A00F0C5AB /* MachPortsServer */,
+				9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,11 +86,43 @@
 		90079EBD293E780A00F0C5AB /* MachPortsServer */ = {
 			isa = PBXGroup;
 			children = (
-				90079EBE293E780A00F0C5AB /* main.m */,
 				90079EC5293E786B00F0C5AB /* MachPortsServer.h */,
 				90079EC6293E786B00F0C5AB /* MachPortsServer.m */,
 			);
 			path = MachPortsServer;
+			sourceTree = "<group>";
+		};
+		9007A013293F92BE00F0C5AB /* DataManager */ = {
+			isa = PBXGroup;
+			children = (
+				9007A01A293FA62E00F0C5AB /* DataManager.h */,
+				9007A01B293FA62E00F0C5AB /* DataManager.m */,
+			);
+			path = DataManager;
+			sourceTree = "<group>";
+		};
+		9007A019293FA60B00F0C5AB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		9007A0242940F92900F0C5AB /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				9007A0252940F92900F0C5AB /* UnitTestDataManager.m */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		9007A02A2940FDD500F0C5AB /* MessageMaker */ = {
+			isa = PBXGroup;
+			children = (
+				9007A02B2940FE4500F0C5AB /* MessageMaker.h */,
+				9007A02C2940FE4500F0C5AB /* MessageMaker.m */,
+			);
+			path = MessageMaker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +145,23 @@
 			productReference = 90079EBB293E780A00F0C5AB /* MachPortsServer */;
 			productType = "com.apple.product-type.tool";
 		};
+		9007A0222940F92800F0C5AB /* UnitTestDataManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9007A0272940F92900F0C5AB /* Build configuration list for PBXNativeTarget "UnitTestDataManager" */;
+			buildPhases = (
+				9007A01F2940F92800F0C5AB /* Sources */,
+				9007A0202940F92800F0C5AB /* Frameworks */,
+				9007A0212940F92800F0C5AB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTestDataManager;
+			productName = UnitTests;
+			productReference = 9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -97,6 +172,9 @@
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					90079EBA293E780A00F0C5AB = {
+						CreatedOnToolsVersion = 14.1;
+					};
+					9007A0222940F92800F0C5AB = {
 						CreatedOnToolsVersion = 14.1;
 					};
 				};
@@ -115,9 +193,20 @@
 			projectRoot = "";
 			targets = (
 				90079EBA293E780A00F0C5AB /* MachPortsServer */,
+				9007A0222940F92800F0C5AB /* UnitTestDataManager */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9007A0212940F92800F0C5AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		90079EB7293E780A00F0C5AB /* Sources */ = {
@@ -125,7 +214,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */,
+				9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */,
+				9007A02D2940FE4500F0C5AB /* MessageMaker.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9007A01F2940F92800F0C5AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9007A033294103BE00F0C5AB /* DataManager.m in Sources */,
+				9007A032294103BB00F0C5AB /* MessageMaker.m in Sources */,
+				9007A031294103A000F0C5AB /* DataManager.h in Sources */,
+				9007A0302941039C00F0C5AB /* MessageMaker.h in Sources */,
+				9007A0262940F92900F0C5AB /* UnitTestDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +360,32 @@
 			};
 			name = Release;
 		};
+		9007A0282940F92900F0C5AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = matan.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Debug;
+		};
+		9007A0292940F92900F0C5AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = matan.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -274,6 +403,15 @@
 			buildConfigurations = (
 				90079EC3293E780A00F0C5AB /* Debug */,
 				90079EC4293E780A00F0C5AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9007A0272940F92900F0C5AB /* Build configuration list for PBXNativeTarget "UnitTestDataManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9007A0282940F92900F0C5AB /* Debug */,
+				9007A0292940F92900F0C5AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
