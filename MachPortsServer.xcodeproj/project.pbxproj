@@ -67,8 +67,7 @@
 				90079EBE293E780A00F0C5AB /* main.m */,
 				90079EBD293E780A00F0C5AB /* MachPortsServer */,
 				9007A019293FA60B00F0C5AB /* Services */,
-				9007A02A2940FDD500F0C5AB /* MessageMaker */,
-				9007A013293F92BE00F0C5AB /* DataManager */,
+				9007A0342941263E00F0C5AB /* HelperClasses */,
 				9007A0242940F92900F0C5AB /* UnitTests */,
 				90079EBC293E780A00F0C5AB /* Products */,
 			);
@@ -123,6 +122,15 @@
 				9007A02C2940FE4500F0C5AB /* MessageMaker.m */,
 			);
 			path = MessageMaker;
+			sourceTree = "<group>";
+		};
+		9007A0342941263E00F0C5AB /* HelperClasses */ = {
+			isa = PBXGroup;
+			children = (
+				9007A013293F92BE00F0C5AB /* DataManager */,
+				9007A02A2940FDD500F0C5AB /* MessageMaker */,
+			);
+			path = HelperClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

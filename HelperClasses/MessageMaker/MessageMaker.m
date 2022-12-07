@@ -13,7 +13,7 @@
 
 @implementation MessageMaker
 
-- (NSPort *)getServicePort
+- (NSPort *)getSelfPort
 {
     return [[NSMachBootstrapServer sharedInstance] portForName:SERVICE_NAME];
 }
@@ -31,9 +31,11 @@
 }
 
 - (NSPortMessage *) createStringMessage:(NSString *) string{
-    // NSString * testString = @"test";
+    return [self createStringMessage:string toPort:[self getSelfPort]];
+}
+
+- (NSPortMessage *) createStringMessage:(NSString *) string toPort:(nonnull NSPort *)sendToPort{
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    NSPort * sendToPort = [self getServicePort];
     NSPort * receivePort = [NSMachPort port];
     NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     
@@ -41,9 +43,12 @@
 }
 
 - (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes{
+    return [self createGarbageDataMessageWithSize:numberOfBytes toPort:[self getSelfPort]];
+}
+
+- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)sendToPort{
     void * bytes = malloc(numberOfBytes);
     NSData * data = [NSData dataWithBytes:bytes length:numberOfBytes];
-    NSPort * sendToPort = [self getServicePort];
     NSPort * receivePort = [NSMachPort port];
     NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     

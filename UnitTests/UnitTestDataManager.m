@@ -41,6 +41,7 @@
     XCTAssertTrue([_dataManager isStorageVacant:exampleMessage.sendPort]);
     
     XCTAssertTrue([_dataManager saveData:exampleMessage]);
+    
     XCTAssertFalse([_dataManager isStorageVacant:exampleMessage.sendPort]);
     
     NSPortMessage * exampleMessage2 = [_messageMaker createStringMessage:@"test2"];
@@ -53,11 +54,13 @@
     XCTAssertFalse([_dataManager isDataValid:tooBigMessage]);
     
     XCTAssertFalse([_dataManager saveData:tooBigMessage]);
-        
+    
     XCTAssertTrue([_dataManager isStorageVacant:tooBigMessage.sendPort]);
 }
 
-
+- (void) testDataManagerGetData{
+    
+}
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

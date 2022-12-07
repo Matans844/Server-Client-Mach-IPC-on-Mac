@@ -45,12 +45,6 @@
     return self.dictHashToComponents;
 }
 
-/*
--(NSMutableDictionary *) getDictMsgDataHashToMsg{
-    return self.dictMsgDataHashToMsg;
-}
- */
-
 - (void) addToDictSenderToHash: (NSPortMessage *) message{
     NSPort * senderPort = message.sendPort;
     NSData * hashCode = [DataManager machMessageToSha256:message];
@@ -62,14 +56,6 @@
     NSArray * components = message.components;
     [[self getDictHashToComponents] setObject:components forKey:hashCode];
 }
-
-/*
-- (void) addToDictMsgDataHashToMsg: (NSPortMessage *) message{
-    NSData * hashCode = [Database machMessageToSha256:message];
-    NSNumber * msgID = [NSNumber numberWithInt:message.msgid];
-    [[self getDictMsgDataHashToMsg] setObject:msgID forKey:hashCode];
-}
- */
 
 -(BOOL) saveData:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;

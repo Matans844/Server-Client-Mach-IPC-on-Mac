@@ -15,7 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) initiate;
 - (NSPortMessage *) createStringMessage: (NSString *) string;
+- (NSPortMessage *) createStringMessage: (NSString *) string toPort:(NSPort *) sendToPort;
 - (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes;
+- (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes toPort:(NSPort *) sendToPort;
 
 @end
 
