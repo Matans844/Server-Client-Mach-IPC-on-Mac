@@ -5,14 +5,14 @@
 //  Created by matan on 07/12/2022.
 //
 
-#import "MessageMaker.h"
+#import "MessageManager.h"
 #import <malloc/malloc.h>
 
 #define SERVICE_NAME @"org.matans.messagemaker"
 
 // ------------------------------------ //
 
-@interface MessageMaker()
+@interface MessageManager()
 
 // "Private" methods
 - (void) initiate;
@@ -22,7 +22,7 @@
 // ------------------------------------ //
 
 
-@implementation MessageMaker
+@implementation MessageManager
 
 - (NSPort *)getSelfPort
 {
@@ -73,6 +73,10 @@
     NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     
     return message;
+}
+
+- (NSPortMessage *) createReceiveDataMessage:(NSArray *)data toPort:(NSPort *)sendToPort{
+    
 }
 
 @end

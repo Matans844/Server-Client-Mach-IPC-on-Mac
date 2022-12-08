@@ -19,8 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray * _Nullable) getData: (NSPort *) sender;
 - (void) removeData: (NSPort *) sender;
 
-// - (BOOL) isStorageVacant: (NSPort *) senderPort;
-// - (BOOL) isDataValid: (NSPortMessage *) message;
 
 @end
 

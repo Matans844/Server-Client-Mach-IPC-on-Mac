@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MessageMaker : NSObject<NSPortDelegate>
+@interface MessageManager : NSObject<NSPortDelegate>
 
 @property NSPort * port;
 
@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSPortMessage *) createStringMessage: (NSString *) string toPort:(NSPort *) sendToPort;
 - (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes;
 - (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes toPort:(NSPort *) sendToPort;
+- (NSPortMessage *) createReceiveDataMessage: (NSArray *) data toPort:(NSPort *) sendToPort;
 
 @end
 

@@ -7,12 +7,12 @@
 
 #import <XCTest/XCTest.h>
 #import "DataManager.h"
-#import "MessageMaker.h"
+#import "MessageManager.h"
 
 @interface UnitTestDataManager : XCTestCase
 
 @property DataManager * dataManager;
-@property MessageMaker * messageMaker;
+@property MessageManager * messageMaker;
 
 @end
 
@@ -37,7 +37,7 @@
     [super setUp];
     _dataManager = [[DataManager alloc] init];
     // [_dataManager initiate];
-    _messageMaker = [[MessageMaker alloc] init];
+    _messageMaker = [[MessageManager alloc] init];
     // [_messageMaker initiate];
 }
 
