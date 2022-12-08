@@ -16,6 +16,20 @@
 
 @end
 
+// ------------------------------------ //
+
+@interface DataManager (Testing)
+// "Private" methods
+- (BOOL) isStorageVacant:(NSPort *)senderPort;
+- (BOOL) isDataValid:(NSPortMessage *)message;
+- (BOOL) isSenderActive:(NSPort *)senderPort;
+- (void) addToDictSenderToHash: (NSPortMessage *) message;
+- (void) addToDictHashToComponents: (NSPortMessage *) message;
+- (void) initiate;
+@end
+
+// ------------------------------------ //
+
 @implementation UnitTestDataManager
 
 - (void)setUp {
