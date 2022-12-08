@@ -22,9 +22,9 @@
     // Put setup code here. This method is called before the invocation of each test method in the class.
     [super setUp];
     _dataManager = [[DataManager alloc] init];
-    [_dataManager initiate];
+    // [_dataManager initiate];
     _messageMaker = [[MessageMaker alloc] init];
-    [_messageMaker initiate];
+    // [_messageMaker initiate];
 }
 
 - (void)tearDown {

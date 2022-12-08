@@ -10,6 +10,17 @@
 
 #define SERVICE_NAME @"org.matans.messagemaker"
 
+// ------------------------------------ //
+
+@interface MessageMaker()
+
+// "Private" methods
+- (void) initiate;
+
+@end
+
+// ------------------------------------ //
+
 
 @implementation MessageMaker
 
@@ -28,6 +39,15 @@
         
         return;
     }
+}
+
+- (id) init{
+    self = [super init];
+    if (self){
+        [self initiate];
+    }
+    
+    return self;
 }
 
 - (NSPortMessage *) createStringMessage:(NSString *) string{
