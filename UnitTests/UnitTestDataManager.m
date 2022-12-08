@@ -8,11 +8,13 @@
 #import <XCTest/XCTest.h>
 #import "DataManager.h"
 #import "MessageHandler.h"
+#import "ValidationHandler.h"
 
 @interface UnitTestDataManager : XCTestCase
 
 @property DataManager * dataManager;
 @property MessageHandler * messageHandler;
+@property ValidationHandler * validationHandler;
 
 @end
 
@@ -35,9 +37,9 @@
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
     [super setUp];
-    _messageHandler = [[MessageHandler alloc] initWithComponentDict:<#(NSArray * _Nullable)#>];
-    
-    _dataManager = [[DataManager alloc] init];
+    _validationHandler = [[ValidationHandler alloc] init];
+    _messageHandler = [[MessageHandler alloc] init];
+    _dataManager = [[DataManager alloc] initWithMessageManager:_messageHandler];
     
 }
 
@@ -46,12 +48,22 @@
     [super tearDown];
 }
 
+// ------------------------------------ //
+// Segment for functional test cases.
+// Use XCTAssert and related functions to verify your tests produce the correct results.
+
+- (void) testValidationHandler {
+    NSPortMessage * nonStructuredMessage = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
+    NSPortMessage * structuredMessage = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
+    
+    XCTAssertFalse([_validationHandler isMessageValid:nonStructuredMessage]);
+    XCTAssertTrue([_validationHandler isMessageValid:structuredMessage]);
+}
+/*
 - (void)testDataManagerVacancy {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+
     NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
     
-    XCTAssertTrue([_dataManager isDataValid:exampleMessage]);
     XCTAssertTrue([_dataManager isStorageVacant:exampleMessage.sendPort]);
     
     XCTAssertTrue([_dataManager saveData:exampleMessage]);
@@ -95,6 +107,7 @@
     [_dataManager removeData:sender];
     XCTAssertTrue([_dataManager isStorageVacant:sender]);
 }
+ */
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

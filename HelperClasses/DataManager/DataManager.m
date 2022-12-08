@@ -6,11 +6,7 @@
 //
 
 #import "DataManager.h"
-#import "MessageHandler.h"
 #import <CommonCrypto/CommonDigest.h>
-#import <malloc/malloc.h>
-
-#define MAX_SIZE_MSG 1024;
 
 // ------------------------------------ //
 
@@ -24,8 +20,6 @@
 
 // "Private" methods
 - (BOOL) isStorageVacant:(NSPort *)senderPort;
-- (BOOL) isDataValid:(NSData *)messageData;
-- (BOOL) isSenderActive:(NSPort *)senderPort;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
 - (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
 - (void) initiateWith: (MessageHandler * _Nullable) messageManager;
@@ -68,6 +62,11 @@
     return self;
 }
 
+- (BOOL) isStorageVacant:(NSPort *)senderPort{
+    BOOL result = ![[self getDictSenderToHash] objectForKey:senderPort];
+    return result;
+}
+
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode{
     [[self getDictSenderToHash] setObject:hashCode forKey:senderPort];
 }
@@ -78,11 +77,12 @@
 
 - (BOOL) saveData:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;
-    NSData * messageData = [[self getMessageManager] extractDataFrom:message];
-    
     BOOL result = FALSE;
     
-    if ([self isSenderActive:responsePort] && [self isDataValid:messageData] && [self isStorageVacant:responsePort]) {
+    // this line should exist outside the data manager!
+    // I pass stuff to "save data" after I checked these!
+    if ([self isStorageVacant:responsePort]){
+        NSData * messageData = [[self getMessageManager] extractDataFrom:message];
         NSData * hashCode = [DataManager dataToSha256:messageData];
         [self addToDictSenderToHash:responsePort withHash:hashCode];
         [self addToDictHashToComponents:hashCode withComponents:message.components];
@@ -105,18 +105,9 @@
     [[self getDictSenderToHash] removeObjectForKey:sender];
 }
 
-- (BOOL) isStorageVacant:(NSPort *)senderPort{
-    BOOL result = ![[self getDictSenderToHash] objectForKey:senderPort];
-    return result;
-}
 
-- (BOOL) isDataValid:(NSData *)messageData{
-    BOOL sizeRequirement = malloc_size((__bridge const void *) messageData) <= MAX_SIZE_MSG;
-    return sizeRequirement;
-}
 
-- (BOOL) isSenderActive:(NSPort *)senderPort{
-    return senderPort != nil;
-}
+
+
 
 @end

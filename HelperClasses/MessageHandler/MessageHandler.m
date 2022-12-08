@@ -6,28 +6,15 @@
 //
 
 #import "MessageHandler.h"
-#import <malloc/malloc.h>
+#import "definitions.h"
 
 #define SERVICE_NAME @"org.matans.messagemaker"
-
-typedef NS_ENUM(NSInteger,eMessageComponentCellType){
-    data = 0,
-    functionality = 1,
-    error = 2,
-};
-
-typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
-    composite = 0,
-    nonComposite = 1,
-};
 
 // ------------------------------------ //
 
 @interface MessageHandler()
 
-// "Private" property
-@property (atomic, retain, getter=getDictMessageComponentTypeToIndex) NSDictionary<NSNumber*, NSNumber*> * dictMessageComponentTypeToIndex;
-@property (atomic, assign, getter=getMessageExtractionProtocol) enum eMessageComponentArrangementType messageArrangementType;
+// "Private" properties
 
 // "Private" methods
 - (void) initiate;
@@ -41,25 +28,19 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
 @implementation MessageHandler
 
 - (id) init{
-    return [self initWithComponentDict:nil];
-}
-
-- (id) initWithComponentDict:(NSDictionary *) messageComponentDict{
     self = [super init];
     if(self){
-        [self initiateWith:messageComponentDict];
+        [self initiate];
     }
     
     return self;
 }
 
-- (NSPort *)getSelfPort
-{
+- (NSPort *)getSelfPort{
     return [[NSMachBootstrapServer sharedInstance] portForName:SERVICE_NAME];
 }
 
--(void) initiateWith:(NSDictionary * _Nullable) messageComponentIndexDict
-{
+-(void) initiate{
     self.port = [[NSMachBootstrapServer sharedInstance] servicePortWithName:SERVICE_NAME];
     
     if (self.port == nil){
@@ -68,53 +49,48 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
         
         return;
     }
-    
-    if (messageComponentIndexDict){
-        self.dictMessageComponentTypeToIndex = [[NSDictionary alloc] initWithDictionary:messageComponentIndexDict];
-        self.messageArrangementType = composite;
-    }
-    else{
-        self.dictMessageComponentTypeToIndex = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithInt:data], 0, nil];
-        self.messageArrangementType = nonComposite;
-    }
 }
 
-- (NSPortMessage *) createStringMessage:(NSString *) string{
-    return [self createStringMessage:string toPort:[self getSelfPort]];
+- (NSPortMessage *) createStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured{
+    return [self createStringMessage:string toPort:[self getSelfPort] isArrayArrangementStructured:isStructured];
 }
 
-- (NSPortMessage *) createStringMessage:(NSString *) string toPort:(nonnull NSPort *)sendToPort{
+- (NSPortMessage *) createStringMessage:(NSString *) string toPort:(nonnull NSPort *)receiverPort isArrayArrangementStructured:(BOOL)isStructured{
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    NSPort * receivePort = [NSMachPort port];
-    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
+    NSArray * array = isStructured ? [self parseDataIntoCompositeStructureArray:data] : @[data];
+    NSPort * senderPort = [NSMachPort port];
+    // NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     
-    return message;
+    return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
 }
 
-- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes{
-    return [self createGarbageDataMessageWithSize:numberOfBytes toPort:[self getSelfPort]];
+- (NSArray *) parseDataIntoCompositeStructureArray:(NSData *)data{
+    return @[data, @"to_program_later_indicator_functionality_indicator", @"to_program_later_indicator_error", [NSNumber numberWithInt:composite]];
 }
 
-- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)sendToPort{
+- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured{
+    return [self createGarbageDataMessageWithSize:numberOfBytes toPort:[self getSelfPort] isArrayArrangementStructured:isStructured];
+}
+
+- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort isArrayArrangementStructured:(BOOL)isStructured{
     void * bytes = malloc(numberOfBytes);
     NSData * data = [NSData dataWithBytes:bytes length:numberOfBytes];
-    NSPort * receivePort = [NSMachPort port];
-    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
+    NSArray * array = isStructured ? [self parseDataIntoCompositeStructureArray:data] : @[data];
+    NSPort * senderPort = [NSMachPort port];
+    // NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
+    
+    return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
+}
+
+- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort{
+    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:receiverPort receivePort:senderPort components:array];
     
     return message;
 }
 
-- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSArray *)data fromPort:(NSPort *)senderPort{
-    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:receiverPort receivePort:senderPort components:data];
-    
-    return message;
-}
-
--(NSData *) extractData:(NSPortMessage *)message{
-    NSInteger indexOfData = [[[self getDictMessageComponentTypeToIndex] objectForKey:[NSNumber numberWithInt:data]] intValue];
-    NSData * result = [message.components objectAtIndex:indexOfData];
-    
-    return result;
+- (NSData *) extractDataFrom:(NSPortMessage *)message{
+    NSInteger indexOfData = [[NSNumber numberWithInt:data] intValue];
+    return [message.components objectAtIndex:indexOfData];
 }
 
 @end

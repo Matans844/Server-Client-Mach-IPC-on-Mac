@@ -14,12 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSPort * port;
 
 - (id) init;
-- (id) initWithComponentDict:(NSArray * _Nullable) messageComponentDict NS_DESIGNATED_INITIALIZER;
-- (NSPortMessage *) createStringMessage: (NSString *) string;
-- (NSPortMessage *) createStringMessage: (NSString *) string toPort:(NSPort *) sendToPort;
-- (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes;
-- (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes toPort:(NSPort *) sendToPort;
-- (NSPortMessage *) createMessageTo:(NSPort *)sendToPort withData:(NSArray *) data fromPort:(NSPort *)senderPort;
+- (NSPortMessage *) createStringMessage: (NSString *) string isArrayArrangementStructured:(BOOL) isStructured;
+- (NSPortMessage *) createStringMessage: (NSString *) string toPort:(NSPort *) receiverPort isArrayArrangementStructured:(BOOL) isStructured;
+- (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes isArrayArrangementStructured:(BOOL) isStructured;
+- (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes toPort:(NSPort *) receiverPort isArrayArrangementStructured:(BOOL) isStructured;
+
+- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort;
 - (NSData *) extractDataFrom:(NSPortMessage *)message;
 
 @end

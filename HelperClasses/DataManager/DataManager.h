@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSData *) doSha256: (NSData *) dataIn;
 + (NSData *) dataToSha256: (NSData *) messageData;
 
-- (id) init;
 - (id) initWithMessageManager: (MessageHandler * _Nullable) messageManager NS_DESIGNATED_INITIALIZER;
+- (id) init;
 - (BOOL) saveData: (NSPortMessage *) message;
 - (NSArray * _Nullable) getData: (NSPort *) sender;
 - (void) removeData: (NSPort *) sender;
