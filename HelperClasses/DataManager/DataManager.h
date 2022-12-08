@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MessageManager.h"
+#import "MessageHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSData *) dataToSha256: (NSData *) messageData;
 
 - (id) init;
-- (id) initWithMessageManager: (MessageManager * _Nullable) messageManager NS_DESIGNATED_INITIALIZER;
+- (id) initWithMessageManager: (MessageHandler * _Nullable) messageManager NS_DESIGNATED_INITIALIZER;
 - (BOOL) saveData: (NSPortMessage *) message;
 - (NSArray * _Nullable) getData: (NSPort *) sender;
 - (void) removeData: (NSPort *) sender;

@@ -6,7 +6,7 @@
 //
 
 #import "DataManager.h"
-#import "MessageManager.h"
+#import "MessageHandler.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <malloc/malloc.h>
 
@@ -18,7 +18,7 @@
 // Idea: Can NSMapTable help with weak references to deactivated clients?
 
 // "Private" properties
-@property (atomic, retain, getter=getMessageManager) MessageManager * messageManager;
+@property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
 @property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
 @property (atomic, retain, getter=getDictHashToComponents) NSMutableDictionary<NSData*, NSArray*> * dictHashToComponents;
 
@@ -28,7 +28,7 @@
 - (BOOL) isSenderActive:(NSPort *)senderPort;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
 - (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
-- (void) initiateWith: (MessageManager * _Nullable) messageManager;
+- (void) initiateWith: (MessageHandler * _Nullable) messageManager;
 
 @end
 
@@ -49,8 +49,8 @@
     return [DataManager doSha256:serializedData];
 }
 
-- (void) initiateWith:(MessageManager * _Nullable)messageManager{
-    self.messageManager = messageManager ? messageManager : [[MessageManager alloc] init];;
+- (void) initiateWith:(MessageHandler * _Nullable)messageManager{
+    self.messageManager = messageManager ? messageManager : [[MessageHandler alloc] init];;
     self.dictSenderToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
     self.dictHashToComponents = [[NSMutableDictionary<NSData*, NSArray*> alloc] init];
 }
@@ -59,7 +59,7 @@
     return [self initWithMessageManager:nil];
 }
 
-- (id) initWithMessageManager:(MessageManager *)messageManager{
+- (id) initWithMessageManager:(MessageHandler *)messageManager{
     self = [super init];
     if(self){
         [self initiateWith:messageManager];

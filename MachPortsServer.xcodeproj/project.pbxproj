@@ -11,8 +11,8 @@
 		90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EC6293E786B00F0C5AB /* MachPortsServer.m */; };
 		9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
 		9007A0262940F92900F0C5AB /* UnitTestDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A0252940F92900F0C5AB /* UnitTestDataManager.m */; };
-		9007A02D2940FE4500F0C5AB /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageManager.m */; };
-		9007A032294103BB00F0C5AB /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageManager.m */; };
+		9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
+		9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
 		9007A033294103BE00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
 		9007A03829413A3000F0C5AB /* ServiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03729413A3000F0C5AB /* ServiceManager.m */; };
 		9007A03B2941420000F0C5AB /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03A2941420000F0C5AB /* Service.m */; };
@@ -39,8 +39,8 @@
 		9007A01B293FA62E00F0C5AB /* DataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTestDataManager.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9007A0252940F92900F0C5AB /* UnitTestDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTestDataManager.m; sourceTree = "<group>"; };
-		9007A02B2940FE4500F0C5AB /* MessageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageManager.h; sourceTree = "<group>"; };
-		9007A02C2940FE4500F0C5AB /* MessageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageManager.m; sourceTree = "<group>"; };
+		9007A02B2940FE4500F0C5AB /* MessageHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageHandler.h; sourceTree = "<group>"; };
+		9007A02C2940FE4500F0C5AB /* MessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageHandler.m; sourceTree = "<group>"; };
 		9007A03629413A3000F0C5AB /* ServiceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceManager.h; sourceTree = "<group>"; };
 		9007A03729413A3000F0C5AB /* ServiceManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceManager.m; sourceTree = "<group>"; };
 		9007A0392941420000F0C5AB /* Service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
@@ -120,13 +120,13 @@
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
-		9007A02A2940FDD500F0C5AB /* MessageManager */ = {
+		9007A02A2940FDD500F0C5AB /* MessageHandler */ = {
 			isa = PBXGroup;
 			children = (
-				9007A02B2940FE4500F0C5AB /* MessageManager.h */,
-				9007A02C2940FE4500F0C5AB /* MessageManager.m */,
+				9007A02B2940FE4500F0C5AB /* MessageHandler.h */,
+				9007A02C2940FE4500F0C5AB /* MessageHandler.m */,
 			);
-			path = MessageManager;
+			path = MessageHandler;
 			sourceTree = "<group>";
 		};
 		9007A0342941263E00F0C5AB /* HelperClasses */ = {
@@ -135,7 +135,7 @@
 				9007A019293FA60B00F0C5AB /* Service */,
 				9007A035294139D700F0C5AB /* ServiceManager */,
 				9007A013293F92BE00F0C5AB /* DataManager */,
-				9007A02A2940FDD500F0C5AB /* MessageManager */,
+				9007A02A2940FDD500F0C5AB /* MessageHandler */,
 			);
 			path = HelperClasses;
 			sourceTree = "<group>";
@@ -240,7 +240,7 @@
 				90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */,
 				9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */,
 				9007A03829413A3000F0C5AB /* ServiceManager.m in Sources */,
-				9007A02D2940FE4500F0C5AB /* MessageManager.m in Sources */,
+				9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
 				9007A03B2941420000F0C5AB /* Service.m in Sources */,
 			);
@@ -251,7 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9007A033294103BE00F0C5AB /* DataManager.m in Sources */,
-				9007A032294103BB00F0C5AB /* MessageManager.m in Sources */,
+				9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */,
 				9007A0262940F92900F0C5AB /* UnitTestDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

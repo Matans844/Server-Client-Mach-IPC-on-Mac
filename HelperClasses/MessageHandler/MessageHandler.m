@@ -5,7 +5,7 @@
 //  Created by matan on 07/12/2022.
 //
 
-#import "MessageManager.h"
+#import "MessageHandler.h"
 #import <malloc/malloc.h>
 
 #define SERVICE_NAME @"org.matans.messagemaker"
@@ -23,10 +23,10 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
 
 // ------------------------------------ //
 
-@interface MessageManager()
+@interface MessageHandler()
 
 // "Private" property
-@property (atomic, retain, getter=getDictMessageComponentTypeToIndex) NSDictionary * dictMessageComponentTypeToIndex;
+@property (atomic, retain, getter=getDictMessageComponentTypeToIndex) NSDictionary<NSNumber*, NSNumber*> * dictMessageComponentTypeToIndex;
 @property (atomic, assign, getter=getMessageExtractionProtocol) enum eMessageComponentArrangementType messageArrangementType;
 
 // "Private" methods
@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
 // ------------------------------------ //
 
 
-@implementation MessageManager
+@implementation MessageHandler
 
 - (id) init{
     return [self initWithComponentDict:nil];
@@ -104,12 +104,17 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
     return message;
 }
 
-- (NSPortMessage *) createReceiveDataMessage:(NSArray *)data toPort:(NSPort *)sendToPort{
+- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSArray *)data fromPort:(NSPort *)senderPort{
+    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:receiverPort receivePort:senderPort components:data];
     
+    return message;
 }
 
 -(NSData *) extractData:(NSPortMessage *)message{
+    NSInteger indexOfData = [[[self getDictMessageComponentTypeToIndex] objectForKey:[NSNumber numberWithInt:data]] intValue];
+    NSData * result = [message.components objectAtIndex:indexOfData];
     
+    return result;
 }
 
 @end

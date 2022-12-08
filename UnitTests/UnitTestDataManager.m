@@ -7,12 +7,12 @@
 
 #import <XCTest/XCTest.h>
 #import "DataManager.h"
-#import "MessageManager.h"
+#import "MessageHandler.h"
 
 @interface UnitTestDataManager : XCTestCase
 
 @property DataManager * dataManager;
-@property MessageManager * messageMaker;
+@property MessageHandler * messageHandler;
 
 @end
 
@@ -35,10 +35,10 @@
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
     [super setUp];
+    _messageHandler = [[MessageHandler alloc] initWithComponentDict:<#(NSArray * _Nullable)#>];
+    
     _dataManager = [[DataManager alloc] init];
-    // [_dataManager initiate];
-    _messageMaker = [[MessageManager alloc] init];
-    // [_messageMaker initiate];
+    
 }
 
 - (void)tearDown {
@@ -49,7 +49,7 @@
 - (void)testDataManagerVacancy {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
-    NSPortMessage * exampleMessage = [_messageMaker createStringMessage:@"test1"];
+    NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
     
     XCTAssertTrue([_dataManager isDataValid:exampleMessage]);
     XCTAssertTrue([_dataManager isStorageVacant:exampleMessage.sendPort]);
@@ -58,12 +58,12 @@
     
     XCTAssertFalse([_dataManager isStorageVacant:exampleMessage.sendPort]);
     
-    NSPortMessage * exampleMessage2 = [_messageMaker createStringMessage:@"test2"];
+    NSPortMessage * exampleMessage2 = [_messageHandler createStringMessage:@"test2"];
     XCTAssertFalse([_dataManager isStorageVacant:exampleMessage2.sendPort]);
 }
 
 - (void) testDataManagerValidation{
-    NSPortMessage * tooBigMessage = [_messageMaker createGarbageDataMessageWithSize:1028];
+    NSPortMessage * tooBigMessage = [_messageHandler createGarbageDataMessageWithSize:1028];
     
     XCTAssertFalse([_dataManager isDataValid:tooBigMessage]);
     
@@ -73,7 +73,7 @@
 }
 
 - (void) testDataManagerGetData{
-    NSPortMessage * exampleMessage = [_messageMaker createStringMessage:@"test1"];
+    NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
     NSArray * originalComponent = exampleMessage.components;
     
     XCTAssertTrue([_dataManager saveData:exampleMessage]);
@@ -83,7 +83,7 @@
 }
 
 - (void) testDataManagerRemoveData{
-    NSPortMessage * exampleMessage = [_messageMaker createStringMessage:@"test1"];
+    NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
     NSPort * sender = exampleMessage.sendPort;
     
     XCTAssertTrue([_dataManager isStorageVacant:exampleMessage.sendPort]);
