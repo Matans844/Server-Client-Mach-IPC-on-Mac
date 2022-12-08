@@ -6,6 +6,7 @@
 //
 
 #import "DataManager.h"
+#import "MessageManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <malloc/malloc.h>
 
@@ -17,16 +18,17 @@
 // Idea: Can NSMapTable help with weak references to deactivated clients?
 
 // "Private" properties
+@property (atomic, retain, getter=getMessageManager) MessageManager * messageManager;
 @property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
 @property (atomic, retain, getter=getDictHashToComponents) NSMutableDictionary<NSData*, NSArray*> * dictHashToComponents;
 
 // "Private" methods
 - (BOOL) isStorageVacant:(NSPort *)senderPort;
-- (BOOL) isDataValid:(NSPortMessage *)message;
+- (BOOL) isDataValid:(NSData *)messageData;
 - (BOOL) isSenderActive:(NSPort *)senderPort;
-- (void) addToDictSenderToHash: (NSPortMessage *) message;
-- (void) addToDictHashToComponents: (NSPortMessage *) message;
-- (void) initiate;
+- (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
+- (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
+- (void) initiateWith: (MessageManager * _Nullable) messageManager;
 
 @end
 
@@ -41,46 +43,49 @@
     return macOut;
 }
 
-+ (NSData *) machMessageToSha256:(NSPortMessage *)message{
-    NSArray * components = message.components;
-    NSData * serializedComponents = [NSKeyedArchiver archivedDataWithRootObject:components requiringSecureCoding:TRUE error:nil];
++ (NSData *) dataToSha256:(NSData *)messageData{
+    NSData * serializedData = [NSKeyedArchiver archivedDataWithRootObject:messageData requiringSecureCoding:TRUE error:nil];
     
-    return [DataManager doSha256:serializedComponents];
+    return [DataManager doSha256:serializedData];
 }
 
-- (void) initiate{
+- (void) initiateWith:(MessageManager * _Nullable)messageManager{
+    self.messageManager = messageManager ? messageManager : [[MessageManager alloc] init];;
     self.dictSenderToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
     self.dictHashToComponents = [[NSMutableDictionary<NSData*, NSArray*> alloc] init];
 }
 
 - (id) init{
+    return [self initWithMessageManager:nil];
+}
+
+- (id) initWithMessageManager:(MessageManager *)messageManager{
     self = [super init];
-    if (self){
-        [self initiate];
+    if(self){
+        [self initiateWith:messageManager];
     }
     
     return self;
 }
 
-- (void) addToDictSenderToHash: (NSPortMessage *) message{
-    NSPort * senderPort = message.sendPort;
-    NSData * hashCode = [DataManager machMessageToSha256:message];
+- (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode{
     [[self getDictSenderToHash] setObject:hashCode forKey:senderPort];
 }
 
-- (void) addToDictHashToComponents: (NSPortMessage *) message{
-    NSData * hashCode = [DataManager machMessageToSha256:message];
-    NSArray * components = message.components;
+- (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components{
     [[self getDictHashToComponents] setObject:components forKey:hashCode];
 }
 
 - (BOOL) saveData:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;
+    NSData * messageData = [[self getMessageManager] extractDataFrom:message];
+    
     BOOL result = FALSE;
     
-    if ([self isSenderActive:responsePort] && [self isDataValid:message] && [self isStorageVacant:responsePort]) {
-        [self addToDictSenderToHash:message];
-        [self addToDictHashToComponents:message];
+    if ([self isSenderActive:responsePort] && [self isDataValid:messageData] && [self isStorageVacant:responsePort]) {
+        NSData * hashCode = [DataManager dataToSha256:messageData];
+        [self addToDictSenderToHash:responsePort withHash:hashCode];
+        [self addToDictHashToComponents:hashCode withComponents:message.components];
         result = TRUE;
     }
     
@@ -105,8 +110,8 @@
     return result;
 }
 
-- (BOOL) isDataValid:(NSPortMessage *)message{
-    BOOL sizeRequirement = malloc_size((__bridge const void *) message.components[0]) <= MAX_SIZE_MSG;
+- (BOOL) isDataValid:(NSData *)messageData{
+    BOOL sizeRequirement = malloc_size((__bridge const void *) messageData) <= MAX_SIZE_MSG;
     return sizeRequirement;
 }
 

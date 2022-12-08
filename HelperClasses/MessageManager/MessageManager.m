@@ -10,12 +10,28 @@
 
 #define SERVICE_NAME @"org.matans.messagemaker"
 
+typedef NS_ENUM(NSInteger,eMessageComponentCellType){
+    data = 0,
+    functionality = 1,
+    error = 2,
+};
+
+typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
+    composite = 0,
+    nonComposite = 1,
+};
+
 // ------------------------------------ //
 
 @interface MessageManager()
 
+// "Private" property
+@property (atomic, retain, getter=getDictMessageComponentTypeToIndex) NSDictionary * dictMessageComponentTypeToIndex;
+@property (atomic, assign, getter=getMessageExtractionProtocol) enum eMessageComponentArrangementType messageArrangementType;
+
 // "Private" methods
 - (void) initiate;
+- (NSPort *)getSelfPort;
 
 @end
 
@@ -24,12 +40,25 @@
 
 @implementation MessageManager
 
+- (id) init{
+    return [self initWithComponentDict:nil];
+}
+
+- (id) initWithComponentDict:(NSDictionary *) messageComponentDict{
+    self = [super init];
+    if(self){
+        [self initiateWith:messageComponentDict];
+    }
+    
+    return self;
+}
+
 - (NSPort *)getSelfPort
 {
     return [[NSMachBootstrapServer sharedInstance] portForName:SERVICE_NAME];
 }
 
--(void) initiate
+-(void) initiateWith:(NSDictionary * _Nullable) messageComponentIndexDict
 {
     self.port = [[NSMachBootstrapServer sharedInstance] servicePortWithName:SERVICE_NAME];
     
@@ -39,15 +68,15 @@
         
         return;
     }
-}
-
-- (id) init{
-    self = [super init];
-    if (self){
-        [self initiate];
-    }
     
-    return self;
+    if (messageComponentIndexDict){
+        self.dictMessageComponentTypeToIndex = [[NSDictionary alloc] initWithDictionary:messageComponentIndexDict];
+        self.messageArrangementType = composite;
+    }
+    else{
+        self.dictMessageComponentTypeToIndex = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithInt:data], 0, nil];
+        self.messageArrangementType = nonComposite;
+    }
 }
 
 - (NSPortMessage *) createStringMessage:(NSString *) string{
@@ -76,6 +105,10 @@
 }
 
 - (NSPortMessage *) createReceiveDataMessage:(NSArray *)data toPort:(NSPort *)sendToPort{
+    
+}
+
+-(NSData *) extractData:(NSPortMessage *)message{
     
 }
 

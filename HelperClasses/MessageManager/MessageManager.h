@@ -14,11 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSPort * port;
 
 - (id) init;
+- (id) initWithComponentDict:(NSArray * _Nullable) messageComponentDict NS_DESIGNATED_INITIALIZER;
 - (NSPortMessage *) createStringMessage: (NSString *) string;
 - (NSPortMessage *) createStringMessage: (NSString *) string toPort:(NSPort *) sendToPort;
 - (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes;
 - (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes toPort:(NSPort *) sendToPort;
 - (NSPortMessage *) createReceiveDataMessage: (NSArray *) data toPort:(NSPort *) sendToPort;
+- (NSData *) extractDataFrom:(NSPortMessage *)message;
 
 @end
 
