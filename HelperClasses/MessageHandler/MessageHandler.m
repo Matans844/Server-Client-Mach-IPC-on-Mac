@@ -40,7 +40,7 @@
     return self;
 }
 
-- (NSPort *)getPortByName:(NSString*) serviceName{
+- (NSPort *)getPortByName:(NSString*)serviceName{
     return [[NSMachBootstrapServer sharedInstance] portForName:serviceName];
 }
 
@@ -61,7 +61,7 @@
     return [self createStringMessage:string toPort:[self getDefaultPortNameReceiver] fromPort:[self getDefaultPortNameSender] isArrayArrangementStructured:isStructured];
 }
 
-- (NSPortMessage *) createStringMessage:(NSString *) string toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured{
+- (NSPortMessage *) createStringMessage:(NSString *)string toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured{
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
     
     // If the message is not structured, data is placed in the first cell of the components array.
@@ -81,8 +81,9 @@
 - (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured{
     void * bytes = malloc(numberOfBytes);
     NSData * data = [NSData dataWithBytes:bytes length:numberOfBytes];
+    
+    // Both data objects are entered into an array. The question is to which index.
     NSArray * array = isStructured ? [self encodeDataIntoCompositeStructureArray:data] : @[data];
-    // NSPort * senderPort = [NSMachPort port];
     
     return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
 }

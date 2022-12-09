@@ -13,15 +13,15 @@
 @interface ValidationHandler()
 
 // "Private" properties
-
+// [This is a very lonely space]
 // "Private" methods
 - (BOOL) isComponentsInCorrectSize:(NSArray *)components;
 - (BOOL) isComponentsInArrangedStructure:(NSArray *)components;
 - (BOOL) isMessageComponentArrangementValid:(NSArray *)components;
-- (BOOL) isMessageComponentsSizeValid:(NSArray *) components;
+- (BOOL) isMessageComponentsSizeValid:(NSArray *)components;
 - (BOOL) isSenderActive:(NSPort *)senderPort;
 - (BOOL) isMessageComponentsValid:(NSArray *)components;
-- (NSUInteger) calculateComponentsSizeInBytes:(NSArray *) components;
+- (NSUInteger) calculateComponentsSizeInBytes:(NSArray *)components;
 
 
 @end
@@ -42,7 +42,7 @@
     return [self isComponentsInCorrectSize:components] && [self isComponentsInArrangedStructure:components];
 }
 
-- (BOOL) isMessageComponentsSizeValid:(NSArray *) components{
+- (BOOL) isMessageComponentsSizeValid:(NSArray *)components{
     return [self calculateComponentsSizeInBytes:components] <= MAX_SIZE_MSG;
     
 }
@@ -55,7 +55,7 @@
     return [self isMessageComponentsSizeValid:components] && [self isMessageComponentArrangementValid:components];
 }
 
-- (NSUInteger) calculateComponentsSizeInBytes:(NSArray *) components{
+- (NSUInteger) calculateComponentsSizeInBytes:(NSArray *)components{
     id obj = nil;
     NSUInteger totalSize = 0;
     for(obj in components){

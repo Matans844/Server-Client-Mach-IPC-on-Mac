@@ -12,6 +12,7 @@
 
 @interface DataManager()
 // Idea: Can NSMapTable help with weak references to deactivated clients?
+// Answer: No. Use delegates that track changing the port value.
 
 // "Private" properties
 @property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
@@ -26,8 +27,8 @@
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
 - (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data;
 - (void) addToCounterDataHash:(NSData *)hashCode;
-- (void) initiateWith: (MessageHandler * _Nullable) messageManager;
-- (NSData *) getHashCodeFromSender:(NSPort *) sender;
+- (void) initiateWith:(MessageHandler * _Nullable)messageManager;
+- (NSData *) getHashCodeFromSender:(NSPort *)sender;
 
 @end
 
@@ -42,10 +43,14 @@
     return macOut;
 }
 
-+ (NSData *) dataToSha256:(NSData *)messageData{
-    NSData * serializedData = [NSKeyedArchiver archivedDataWithRootObject:messageData requiringSecureCoding:TRUE error:nil];
++ (NSData *) encodeDataAndCalculateHash:(NSData *)messageData{
+    NSData * serializedData = [DataManager encodeData:messageData];
     
     return [DataManager doSha256:serializedData];
+}
+
++ (NSData *) encodeData:(NSData *)data{
+    return [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:TRUE error:nil];
 }
 
 - (void) initiateWith:(MessageHandler * _Nullable)messageManager{
@@ -74,10 +79,8 @@
 }
 
 - (BOOL) isStorageVacantForHash:(NSData *)hashCode{
-    NSLog(@"counter data hash dictionary is: %@", [self getCounterOfDataHash]);
-    NSLog(@"hash code to find is: %@", hashCode);
-    // NSLog(@"currentHashCount is %@", [[self getCounterOfDataHash] objectForKey:hashCode]);
     BOOL result = ![[self getDictHashToData] objectForKey:hashCode];
+    
     return result;
 }
 
@@ -101,15 +104,13 @@
     }
 }
 
-- (BOOL) saveDataFrom:(NSPortMessage *)message{
+- (BOOL) saveDataFromMessage:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;
     BOOL result = FALSE;
     
     if ([self isStorageVacantForSender:responsePort]){
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
-        NSData * hashCode = [DataManager dataToSha256:messageData];
-        // NSData * hashCode = [DataManager doSha256:messageData];
-        NSLog(@"hash code added is: %@", hashCode);
+        NSData * hashCode = [DataManager encodeDataAndCalculateHash:messageData];
         [self addToDictSenderToHash:responsePort withHash:hashCode];
         [self addToDictHashToData:hashCode withData:messageData];
         [self addToCounterDataHash:hashCode];
@@ -120,24 +121,23 @@
     return result;
 }
 
-- (NSData * _Nullable) getData:(NSPort *)sender{
+- (NSData * _Nullable) getDataBySender:(NSPort *)sender{
     NSData * hashCode = [self getHashCodeFromSender:sender];
 
     return [[self getDictHashToData] objectForKey:hashCode];
 }
 
-- (NSData *) getHashCodeFromSender:(NSPort *) sender{
+- (NSData *) getHashCodeFromSender:(NSPort *)sender{
     return [[self getDictSenderToHash] objectForKey:sender];
 }
 
-- (BOOL) removeSenderData:(NSPort *)sender{
+- (BOOL) removeDataBySender:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
     BOOL result = FALSE;
     
     // Make sure there sender exists
     if (![self isStorageVacantForSender:sender]){
         NSNumber * currentHashCount = [[self getCounterOfDataHash] objectForKey:hashCode];
-        // NSLog(@"currentHashCount is %@", currentHashCount);
         
         // We only remove the hashCode if no other senders are linked to it.
         if ([currentHashCount intValue] == 1){
@@ -147,14 +147,11 @@
         else{
             [[self getCounterOfDataHash] setObject:@([currentHashCount intValue] - 1) forKey:hashCode];
         }
-        
-        // NSLog(@"currentHashCount is %@", [[self getCounterOfDataHash] objectForKey:hashCode]);
-        
-        // We remove the sender anyway.
+                
+        // We remove the sender entry anyway.
+        // Notice: A sender (client) can have at most one data record in the data manager (server).
         [[self getDictSenderToHash] removeObjectForKey:sender];
-        
-        // NSLog(@"currentHashCount is %@", [[self getCounterOfDataHash] objectForKey:hashCode]);
-        
+                
         result = TRUE;
     }
     

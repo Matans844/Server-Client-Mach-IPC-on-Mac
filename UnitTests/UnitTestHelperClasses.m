@@ -19,7 +19,8 @@
 @end
 
 // ------------------------------------ //
-// So that we can test private methods
+// Interface section from classes:
+// This allows us to test private properties and/or methods.
 
 // ------------------------------------ //
 
@@ -34,7 +35,7 @@
 - (BOOL) isStorageVacantForHash:(NSData *)hashCode;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
 - (void) addToDictHashToComponents:(NSData *)hashCode withData:(NSArray *)components;
-- (void) initiateWith: (MessageHandler * _Nullable) messageManager;
+- (void) initiateWith:(MessageHandler * _Nullable)messageManager;
 - (NSData *) getHashCodeFromSender:(NSPort *) sender;
 @end
 
@@ -98,7 +99,7 @@
     XCTAssertTrue([_validationHandler isMessageValid:messageStructured]);
     
     // Now we can add
-    XCTAssertTrue([_dataManager saveDataFrom:messageStructured]);
+    XCTAssertTrue([_dataManager saveDataFromMessage:messageStructured]);
     
     // Check that data was added
     XCTAssertFalse([_dataManager isStorageVacantForSender:messageStructured.sendPort]);
@@ -141,29 +142,29 @@
     
     NSData * message2StructuredData = [_messageHandler extractDataFrom:message2Structured];
 
-    XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
+    XCTAssertTrue([_dataManager saveDataFromMessage:message2Structured]);
     
-    NSData * dataFromDataManager = [_dataManager getData:senderPort];
+    NSData * dataFromDataManager = [_dataManager getDataBySender:senderPort];
     
     XCTAssertEqualObjects(message2StructuredData, dataFromDataManager);
 }
 
 
-- (void) testDataManagerRemoveData1{
+- (void) testDataManagerRemoveDataOneAddition{
     NSPortMessage * message2Structured = [_messageHandler createDefaultStringMessage:@"test2" isArrayArrangementStructured:YES];
      
     // Message handler default messages are sent from the same port
     NSPort * senderPort = message2Structured.sendPort;
     
     XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort]);
-    XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
+    XCTAssertTrue([_dataManager saveDataFromMessage:message2Structured]);
     XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort]);
     
-    XCTAssertTrue([_dataManager removeSenderData:senderPort]);
+    XCTAssertTrue([_dataManager removeDataBySender:senderPort]);
     XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort]);
 }
 
-- (void) testDataManagerRemoveData2{
+- (void) testDataManagerRemoveDataMoreThanOneAddition{
     NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameSender] isArrayArrangementStructured:YES];
     NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameReceiver] isArrayArrangementStructured:YES];
      
@@ -183,32 +184,24 @@
     
     // We are adding the first message.
     // We should still have room for the second message.
-    XCTAssertTrue([_dataManager saveDataFrom:message1Structured]);
+    XCTAssertTrue([_dataManager saveDataFromMessage:message1Structured]);
     XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort1]);
     XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort2]);
     
     // We add the second message.
-    XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
+    XCTAssertTrue([_dataManager saveDataFromMessage:message2Structured]);
     
     // Are they both linked to the same data?
-    XCTAssertEqualObjects([_dataManager getData:senderPort1], [_dataManager getData:senderPort2]);
+    XCTAssertEqualObjects([_dataManager getDataBySender:senderPort1], [_dataManager getDataBySender:senderPort2]);
     
     // We can delete the second message.
     // This does not affect the first message.
-    XCTAssertTrue([_dataManager removeSenderData:senderPort2]);
+    XCTAssertTrue([_dataManager removeDataBySender:senderPort2]);
     XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort2]);
     XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort1]);
     
     // The hash code is still present
-    // NSData * hashCode = [[_dataManager getDictSenderToHash] objectForKey:senderPort1];
     NSData * hashCode = [_dataManager getHashCodeFromSender:senderPort1];
-    
-    // NSLog(@"hash code we want to find is: %@", hashCode);
-    // NSLog(@"hash code for usual string: %@", [DataManager dataToSha256:[@"test2" dataUsingEncoding:NSUTF8StringEncoding]]);
-    
-    // XCTAssertTrue([DataManager dataToSha256:[@"test2" dataUsingEncoding:NSUTF8StringEncoding]] == hashCode);
-
-    // XCTAssertEqualObjects([DataManager dataToSha256:[@"test2" dataUsingEncoding:NSUTF8StringEncoding]], hashCode);
     
     XCTAssertFalse([_dataManager isStorageVacantForHash:hashCode]);
 }

@@ -12,15 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DataManager : NSObject
 
-+ (NSData *) doSha256: (NSData *) dataIn;
-+ (NSData *) dataToSha256: (NSData *) messageData;
++ (NSData *) doSha256:(NSData *)dataIn;
++ (NSData *) encodeData:(NSData *)data;
++ (NSData *) encodeDataAndCalculateHash:(NSData *)messageData;
 
-- (id) initWithMessageManager: (MessageHandler * _Nullable) messageManager NS_DESIGNATED_INITIALIZER;
 - (id) init;
-- (BOOL) saveDataFrom: (NSPortMessage *) message;
-// - (NSArray * _Nullable) getComponent: (NSPort *) sender;
-- (NSData * _Nullable) getData: (NSPort *) sender;
-- (BOOL) removeSenderData: (NSPort *) sender;
+- (id) initWithMessageManager:(MessageHandler * _Nullable)messageManager NS_DESIGNATED_INITIALIZER;
+
+- (BOOL) saveDataFromMessage:(NSPortMessage *)message;
+- (NSData * _Nullable) getDataBySender: (NSPort *)sender;
+- (BOOL) removeDataBySender: (NSPort *)sender;
 
 @end
 
