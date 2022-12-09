@@ -51,7 +51,7 @@
     }
 }
 
-- (NSPortMessage *) createStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured{
+- (NSPortMessage *) createDefaultStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured{
     return [self createStringMessage:string toPort:[self getSelfPort] isArrayArrangementStructured:isStructured];
 }
 
@@ -78,7 +78,7 @@
     return [mutableArray copy];
 }
 
-- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured{
+- (NSPortMessage *) createDefaultGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured{
     return [self createGarbageDataMessageWithSize:numberOfBytes toPort:[self getSelfPort] isArrayArrangementStructured:isStructured];
 }
 

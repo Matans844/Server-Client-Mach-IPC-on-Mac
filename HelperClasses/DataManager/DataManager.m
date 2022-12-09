@@ -75,7 +75,7 @@
     [[self getDictHashToComponents] setObject:components forKey:hashCode];
 }
 
-- (BOOL) saveData:(NSPortMessage *)message{
+- (BOOL) saveDataFrom:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;
     BOOL result = FALSE;
     
@@ -103,7 +103,7 @@
     return messageComponent[indexOfData];
 }
 
-- (void) removeData:(NSPort *)sender{
+- (void) removeSenderData:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
     [[self getDictHashToComponents] removeObjectForKey:hashCode];
     [[self getDictSenderToHash] removeObjectForKey:sender];
