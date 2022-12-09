@@ -90,11 +90,17 @@
     return result;
 }
 
-- (NSArray * _Nullable) getData:(NSPort *)sender{
+- (NSArray * _Nullable) getComponent:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
     NSArray * _Nullable target = [[self getDictHashToComponents] objectForKey:hashCode];
     
     return target;
+}
+
+- (NSData * _Nullable) getData:(NSPort *)sender{
+    NSArray * messageComponent = [self getComponent:sender];
+    
+    return messageComponent[indexOfData];
 }
 
 - (void) removeData:(NSPort *)sender{

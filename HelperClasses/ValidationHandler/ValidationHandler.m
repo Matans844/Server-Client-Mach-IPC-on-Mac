@@ -31,11 +31,11 @@
 @implementation ValidationHandler
 
 - (BOOL) isComponentsInCorrectSize:(NSArray *)components{
-    return [components count] == [ValidationHandler defaultMessageStructureSize];
+    return [components count] == DEFAULT_STRUCTURED_COMPONENT_SIZE;
 }
 
 - (BOOL) isComponentsInArrangedStructure:(NSArray *)components{
-    return [[components objectAtIndex:componentArrangementFlag] intValue] == notArrangedByStructuredArrangement;
+    return [[components objectAtIndex:indexOfComponentArrangementFlag] intValue] == arrangedByStructuredArrangement;
 }
 
 - (BOOL) isMessageComponentArrangementValid:(NSArray *)components{
@@ -69,9 +69,11 @@
     return [self isSenderActive:message.sendPort] && [self isMessageComponentsValid:message.components];
 }
 
+/*
 + (NSUInteger) defaultMessageStructureSize{
     return 4;
 }
+*/
 
 
 @end

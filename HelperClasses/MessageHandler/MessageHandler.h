@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort;
 - (NSData *) extractDataFrom:(NSPortMessage *)message;
+// - (NSData *) extractDataFrom:(NSArray *)messageComponents;
 
 @end
 

@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (id) initWithMessageManager: (MessageHandler * _Nullable) messageManager NS_DESIGNATED_INITIALIZER;
 - (id) init;
 - (BOOL) saveData: (NSPortMessage *) message;
-- (NSArray * _Nullable) getData: (NSPort *) sender;
+- (NSArray * _Nullable) getComponent: (NSPort *) sender;
+- (NSData * _Nullable) getData: (NSPort *) sender;
 - (void) removeData: (NSPort *) sender;
 
 @end

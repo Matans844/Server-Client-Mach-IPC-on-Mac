@@ -124,15 +124,27 @@
 }
 
 - (void) testDataManagerGetData{
-    NSPortMessage * message1NonStructured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
-    NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:YES];
-    NSPortMessage * message2NonStructured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:NO];
+    // Data Manager saves data with message handler get extract data
+    // NSPortMessage * message1NonStructured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
+    // NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:YES];
+    // NSPortMessage * message2NonStructured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:NO];
     NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
-    NSPortMessage * message2StructuredCopy = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
-
-    XCTAssertTrue([_dataManager saveData:message1Structured]);
+    // NSPortMessage * message2StructuredCopy = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
     
-    NSData
+    // All default messages are sent from the same port
+    NSPort * senderPort = message2Structured.sendPort;
+    
+    // NSData * message1NonStructuredData = [_messageHandler extractDataFrom:message1NonStructured];
+    // NSData * message1StructuredData = [_messageHandler extractDataFrom:message1Structured];
+    // NSData * message2NonStructuredData = [_messageHandler extractDataFrom:message2NonStructured];
+    NSData * message2StructuredData = [_messageHandler extractDataFrom:message2Structured];
+    // NSData * message2StructuredDataCopy = [_messageHandler extractDataFrom:message2StructuredCopy];
+
+    XCTAssertTrue([_dataManager saveData:message2Structured]);
+    
+    NSData * dataFromDataManager = [_dataManager getData:senderPort];
+    
+    XCTAssertEqualObjects(message2StructuredData, dataFromDataManager);
 }
 
 /*

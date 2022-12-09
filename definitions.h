@@ -9,12 +9,13 @@
 #define definitions_h
 
 #define MAX_SIZE_MSG 1024;
+#define DEFAULT_STRUCTURED_COMPONENT_SIZE 4
 
 typedef NS_ENUM(NSInteger,eMessageComponentCellType){
-    data = 0,
-    functionality = 1,
-    error = 2,
-    componentArrangementFlag = 3,
+    indexOfData = 0,
+    indexOfRequestedFunctionality = 1,
+    indexOfError = 2,
+    indexOfComponentArrangementFlag = 3,
 };
 
 typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){

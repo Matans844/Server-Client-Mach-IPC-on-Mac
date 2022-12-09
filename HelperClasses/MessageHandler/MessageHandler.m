@@ -18,6 +18,7 @@
 // "Private" methods
 - (void) initiate;
 - (NSPort *)getSelfPort;
+- (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
 
 @end
 
@@ -56,7 +57,11 @@
 
 - (NSPortMessage *) createStringMessage:(NSString *) string toPort:(nonnull NSPort *)receiverPort isArrayArrangementStructured:(BOOL)isStructured{
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    
+    // If the message is not structured, data is placed in the first cell of the components array.
+    // If message is structured, we need to parse the messsage according to the agreed arrangement.
     NSArray * array = isStructured ? [self parseDataIntoCompositeStructureArray:data] : @[data];
+    
     NSPort * senderPort = [NSMachPort port];
     // NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     
@@ -64,7 +69,13 @@
 }
 
 - (NSArray *) parseDataIntoCompositeStructureArray:(NSData *)data{
-    return @[data, @"to_program_later_indicator_functionality_indicator", @"to_program_later_indicator_error", [NSNumber numberWithInt:notArrangedByStructuredArrangement]];
+    NSMutableArray * mutableArray = [NSMutableArray arrayWithCapacity:DEFAULT_STRUCTURED_COMPONENT_SIZE];
+    mutableArray[indexOfData] = data;
+    mutableArray[indexOfRequestedFunctionality] = @"to_program_later_indicator_functionality_indicator";
+    mutableArray[indexOfError] = @"to_program_later_indicator_error";
+    mutableArray[indexOfComponentArrangementFlag] = [NSNumber numberWithInt:arrangedByStructuredArrangement];
+    
+    return [mutableArray copy];
 }
 
 - (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured{
@@ -88,8 +99,12 @@
 }
 
 - (NSData *) extractDataFrom:(NSPortMessage *)message{
-    NSInteger indexOfData = [[NSNumber numberWithInt:data] intValue];
-    return [message.components objectAtIndex:indexOfData];
+    // NSInteger indexOfData = [[NSNumber numberWithInt:indexOfData] intValue];
+    return [self extractDataFromComponents:message.components];
+}
+
+- (NSData *) extractDataFromComponents:(NSArray *)messageComponents{
+    return [messageComponents objectAtIndex:indexOfData];
 }
 
 @end
