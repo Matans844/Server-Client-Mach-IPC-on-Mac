@@ -69,11 +69,5 @@
     return [self isSenderActive:message.sendPort] && [self isMessageComponentsValid:message.components];
 }
 
-/*
-+ (NSUInteger) defaultMessageStructureSize{
-    return 4;
-}
-*/
-
 
 @end

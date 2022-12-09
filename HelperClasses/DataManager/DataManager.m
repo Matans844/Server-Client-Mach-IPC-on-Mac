@@ -16,13 +16,11 @@
 // "Private" properties
 @property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
 @property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
-// @property (atomic, retain, getter=getDictHashToComponents) NSMutableDictionary<NSData*, NSArray*> * dictHashToComponents;
 @property (atomic, retain, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
 
 // "Private" methods
 - (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
-// - (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
 - (void) addToDictHashToData:(NSData *)hashCode withComponents:(NSData *)data;
 - (void) initiateWith: (MessageHandler * _Nullable) messageManager;
 
@@ -48,7 +46,6 @@
 - (void) initiateWith:(MessageHandler * _Nullable)messageManager{
     self.messageManager = messageManager ? messageManager : [[MessageHandler alloc] init];;
     self.dictSenderToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
-    // self.dictHashToComponents = [[NSMutableDictionary<NSData*, NSArray*> alloc] init];
     self.dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
 }
 
@@ -74,12 +71,6 @@
     [[self getDictSenderToHash] setObject:hashCode forKey:senderPort];
 }
 
-/*
-- (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components{
-    [[self getDictHashToComponents] setObject:components forKey:hashCode];
-}
-*/
-
 - (void) addToDictHashToData:(NSData *)hashCode withComponents:(NSData *)data{
     [[self getDictHashToData] setObject:data forKey:hashCode];
 }
@@ -92,22 +83,12 @@
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
         NSData * hashCode = [DataManager dataToSha256:messageData];
         [self addToDictSenderToHash:responsePort withHash:hashCode];
-        // [self addToDictHashToComponents:hashCode withComponents:message.components];
         [self addToDictHashToData:hashCode withComponents:messageData];
         result = TRUE;
     }
     
     return result;
 }
-
-/*
-- (NSArray * _Nullable) getComponent:(NSPort *)sender{
-    NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
-    NSArray * _Nullable target = [[self getDictHashToComponents] objectForKey:hashCode];
-    
-    return target;
-}
-*/
 
 - (NSData * _Nullable) getData:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
@@ -117,17 +98,11 @@
 
 - (void) removeSenderData:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
-    // [[self getDictHashToComponents] removeObjectForKey:hashCode];
     
-    // order is important here:
+    // The order of removal is important:
     // Had we first removed from dictSenderToHash, the hash value might not be valid anymore!
     [[self getDictHashToData] removeObjectForKey:hashCode];
     [[self getDictSenderToHash] removeObjectForKey:sender];
 }
-
-
-
-
-
 
 @end

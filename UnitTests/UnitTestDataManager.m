@@ -85,18 +85,6 @@
     XCTAssertFalse([_dataManager isStorageVacantForSender:messageNonStructured.sendPort]);
 }
 
-/*
-- (void) testDataManagerValidation{
-    NSPortMessage * tooBigMessage = [_messageHandler createGarbageDataMessageWithSize:1028];
-    
-    XCTAssertFalse([_dataManager isDataValid:tooBigMessage]);
-    
-    XCTAssertFalse([_dataManager saveData:tooBigMessage]);
-    
-    XCTAssertTrue([_dataManager isStorageVacant:tooBigMessage.sendPort]);
-}
-*/
-
 - (void) testDataHandlerExtractData{
     NSPortMessage * message1NonStructured = [_messageHandler createDefaultStringMessage:@"test1" isArrayArrangementStructured:NO];
     NSPortMessage * message1Structured = [_messageHandler createDefaultStringMessage:@"test1" isArrayArrangementStructured:YES];
@@ -132,7 +120,6 @@
     NSPort * senderPort = message2Structured.sendPort;
     
     NSData * message2StructuredData = [_messageHandler extractDataFrom:message2Structured];
-    // NSData * message2StructuredDataCopy = [_messageHandler extractDataFrom:message2StructuredCopy];
 
     XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
     

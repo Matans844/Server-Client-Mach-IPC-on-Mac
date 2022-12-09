@@ -63,7 +63,6 @@
     NSArray * array = isStructured ? [self parseDataIntoCompositeStructureArray:data] : @[data];
     
     NSPort * senderPort = [NSMachPort port];
-    // NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     
     return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
 }
@@ -87,7 +86,6 @@
     NSData * data = [NSData dataWithBytes:bytes length:numberOfBytes];
     NSArray * array = isStructured ? [self parseDataIntoCompositeStructureArray:data] : @[data];
     NSPort * senderPort = [NSMachPort port];
-    // NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:sendToPort receivePort:receivePort components:@[data]];
     
     return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
 }
@@ -99,7 +97,6 @@
 }
 
 - (NSData *) extractDataFrom:(NSPortMessage *)message{
-    // NSInteger indexOfData = [[NSNumber numberWithInt:indexOfData] intValue];
     return [self extractDataFromComponents:message.components];
 }
 

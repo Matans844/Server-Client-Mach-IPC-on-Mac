@@ -12,10 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ValidationHandler : NSObject
 
-// + (NSUInteger) defaultMessageStructureSize;
-
 - (BOOL) isMessageValid:(NSPortMessage *)message;
-
 
 @end
 
