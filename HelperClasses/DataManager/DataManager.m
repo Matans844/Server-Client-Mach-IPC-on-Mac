@@ -17,11 +17,14 @@
 @property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
 @property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
 @property (atomic, retain, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
+@property (atomic, retain, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
+
 
 // "Private" methods
 - (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
 - (void) addToDictHashToData:(NSData *)hashCode withComponents:(NSData *)data;
+- (void) addToCounterDataHash:(NSData *)hashCode;
 - (void) initiateWith: (MessageHandler * _Nullable) messageManager;
 
 @end
@@ -47,6 +50,7 @@
     self.messageManager = messageManager ? messageManager : [[MessageHandler alloc] init];;
     self.dictSenderToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
     self.dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
+    self.counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
 }
 
 - (id) init{
@@ -75,6 +79,18 @@
     [[self getDictHashToData] setObject:data forKey:hashCode];
 }
 
+- (void) addToCounterDataHash:(NSData *)hashCode{
+    NSNumber * currentHashCodeCount = [[self getCounterOfDataHash] objectForKey:hashCode];
+    
+    // We check if the counter only contains a count for the hash code
+    if(currentHashCodeCount){
+        [[self getCounterOfDataHash] setObject:@([currentHashCodeCount intValue] + 1) forKey:hashCode];
+    }
+    else{
+        [[self getCounterOfDataHash] setObject:@(1) forKey:hashCode];
+    }
+}
+
 - (BOOL) saveDataFrom:(NSPortMessage *)message{
     NSPort * responsePort = message.sendPort;
     BOOL result = FALSE;
@@ -84,6 +100,7 @@
         NSData * hashCode = [DataManager dataToSha256:messageData];
         [self addToDictSenderToHash:responsePort withHash:hashCode];
         [self addToDictHashToData:hashCode withComponents:messageData];
+        [self addToCounterDataHash:hashCode];
         result = TRUE;
     }
     
@@ -96,13 +113,30 @@
     return [[self getDictHashToData] objectForKey:hashCode];
 }
 
-- (void) removeSenderData:(NSPort *)sender{
+- (BOOL) removeSenderData:(NSPort *)sender{
     NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
+    BOOL result = FALSE;
     
-    // The order of removal is important:
-    // Had we first removed from dictSenderToHash, the hash value might not be valid anymore!
-    [[self getDictHashToData] removeObjectForKey:hashCode];
-    [[self getDictSenderToHash] removeObjectForKey:sender];
+    // Make sure there sender exists
+    if (![self isStorageVacantForSender:sender]){
+        NSNumber * currentHashCount = [[self getCounterOfDataHash] objectForKey:hashCode];
+        
+        // We only remove the hashCode if no other senders are linked to it.
+        if ([currentHashCount intValue] == 1){
+            [[self getDictHashToData] removeObjectForKey:hashCode];
+            [[self getCounterOfDataHash] removeObjectForKey:hashCode];
+        }
+        else{
+            [[self getCounterOfDataHash] setObject:@([currentHashCount intValue] - 1) forKey:hashCode];
+        }
+        
+        // We remove the sender anyway.
+        [[self getDictSenderToHash] removeObjectForKey:sender];
+        
+        result = TRUE;
+    }
+    
+    return result;
 }
 
 @end

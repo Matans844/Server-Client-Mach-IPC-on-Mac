@@ -10,7 +10,7 @@
 #import "MessageHandler.h"
 #import "ValidationHandler.h"
 
-@interface UnitTestDataManager : XCTestCase
+@interface UnitTestHelperClasses : XCTestCase
 
 @property DataManager * dataManager;
 @property MessageHandler * messageHandler;
@@ -19,8 +19,10 @@
 @end
 
 // ------------------------------------ //
-
 // So that we can test private methods
+
+// ------------------------------------ //
+
 @interface DataManager (Testing)
 // "Private" methods
 - (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
@@ -31,7 +33,18 @@
 
 // ------------------------------------ //
 
-@implementation UnitTestDataManager
+@interface MessageHandler (Testing)
+// "Private" properties
+@property (atomic, retain, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
+@property (atomic, retain, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
+// "Private" methods
+- (NSPort * _Nullable) initiatePortWithString:(NSString *)serviceName;
+- (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
+@end
+
+// ------------------------------------ //
+
+@implementation UnitTestHelperClasses
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -129,7 +142,7 @@
 }
 
 
-- (void) testDataManagerRemoveData{
+- (void) testDataManagerRemoveData1{
     NSPortMessage * message2Structured = [_messageHandler createDefaultStringMessage:@"test2" isArrayArrangementStructured:YES];
      
     // Message handler default messages are sent from the same port
@@ -139,8 +152,45 @@
     XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
     XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort]);
     
-    [_dataManager removeSenderData:senderPort];
+    XCTAssertTrue([_dataManager removeSenderData:senderPort]);
     XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort]);
+}
+
+- (void) testDataManagerRemoveData2{
+    NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameSender] isArrayArrangementStructured:YES];
+    NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameReceiver] isArrayArrangementStructured:YES];
+     
+    // Message handler default messages are sent from the same port
+    NSPort * senderPort1 = message1Structured.sendPort;
+    NSPort * senderPort2 = message2Structured.sendPort;
+    XCTAssertNotEqualObjects(senderPort1, senderPort2);
+    
+    NSPort * receiverPort1 = message1Structured.receivePort;
+    NSPort * receiverPort2 = message2Structured.receivePort;
+    XCTAssertEqualObjects(receiverPort1, receiverPort2);
+    
+    // Both messages come from different ports, to the same port, and contain the same data.
+    
+    // We should have room for both senders.
+    XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort1]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort2]);
+    
+    // We are adding the first message.
+    // We should still have room for the second message.
+    XCTAssertTrue([_dataManager saveDataFrom:message1Structured]);
+    XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort1]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort2]);
+    
+    // We add the second message.
+    XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
+    
+    // We can delete the second message.
+    // This does not affect the first message.
+    XCTAssertTrue([_dataManager removeSenderData:senderPort2]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort2]);
+    XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort1]);
+    
+    // The hash code is still present
 }
 
 

@@ -10,7 +10,7 @@
 		90079EBF293E780A00F0C5AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EBE293E780A00F0C5AB /* main.m */; };
 		90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EC6293E786B00F0C5AB /* MachPortsServer.m */; };
 		9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
-		9007A0262940F92900F0C5AB /* UnitTestDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A0252940F92900F0C5AB /* UnitTestDataManager.m */; };
+		9007A0262940F92900F0C5AB /* UnitTestHelperClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A0252940F92900F0C5AB /* UnitTestHelperClasses.m */; };
 		9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
 		9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
 		9007A033294103BE00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
@@ -40,7 +40,7 @@
 		9007A01A293FA62E00F0C5AB /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		9007A01B293FA62E00F0C5AB /* DataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTestDataManager.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9007A0252940F92900F0C5AB /* UnitTestDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTestDataManager.m; sourceTree = "<group>"; };
+		9007A0252940F92900F0C5AB /* UnitTestHelperClasses.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTestHelperClasses.m; sourceTree = "<group>"; };
 		9007A02B2940FE4500F0C5AB /* MessageHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageHandler.h; sourceTree = "<group>"; };
 		9007A02C2940FE4500F0C5AB /* MessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageHandler.m; sourceTree = "<group>"; };
 		9007A03629413A3000F0C5AB /* ServiceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceManager.h; sourceTree = "<group>"; };
@@ -121,7 +121,7 @@
 		9007A0242940F92900F0C5AB /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				9007A0252940F92900F0C5AB /* UnitTestDataManager.m */,
+				9007A0252940F92900F0C5AB /* UnitTestHelperClasses.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -278,7 +278,7 @@
 				9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */,
 				9007A033294103BE00F0C5AB /* DataManager.m in Sources */,
 				9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */,
-				9007A0262940F92900F0C5AB /* UnitTestDataManager.m in Sources */,
+				9007A0262940F92900F0C5AB /* UnitTestHelperClasses.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) saveDataFrom: (NSPortMessage *) message;
 // - (NSArray * _Nullable) getComponent: (NSPort *) sender;
 - (NSData * _Nullable) getData: (NSPort *) sender;
-- (void) removeSenderData: (NSPort *) sender;
+- (BOOL) removeSenderData: (NSPort *) sender;
 
 @end
 
