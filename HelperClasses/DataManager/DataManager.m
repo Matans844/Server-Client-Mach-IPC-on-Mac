@@ -109,11 +109,18 @@
     BOOL result = FALSE;
     
     if ([self isStorageVacantForSender:responsePort]){
+        
+        // There are new senders for the data.
+        // We update the sender to hash dictionary.
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
         NSData * hashCode = [DataManager encodeDataAndCalculateHash:messageData];
         [self addToDictSenderToHash:responsePort withHash:hashCode];
-        [self addToDictHashToData:hashCode withData:messageData];
         [self addToCounterDataHash:hashCode];
+        
+        // We only update the hash to original data dictionary if the hash is new
+        if ([self isStorageVacantForHash:hashCode]){
+            [self addToDictHashToData:hashCode withData:messageData];
+        }
         
         result = TRUE;
     }
