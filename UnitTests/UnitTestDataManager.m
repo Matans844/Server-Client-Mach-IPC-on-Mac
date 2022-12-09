@@ -23,7 +23,7 @@
 // So that we can test private methods
 @interface DataManager (Testing)
 // "Private" methods
-- (BOOL) isStorageVacant:(NSPort *)senderPort;
+- (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
 - (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
 - (void) initiateWith: (MessageHandler * _Nullable) messageManager;
@@ -69,8 +69,8 @@
     NSPortMessage * messageStructured = [_messageHandler createDefaultStringMessage:@"test2" isArrayArrangementStructured:YES];
     
     // These two messages are sent from the same message handler. Thus, their sender port is identical.
-    XCTAssertTrue([_dataManager isStorageVacant:messageNonStructured.sendPort]);
-    XCTAssertTrue([_dataManager isStorageVacant:messageStructured.sendPort]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:messageNonStructured.sendPort]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:messageStructured.sendPort]);
     
     // These are checked before accessing the data manager
     // For maintainability: These should also be checked in the data manager saveData method
@@ -81,8 +81,8 @@
     XCTAssertTrue([_dataManager saveDataFrom:messageStructured]);
     
     // Check that data was added
-    XCTAssertFalse([_dataManager isStorageVacant:messageStructured.sendPort]);
-    XCTAssertFalse([_dataManager isStorageVacant:messageNonStructured.sendPort]);
+    XCTAssertFalse([_dataManager isStorageVacantForSender:messageStructured.sendPort]);
+    XCTAssertFalse([_dataManager isStorageVacantForSender:messageNonStructured.sendPort]);
 }
 
 /*
@@ -148,12 +148,12 @@
     // Message handler default messages are sent from the same port
     NSPort * senderPort = message2Structured.sendPort;
     
-    XCTAssertTrue([_dataManager isStorageVacant:senderPort]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort]);
     XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
-    XCTAssertFalse([_dataManager isStorageVacant:senderPort]);
+    XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort]);
     
     [_dataManager removeSenderData:senderPort];
-    XCTAssertTrue([_dataManager isStorageVacant:senderPort]);
+    XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort]);
 }
 
 
