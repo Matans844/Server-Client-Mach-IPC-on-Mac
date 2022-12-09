@@ -79,8 +79,6 @@
     NSPort * responsePort = message.sendPort;
     BOOL result = FALSE;
     
-    // this line should exist outside the data manager!
-    // I pass stuff to "save data" after I checked these!
     if ([self isStorageVacant:responsePort]){
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
         NSData * hashCode = [DataManager dataToSha256:messageData];

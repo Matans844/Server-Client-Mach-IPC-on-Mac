@@ -16,8 +16,8 @@
 
 // "Private" methods
 - (BOOL) isComponentsInCorrectSize:(NSArray *)components;
-- (BOOL) isComponentsInCorrectStructure:(NSArray *)components;
-- (BOOL) isMessageComponentStructureValid:(NSArray *)components;
+- (BOOL) isComponentsInArrangedStructure:(NSArray *)components;
+- (BOOL) isMessageComponentArrangementValid:(NSArray *)components;
 - (BOOL) isMessageComponentsSizeValid:(NSArray *) components;
 - (BOOL) isSenderActive:(NSPort *)senderPort;
 - (BOOL) isMessageComponentsValid:(NSArray *)components;
@@ -34,12 +34,12 @@
     return [components count] == [ValidationHandler defaultMessageStructureSize];
 }
 
-- (BOOL) isComponentsInCorrectStructure:(NSArray *)components{
-    return [[components objectAtIndex:componentArrangementFlag] intValue] == composite;
+- (BOOL) isComponentsInArrangedStructure:(NSArray *)components{
+    return [[components objectAtIndex:componentArrangementFlag] intValue] == notArrangedByStructuredArrangement;
 }
 
-- (BOOL) isMessageComponentStructureValid:(NSArray *)components{
-    return [self isComponentsInCorrectSize:components] && [self isComponentsInCorrectStructure:components];
+- (BOOL) isMessageComponentArrangementValid:(NSArray *)components{
+    return [self isComponentsInCorrectSize:components] && [self isComponentsInArrangedStructure:components];
 }
 
 - (BOOL) isMessageComponentsSizeValid:(NSArray *) components{
@@ -52,7 +52,7 @@
 }
 
 - (BOOL) isMessageComponentsValid:(NSArray *)components{
-    return [self isMessageComponentsSizeValid:components] && [self isMessageComponentStructureValid:components];
+    return [self isMessageComponentsSizeValid:components] && [self isMessageComponentArrangementValid:components];
 }
 
 - (NSUInteger) calculateComponentsSizeInBytes:(NSArray *) components{
@@ -66,7 +66,7 @@
 }
 
 - (BOOL) isMessageValid:(NSPortMessage *)message{
-    return [self isSenderActive:message.sendPort] && [self isMessageComponentStructureValid:message.components];
+    return [self isSenderActive:message.sendPort] && [self isMessageComponentsValid:message.components];
 }
 
 + (NSUInteger) defaultMessageStructureSize{

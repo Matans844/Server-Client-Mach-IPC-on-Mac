@@ -20,14 +20,13 @@
 
 // ------------------------------------ //
 
+// So that we can test private methods
 @interface DataManager (Testing)
 // "Private" methods
 - (BOOL) isStorageVacant:(NSPort *)senderPort;
-- (BOOL) isDataValid:(NSPortMessage *)message;
-- (BOOL) isSenderActive:(NSPort *)senderPort;
-- (void) addToDictSenderToHash: (NSPortMessage *) message;
-- (void) addToDictHashToComponents: (NSPortMessage *) message;
-- (void) initiate;
+- (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
+- (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
+- (void) initiateWith: (MessageHandler * _Nullable) messageManager;
 @end
 
 // ------------------------------------ //
@@ -53,27 +52,40 @@
 // Use XCTAssert and related functions to verify your tests produce the correct results.
 
 - (void) testValidationHandler {
-    NSPortMessage * nonStructuredMessage = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
-    NSPortMessage * structuredMessage = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
+    // Testing that the message is in the agreed upon structure, and that it is in the proper size
+    NSPortMessage * messageNonStructured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
+    NSPortMessage * messageStructured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
+    NSPortMessage * messageTooBig = [_messageHandler createGarbageDataMessageWithSize:1028 isArrayArrangementStructured:YES];
+    NSPortMessage * messageAlmostTooBig = [_messageHandler createGarbageDataMessageWithSize:1000 isArrayArrangementStructured:YES];
     
-    XCTAssertFalse([_validationHandler isMessageValid:nonStructuredMessage]);
-    XCTAssertTrue([_validationHandler isMessageValid:structuredMessage]);
+    XCTAssertFalse([_validationHandler isMessageValid:messageNonStructured]);
+    XCTAssertTrue([_validationHandler isMessageValid:messageStructured]);
+    XCTAssertFalse([_validationHandler isMessageValid:messageTooBig]);
+    XCTAssertTrue([_validationHandler isMessageValid:messageAlmostTooBig]);
 }
-/*
+
 - (void)testDataManagerVacancy {
-
-    NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
+    NSPortMessage * messageNonStructured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
+    NSPortMessage * messageStructured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
     
-    XCTAssertTrue([_dataManager isStorageVacant:exampleMessage.sendPort]);
+    // These two messages are sent from the same message handler. Thus, their sender port is identical.
+    XCTAssertTrue([_dataManager isStorageVacant:messageNonStructured.sendPort]);
+    XCTAssertTrue([_dataManager isStorageVacant:messageStructured.sendPort]);
     
-    XCTAssertTrue([_dataManager saveData:exampleMessage]);
+    // These are checked before accessing the data manager
+    // For maintainability: These should also be checked in the data manager saveData method
+    XCTAssertFalse([_validationHandler isMessageValid:messageNonStructured]);
+    XCTAssertTrue([_validationHandler isMessageValid:messageStructured]);
     
-    XCTAssertFalse([_dataManager isStorageVacant:exampleMessage.sendPort]);
+    // Now we can add
+    XCTAssertTrue([_dataManager saveData:messageStructured]);
     
-    NSPortMessage * exampleMessage2 = [_messageHandler createStringMessage:@"test2"];
-    XCTAssertFalse([_dataManager isStorageVacant:exampleMessage2.sendPort]);
+    // Check that data was added
+    XCTAssertFalse([_dataManager isStorageVacant:messageStructured.sendPort]);
+    XCTAssertFalse([_dataManager isStorageVacant:messageNonStructured.sendPort]);
 }
 
+/*
 - (void) testDataManagerValidation{
     NSPortMessage * tooBigMessage = [_messageHandler createGarbageDataMessageWithSize:1028];
     
@@ -83,17 +95,47 @@
     
     XCTAssertTrue([_dataManager isStorageVacant:tooBigMessage.sendPort]);
 }
+*/
 
-- (void) testDataManagerGetData{
-    NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
-    NSArray * originalComponent = exampleMessage.components;
+- (void) testDataHandlerExtractData{
+    NSPortMessage * message1NonStructured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
+    NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:YES];
+    NSPortMessage * message2NonStructured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:NO];
+    NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
+    NSPortMessage * message2StructuredCopy = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
     
-    XCTAssertTrue([_dataManager saveData:exampleMessage]);
-    NSArray * receivedComponent = [_dataManager getData:exampleMessage.sendPort];
+    NSData * message1NonStructuredData = [_messageHandler extractDataFrom:message1NonStructured];
+    NSData * message1StructuredData = [_messageHandler extractDataFrom:message1Structured];
+    NSData * message2NonStructuredData = [_messageHandler extractDataFrom:message2NonStructured];
+    NSData * message2StructuredData = [_messageHandler extractDataFrom:message2Structured];
+    NSData * message2StructuredDataCopy = [_messageHandler extractDataFrom:message2StructuredCopy];
+
+    // Checking:
+    // 1. Data after processing (extractData + save) is the same as data after extraction.
+    // 2. Check 1 is maintained across message structure arrangements. The message handler should know how to extract data from message by examining the arrangement of the message, given in an enum inside the message.
+    XCTAssertEqualObjects(message2StructuredData, message2StructuredDataCopy);
+    XCTAssertEqualObjects(message2StructuredData, message2NonStructuredData);
     
-    XCTAssertEqualObjects(receivedComponent[0], originalComponent[0]);
+    // Checking:
+    // 1. Data remains unique.
+    // 2. Check 1 is maintained across message structure arrangements
+    XCTAssertNotEqualObjects(message2StructuredData, message1NonStructuredData);
+    XCTAssertNotEqualObjects(message2StructuredData, message1StructuredData);
 }
 
+- (void) testDataManagerGetData{
+    NSPortMessage * message1NonStructured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:NO];
+    NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test1" isArrayArrangementStructured:YES];
+    NSPortMessage * message2NonStructured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:NO];
+    NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
+    NSPortMessage * message2StructuredCopy = [_messageHandler createStringMessage:@"test2" isArrayArrangementStructured:YES];
+
+    XCTAssertTrue([_dataManager saveData:message1Structured]);
+    
+    NSData
+}
+
+/*
 - (void) testDataManagerRemoveData{
     NSPortMessage * exampleMessage = [_messageHandler createStringMessage:@"test1"];
     NSPort * sender = exampleMessage.sendPort;

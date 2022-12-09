@@ -6,7 +6,6 @@
 //
 
 #import "MessageHandler.h"
-#import "definitions.h"
 
 #define SERVICE_NAME @"org.matans.messagemaker"
 
@@ -65,7 +64,7 @@
 }
 
 - (NSArray *) parseDataIntoCompositeStructureArray:(NSData *)data{
-    return @[data, @"to_program_later_indicator_functionality_indicator", @"to_program_later_indicator_error", [NSNumber numberWithInt:composite]];
+    return @[data, @"to_program_later_indicator_functionality_indicator", @"to_program_later_indicator_error", [NSNumber numberWithInt:notArrangedByStructuredArrangement]];
 }
 
 - (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured{

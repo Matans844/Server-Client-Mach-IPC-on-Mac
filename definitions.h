@@ -18,8 +18,8 @@ typedef NS_ENUM(NSInteger,eMessageComponentCellType){
 };
 
 typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
-    composite = 0,
-    nonComposite = 1,
+    notArrangedByStructuredArrangement = 0,
+    arrangedByStructuredArrangement = 1,
 };
 
 
