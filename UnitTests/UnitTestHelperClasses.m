@@ -24,11 +24,18 @@
 // ------------------------------------ //
 
 @interface DataManager (Testing)
+// "Private" properties
+@property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
+@property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
+@property (atomic, retain, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
+@property (atomic, retain, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
 // "Private" methods
 - (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
+- (BOOL) isStorageVacantForHash:(NSData *)hashCode;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
-- (void) addToDictHashToComponents:(NSData *)hashCode withComponents:(NSArray *)components;
+- (void) addToDictHashToComponents:(NSData *)hashCode withData:(NSArray *)components;
 - (void) initiateWith: (MessageHandler * _Nullable) messageManager;
+- (NSData *) getHashCodeFromSender:(NSPort *) sender;
 @end
 
 // ------------------------------------ //
@@ -160,16 +167,15 @@
     NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameSender] isArrayArrangementStructured:YES];
     NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameReceiver] isArrayArrangementStructured:YES];
      
-    // Message handler default messages are sent from the same port
+    // Both messages come from different ports
     NSPort * senderPort1 = message1Structured.sendPort;
     NSPort * senderPort2 = message2Structured.sendPort;
     XCTAssertNotEqualObjects(senderPort1, senderPort2);
     
+    // Both messages arrive at the same port
     NSPort * receiverPort1 = message1Structured.receivePort;
     NSPort * receiverPort2 = message2Structured.receivePort;
     XCTAssertEqualObjects(receiverPort1, receiverPort2);
-    
-    // Both messages come from different ports, to the same port, and contain the same data.
     
     // We should have room for both senders.
     XCTAssertTrue([_dataManager isStorageVacantForSender:senderPort1]);
@@ -184,6 +190,9 @@
     // We add the second message.
     XCTAssertTrue([_dataManager saveDataFrom:message2Structured]);
     
+    // Are they both linked to the same data?
+    XCTAssertEqualObjects([_dataManager getData:senderPort1], [_dataManager getData:senderPort2]);
+    
     // We can delete the second message.
     // This does not affect the first message.
     XCTAssertTrue([_dataManager removeSenderData:senderPort2]);
@@ -191,6 +200,17 @@
     XCTAssertFalse([_dataManager isStorageVacantForSender:senderPort1]);
     
     // The hash code is still present
+    // NSData * hashCode = [[_dataManager getDictSenderToHash] objectForKey:senderPort1];
+    NSData * hashCode = [_dataManager getHashCodeFromSender:senderPort1];
+    
+    // NSLog(@"hash code we want to find is: %@", hashCode);
+    // NSLog(@"hash code for usual string: %@", [DataManager dataToSha256:[@"test2" dataUsingEncoding:NSUTF8StringEncoding]]);
+    
+    // XCTAssertTrue([DataManager dataToSha256:[@"test2" dataUsingEncoding:NSUTF8StringEncoding]] == hashCode);
+
+    // XCTAssertEqualObjects([DataManager dataToSha256:[@"test2" dataUsingEncoding:NSUTF8StringEncoding]], hashCode);
+    
+    XCTAssertFalse([_dataManager isStorageVacantForHash:hashCode]);
 }
 
 

@@ -22,10 +22,12 @@
 
 // "Private" methods
 - (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
+- (BOOL) isStorageVacantForHash:(NSData *)hashCode;
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
-- (void) addToDictHashToData:(NSData *)hashCode withComponents:(NSData *)data;
+- (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data;
 - (void) addToCounterDataHash:(NSData *)hashCode;
 - (void) initiateWith: (MessageHandler * _Nullable) messageManager;
+- (NSData *) getHashCodeFromSender:(NSPort *) sender;
 
 @end
 
@@ -71,11 +73,19 @@
     return result;
 }
 
+- (BOOL) isStorageVacantForHash:(NSData *)hashCode{
+    NSLog(@"counter data hash dictionary is: %@", [self getCounterOfDataHash]);
+    NSLog(@"hash code to find is: %@", hashCode);
+    // NSLog(@"currentHashCount is %@", [[self getCounterOfDataHash] objectForKey:hashCode]);
+    BOOL result = ![[self getDictHashToData] objectForKey:hashCode];
+    return result;
+}
+
 - (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode{
     [[self getDictSenderToHash] setObject:hashCode forKey:senderPort];
 }
 
-- (void) addToDictHashToData:(NSData *)hashCode withComponents:(NSData *)data{
+- (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data{
     [[self getDictHashToData] setObject:data forKey:hashCode];
 }
 
@@ -98,9 +108,12 @@
     if ([self isStorageVacantForSender:responsePort]){
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
         NSData * hashCode = [DataManager dataToSha256:messageData];
+        // NSData * hashCode = [DataManager doSha256:messageData];
+        NSLog(@"hash code added is: %@", hashCode);
         [self addToDictSenderToHash:responsePort withHash:hashCode];
-        [self addToDictHashToData:hashCode withComponents:messageData];
+        [self addToDictHashToData:hashCode withData:messageData];
         [self addToCounterDataHash:hashCode];
+        
         result = TRUE;
     }
     
@@ -108,9 +121,13 @@
 }
 
 - (NSData * _Nullable) getData:(NSPort *)sender{
-    NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
+    NSData * hashCode = [self getHashCodeFromSender:sender];
 
     return [[self getDictHashToData] objectForKey:hashCode];
+}
+
+- (NSData *) getHashCodeFromSender:(NSPort *) sender{
+    return [[self getDictSenderToHash] objectForKey:sender];
 }
 
 - (BOOL) removeSenderData:(NSPort *)sender{
@@ -120,6 +137,7 @@
     // Make sure there sender exists
     if (![self isStorageVacantForSender:sender]){
         NSNumber * currentHashCount = [[self getCounterOfDataHash] objectForKey:hashCode];
+        // NSLog(@"currentHashCount is %@", currentHashCount);
         
         // We only remove the hashCode if no other senders are linked to it.
         if ([currentHashCount intValue] == 1){
@@ -130,8 +148,12 @@
             [[self getCounterOfDataHash] setObject:@([currentHashCount intValue] - 1) forKey:hashCode];
         }
         
+        // NSLog(@"currentHashCount is %@", [[self getCounterOfDataHash] objectForKey:hashCode]);
+        
         // We remove the sender anyway.
         [[self getDictSenderToHash] removeObjectForKey:sender];
+        
+        // NSLog(@"currentHashCount is %@", [[self getCounterOfDataHash] objectForKey:hashCode]);
         
         result = TRUE;
     }

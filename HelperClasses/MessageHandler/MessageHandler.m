@@ -65,7 +65,7 @@
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
     
     // If the message is not structured, data is placed in the first cell of the components array.
-    // If message is structured, we need to parse the messsage according to the agreed arrangement.
+    // If message is structured, we need to unparse the messsage according to the agreed arrangement.
     NSArray * array = isStructured ? [self encodeDataIntoCompositeStructureArray:data] : @[data];
     
     // This creates a new machPort
@@ -88,7 +88,7 @@
 }
 
 - (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort{
-    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:receiverPort receivePort:senderPort components:array];
+    NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:senderPort receivePort:receiverPort components:array];
     
     return message;
 }

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSPortMessage *) createDefaultGarbageDataMessageWithSize: (NSUInteger) numberOfBytes isArrayArrangementStructured:(BOOL) isStructured;
 // - (NSPortMessage *) createGarbageDataMessageWithSize: (NSUInteger) numberOfBytes toPort:(NSPort *) receiverPort isArrayArrangementStructured:(BOOL) isStructured;
-- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured
+- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured;
 
 - (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort;
 - (NSData *) extractDataFrom:(NSPortMessage *)message;
