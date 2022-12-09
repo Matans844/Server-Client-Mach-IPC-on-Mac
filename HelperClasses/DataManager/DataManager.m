@@ -15,20 +15,20 @@
 // Answer: No. Use delegates that track changing the port value.
 
 // "Private" properties
-@property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
-@property (atomic, retain, getter=getDictSenderToHash) NSMutableDictionary<NSPort*, NSData*> * dictSenderToHash;
+@property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
+@property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageManager;
+@property (atomic, retain, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
 @property (atomic, retain, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
 @property (atomic, retain, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
 
 
 // "Private" methods
-- (BOOL) isStorageVacantForSender:(NSPort *)senderPort;
+- (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
 - (BOOL) isStorageVacantForHash:(NSData *)hashCode;
-- (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode;
+- (void) addToDictCorrespondentToHash:(NSPort *)chosenCorrespondent withHash:(NSData *)hashCode;
 - (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data;
 - (void) addToCounterDataHash:(NSData *)hashCode;
-- (void) initiateWith:(MessageHandler * _Nullable)messageManager;
-- (NSData *) getHashCodeFromSender:(NSPort *)sender;
+- (NSData *) getHashCodeFromCorrespondent:(NSPort *)chosenCorrespondent;
 
 @end
 
@@ -53,28 +53,21 @@
     return [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:TRUE error:nil];
 }
 
-- (void) initiateWith:(MessageHandler * _Nullable)messageManager{
-    self.messageManager = messageManager ? messageManager : [[MessageHandler alloc] init];;
-    self.dictSenderToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
-    self.dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
-    self.counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
-}
-
-- (id) init{
-    return [self initWithMessageManager:nil];
-}
-
-- (id) initWithMessageManager:(MessageHandler *)messageManager{
+- (id) initWithMessageHandler:(MessageHandler *)messageManager chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent{
     self = [super init];
     if(self){
-        [self initiateWith:messageManager];
+        self->_chosenCorrespondent = keyCorrespondent;
+        self->_messageManager = [[MessageHandler alloc] init];
+        self.dictCorrespondentToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
+        self.dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
+        self.counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
     }
     
     return self;
 }
 
-- (BOOL) isStorageVacantForSender:(NSPort *)senderPort{
-    BOOL result = ![[self getDictSenderToHash] objectForKey:senderPort];
+- (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent{
+    BOOL result = ![[self getDictCorrespondentToHash] objectForKey:chosenCorrespondent];
     return result;
 }
 
@@ -84,8 +77,8 @@
     return result;
 }
 
-- (void) addToDictSenderToHash:(NSPort *)senderPort withHash:(NSData *)hashCode{
-    [[self getDictSenderToHash] setObject:hashCode forKey:senderPort];
+- (void) addToDictCorrespondentToHash:(NSPort *)chosenCorrespondent withHash:(NSData *)hashCode{
+    [[self getDictCorrespondentToHash] setObject:hashCode forKey:chosenCorrespondent];
 }
 
 - (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data{
@@ -105,16 +98,18 @@
 }
 
 - (BOOL) saveDataFromMessage:(NSPortMessage *)message{
-    NSPort * responsePort = message.sendPort;
+    NSPort * senderPort = message.sendPort;
+    NSPort * receiverPort = message.receivePort;
+    NSPort * keyCorrespondentPort = [self getChosenCorrespondent] == server ? senderPort : receiverPort;
     BOOL result = FALSE;
     
-    if ([self isStorageVacantForSender:responsePort]){
+    if ([self isStorageVacantForCorrespondent:keyCorrespondentPort]){
         
-        // There are new senders for the data.
-        // We update the sender to hash dictionary.
+        // There are new key correspondents for the data.
+        // We update the correspondent to hash dictionary.
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
         NSData * hashCode = [DataManager encodeDataAndCalculateHash:messageData];
-        [self addToDictSenderToHash:responsePort withHash:hashCode];
+        [self addToDictCorrespondentToHash:keyCorrespondentPort withHash:hashCode];
         [self addToCounterDataHash:hashCode];
         
         // We only update the hash to original data dictionary if the hash is new
@@ -128,25 +123,25 @@
     return result;
 }
 
-- (NSData * _Nullable) getDataBySender:(NSPort *)sender{
-    NSData * hashCode = [self getHashCodeFromSender:sender];
+- (NSData * _Nullable) getDataByCorrespondent:(NSPort *)chosenCorrespondent{
+    NSData * hashCode = [self getHashCodeFromCorrespondent:chosenCorrespondent];
 
     return [[self getDictHashToData] objectForKey:hashCode];
 }
 
-- (NSData *) getHashCodeFromSender:(NSPort *)sender{
-    return [[self getDictSenderToHash] objectForKey:sender];
+- (NSData *) getHashCodeFromCorrespondent:(NSPort *)chosenCorrespondent{
+    return [[self getDictCorrespondentToHash] objectForKey:chosenCorrespondent];
 }
 
-- (BOOL) removeDataBySender:(NSPort *)sender{
-    NSData * hashCode = [[self getDictSenderToHash] objectForKey:sender];
+- (BOOL) removeDataByCorrespondent:(NSPort *)chosenCorrespondent{
+    NSData * hashCode = [[self getDictCorrespondentToHash] objectForKey:chosenCorrespondent];
     BOOL result = FALSE;
     
-    // Make sure there sender exists
-    if (![self isStorageVacantForSender:sender]){
+    // Make sure correspondent key exists
+    if (![self isStorageVacantForCorrespondent:chosenCorrespondent]){
         NSNumber * currentHashCount = [[self getCounterOfDataHash] objectForKey:hashCode];
         
-        // We only remove the hashCode if no other senders are linked to it.
+        // We only remove the hashCode if no other correspondent keys are linked to it.
         if ([currentHashCount intValue] == 1){
             [[self getDictHashToData] removeObjectForKey:hashCode];
             [[self getCounterOfDataHash] removeObjectForKey:hashCode];
@@ -155,9 +150,11 @@
             [[self getCounterOfDataHash] setObject:@([currentHashCount intValue] - 1) forKey:hashCode];
         }
                 
-        // We remove the sender entry anyway.
-        // Notice: A sender (client) can have at most one data record in the data manager (server).
-        [[self getDictSenderToHash] removeObjectForKey:sender];
+        // We remove the key correspondent entry anyway.
+        // Notice:
+        // 1. A sender (client) can have at most one data record in its data manager from the receiver (server).
+        // 2. A receiver (server) can have at most one data record in its data manager from the sender (client).
+        [[self getDictCorrespondentToHash] removeObjectForKey:chosenCorrespondent];
                 
         result = TRUE;
     }

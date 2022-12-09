@@ -16,12 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSData *) encodeData:(NSData *)data;
 + (NSData *) encodeDataAndCalculateHash:(NSData *)messageData;
 
-- (id) init;
-- (id) initWithMessageManager:(MessageHandler * _Nullable)messageManager NS_DESIGNATED_INITIALIZER;
+- (id) initWithMessageHandler:(MessageHandler * _Nullable)messageManager chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent NS_DESIGNATED_INITIALIZER;
+- (id) init NS_UNAVAILABLE;
 
 - (BOOL) saveDataFromMessage:(NSPortMessage *)message;
-- (NSData * _Nullable) getDataBySender: (NSPort *)sender;
-- (BOOL) removeDataBySender: (NSPort *)sender;
+- (NSData * _Nullable) getDataByCorrespondent: (NSPort *)chosenCorrespondent;
+- (BOOL) removeDataByCorrespondent: (NSPort *)chosenCorrespondent;
 
 @end
 

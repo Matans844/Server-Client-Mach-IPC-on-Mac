@@ -23,5 +23,10 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
     arrangedByStructuredArrangement = 1,
 };
 
+typedef NS_ENUM(NSInteger, eRoleInCommunication){
+    server = 0,
+    client = 1,
+};
+
 
 #endif /* definitions_h */
