@@ -6,6 +6,7 @@
 //
 
 #import "MessageHandler.h"
+#import "PortHandler.h"
 
 #define DEFAULT_SERVICE_NAME_SENDER @"org.matan.messagemaker.defaultsender"
 #define DEFAULT_SERVICE_NAME_RECEIVER @"org.matan.messagemaker.defaultreceiver"
@@ -17,11 +18,10 @@
 // "Private" properties
 @property (atomic, retain, readonly, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
 @property (atomic, retain, readonly, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
+@property (atomic, retain, readonly, getter=getPortHandler) PortHandler * portHandler;
 
 // "Private" methods
-- (NSPort * _Nullable) initiatePortWithString:(NSString *)serviceName;
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
-- (NSPort *) getPortByName:(NSString*) serviceName;
 
 @end
 
@@ -33,28 +33,13 @@
 - (id) init{
     self = [super init];
     if(self){
-        self -> _defaultPortNameSender = [self initiatePortWithString:DEFAULT_SERVICE_NAME_SENDER];
-        self -> _defaultPortNameReceiver = [self initiatePortWithString:DEFAULT_SERVICE_NAME_RECEIVER];
+        PortHandler * localPortHandler = [[PortHandler alloc] init];
+        self -> _portHandler = localPortHandler;
+        self -> _defaultPortNameSender = [localPortHandler initiatePortWithString:DEFAULT_SERVICE_NAME_SENDER];
+        self -> _defaultPortNameReceiver = [localPortHandler initiatePortWithString:DEFAULT_SERVICE_NAME_RECEIVER];
     }
     
     return self;
-}
-
-- (NSPort *)getPortByName:(NSString*)serviceName{
-    return [[NSMachBootstrapServer sharedInstance] portForName:serviceName];
-}
-
-- (NSPort *) initiatePortWithString:(NSString *)serviceName{
-    NSPort * result = [[NSMachBootstrapServer sharedInstance] servicePortWithName:serviceName];
-    
-    if(result == nil){
-        // This probably means another instance is running
-        NSLog(@"Unable to open server port for %@.", serviceName);
-        // We copy the existing porty
-        result = [self getPortByName:serviceName];
-    }
-    
-    return result;
 }
 
 - (NSPortMessage *) createDefaultStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured{

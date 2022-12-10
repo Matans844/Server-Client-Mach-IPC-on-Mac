@@ -16,11 +16,10 @@
 
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
-@property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageManager;
+@property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
 @property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
 @property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
 @property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
-
 
 // "Private" methods
 - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
@@ -57,7 +56,7 @@
     self = [super init];
     if(self){
         self->_chosenCorrespondent = keyCorrespondent;
-        self->_messageManager = [[MessageHandler alloc] init];
+        self->_messageHandler = [[MessageHandler alloc] init];
         self->_dictCorrespondentToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
         self->_dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
         self->_counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];

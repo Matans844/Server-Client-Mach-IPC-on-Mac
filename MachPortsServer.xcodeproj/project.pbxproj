@@ -15,11 +15,13 @@
 		9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
 		9007A033294103BE00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
 		9007A03829413A3000F0C5AB /* ServiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03729413A3000F0C5AB /* ServiceManager.m */; };
-		9007A03B2941420000F0C5AB /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03A2941420000F0C5AB /* Service.m */; };
+		9007A03B2941420000F0C5AB /* Correspondent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03A2941420000F0C5AB /* Correspondent.m */; };
 		9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03F294284C400F0C5AB /* ValidationHandler.m */; };
 		9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03F294284C400F0C5AB /* ValidationHandler.m */; };
 		90D1DE0B2943F6FF00F92CF0 /* MachServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0A2943F6FF00F92CF0 /* MachServer.m */; };
 		90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0F2943F76A00F92CF0 /* MachClient.m */; };
+		90D1DE1429441E5B00F92CF0 /* PortHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1329441E5B00F92CF0 /* PortHandler.m */; };
+		90D1DE1529441F9D00F92CF0 /* PortHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1329441E5B00F92CF0 /* PortHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,8 +49,8 @@
 		9007A02C2940FE4500F0C5AB /* MessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageHandler.m; sourceTree = "<group>"; };
 		9007A03629413A3000F0C5AB /* ServiceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceManager.h; sourceTree = "<group>"; };
 		9007A03729413A3000F0C5AB /* ServiceManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceManager.m; sourceTree = "<group>"; };
-		9007A0392941420000F0C5AB /* Service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
-		9007A03A2941420000F0C5AB /* Service.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
+		9007A0392941420000F0C5AB /* Correspondent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Correspondent.h; sourceTree = "<group>"; };
+		9007A03A2941420000F0C5AB /* Correspondent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Correspondent.m; sourceTree = "<group>"; };
 		9007A03E294284C400F0C5AB /* ValidationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValidationHandler.h; sourceTree = "<group>"; };
 		9007A03F294284C400F0C5AB /* ValidationHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValidationHandler.m; sourceTree = "<group>"; };
 		9007A041294289ED00F0C5AB /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
@@ -56,6 +58,8 @@
 		90D1DE0A2943F6FF00F92CF0 /* MachServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachServer.m; sourceTree = "<group>"; };
 		90D1DE0E2943F76A00F92CF0 /* MachClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachClient.h; sourceTree = "<group>"; };
 		90D1DE0F2943F76A00F92CF0 /* MachClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachClient.m; sourceTree = "<group>"; };
+		90D1DE1229441E5B00F92CF0 /* PortHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PortHandler.h; sourceTree = "<group>"; };
+		90D1DE1329441E5B00F92CF0 /* PortHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,13 +119,13 @@
 			path = DataManager;
 			sourceTree = "<group>";
 		};
-		9007A019293FA60B00F0C5AB /* Service */ = {
+		9007A019293FA60B00F0C5AB /* Correspondent */ = {
 			isa = PBXGroup;
 			children = (
-				9007A0392941420000F0C5AB /* Service.h */,
-				9007A03A2941420000F0C5AB /* Service.m */,
+				9007A0392941420000F0C5AB /* Correspondent.h */,
+				9007A03A2941420000F0C5AB /* Correspondent.m */,
 			);
-			path = Service;
+			path = Correspondent;
 			sourceTree = "<group>";
 		};
 		9007A0242940F92900F0C5AB /* UnitTests */ = {
@@ -144,6 +148,7 @@
 		9007A0342941263E00F0C5AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				90D1DE1129441E4000F92CF0 /* PortHandler */,
 				9007A03D2942849000F0C5AB /* ValidationHandler */,
 				9007A013293F92BE00F0C5AB /* DataManager */,
 				9007A02A2940FDD500F0C5AB /* MessageHandler */,
@@ -165,7 +170,6 @@
 			children = (
 				90079EBD293E780A00F0C5AB /* MachPortsServer */,
 				9007A035294139D700F0C5AB /* ServiceManager */,
-				9007A019293FA60B00F0C5AB /* Service */,
 			);
 			path = OnHold;
 			sourceTree = "<group>";
@@ -182,6 +186,7 @@
 		90D1DE072943F63300F92CF0 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				9007A019293FA60B00F0C5AB /* Correspondent */,
 				9007A0342941263E00F0C5AB /* Components */,
 				90D1DE082943F65900F92CF0 /* Participants */,
 			);
@@ -213,6 +218,15 @@
 				90D1DE0F2943F76A00F92CF0 /* MachClient.m */,
 			);
 			path = Client;
+			sourceTree = "<group>";
+		};
+		90D1DE1129441E4000F92CF0 /* PortHandler */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE1229441E5B00F92CF0 /* PortHandler.h */,
+				90D1DE1329441E5B00F92CF0 /* PortHandler.m */,
+			);
+			path = PortHandler;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,13 +318,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */,
+				90D1DE1429441E5B00F92CF0 /* PortHandler.m in Sources */,
 				9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */,
 				9007A03829413A3000F0C5AB /* ServiceManager.m in Sources */,
 				9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
 				9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */,
 				90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */,
-				9007A03B2941420000F0C5AB /* Service.m in Sources */,
+				9007A03B2941420000F0C5AB /* Correspondent.m in Sources */,
 				90D1DE0B2943F6FF00F92CF0 /* MachServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -319,6 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90D1DE1529441F9D00F92CF0 /* PortHandler.m in Sources */,
 				9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */,
 				9007A033294103BE00F0C5AB /* DataManager.m in Sources */,
 				9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */,

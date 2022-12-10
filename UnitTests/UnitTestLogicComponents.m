@@ -6,9 +6,11 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "definitions.h"
 #import "DataManager.h"
 #import "MessageHandler.h"
 #import "ValidationHandler.h"
+#import "PortHandler.h"
 
 @interface UnitTestLogicComponents : XCTestCase
 
@@ -28,7 +30,7 @@
 @interface DataManager (Testing)
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
-@property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageManager;
+@property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
 @property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
 @property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
 @property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
@@ -46,8 +48,8 @@
 // "Private" properties
 @property (atomic, retain, readonly, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
 @property (atomic, retain, readonly, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
+@property (atomic, retain, readonly, getter=getPortHandler) PortHandler * portHandler;
 // "Private" methods
-- (NSPort * _Nullable) initiatePortWithString:(NSString *)serviceName;
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
 @end
 
