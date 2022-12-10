@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MachClient : Correspondent<NSPortDelegate>
 
+- (void) sendDataToSaveAt:(NSPort *)senderPort withData:(NSData *)messageData;
+- (void) removeDataToSaveAt:(NSPort *)senderPort;
+- (NSData *) receiveDataSaveAt:(NSPort *)senderPort;
+- (BOOL) compareData:(NSData *)receivedData otherData:(NSData *)originalData;
+- (NSPort *) findServerByName:(NSString *)serverName;
+
 @end
 
 NS_ASSUME_NONNULL_END

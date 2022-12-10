@@ -9,6 +9,28 @@
 
 @implementation MachClient
 
+
+- (void) sendDataToSaveAt:(NSPort *)senderPort withData:(NSData *)messageData{
+    
+}
+
+- (void) removeDataToSaveAt:(NSPort *)senderPort{
+    
+}
+
+- (NSData *) receiveDataSaveAt:(NSPort *)senderPort{
+    
+}
+
+- (BOOL) compareData:(NSData *)receivedData otherData:(NSData *)originalData{
+    return [originalData isEqual:receivedData];
+}
+
+- (NSPort *) findServerByName:(NSString *)serverName{
+    return [[self getPortHandler] getPortByName:serverName];
+}
+
+
 -(void) handlePortMessage:(NSPortMessage *)message
 {
     /*

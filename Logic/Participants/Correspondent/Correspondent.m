@@ -21,39 +21,62 @@
 
 @implementation Correspondent
 
-static NSNumber * _numberOfInstancesCreated = @0;
+static NSNumber * _numberOfServerInstancesCreated = @0;
+static NSNumber * _numberOfClientInstancesCreated = @0;
 
-+ (void) setNumberOfInstancesCreated:(NSNumber *)newNumberOfInstances{
-    _numberOfInstancesCreated = newNumberOfInstances;
++ (void) setNumberOfServerInstancesCreated:(NSNumber *)newNumberOfInstances{
+    _numberOfServerInstancesCreated = newNumberOfInstances;
 }
 
-+ (NSNumber *) numberOfInstancesCreated{
-    return _numberOfInstancesCreated;
++ (void) setNumberOfClientInstancesCreated:(NSNumber *)newNumberOfInstances{
+    _numberOfClientInstancesCreated = newNumberOfInstances;
+}
+
++ (NSNumber *) numberOfServerInstancesCreated{
+    return _numberOfClientInstancesCreated;
+}
+
++ (NSNumber *) numberOfClientInstancesCreated{
+    return _numberOfServerInstancesCreated;
 }
 
 - (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject{
     self = [super init];
     if(self){
-        NSString * instanceIdentifier = [[Correspondent numberOfInstancesCreated] stringValue];
+        NSString * instanceIdentifier;
+        NSNumber * newNumberOfInstances;
         
-        PortHandler * localPortHandler = [[PortHandler alloc] init];
-        self -> _portHandler = localPortHandler;
+        switch(keyCorrespondent){
+            case serverSide:
+                instanceIdentifier = [[Correspondent numberOfServerInstancesCreated] stringValue];
+                // update class property
+                newNumberOfInstances = @([_numberOfServerInstancesCreated intValue] + 1);
+                [Correspondent setNumberOfServerInstancesCreated:newNumberOfInstances];
+                break;
+            case clientSide:
+                instanceIdentifier = [[Correspondent numberOfClientInstancesCreated] stringValue];
+                // update class property
+                newNumberOfInstances = @([_numberOfClientInstancesCreated intValue] + 1);
+                [Correspondent setNumberOfClientInstancesCreated:newNumberOfInstances];
+                break;
+            default:
+                NSLog(@"error");
+                // TODO: Out of range error for the enum
+                break;
+        }
         
         NSString * newServiceName = [NSString stringWithFormat:@"%@%@", baseServiceName, instanceIdentifier];
         self->_serviceName = newServiceName;
         
+        PortHandler * localPortHandler = [[PortHandler alloc] init];
+        self -> _portHandler = localPortHandler;
         NSPort * servicePort = [localPortHandler initiatePortWithString:newServiceName];
         servicePort.delegate = delegateObject;
         self->_port = servicePort;
-        
-        self->_chosenCorrespondent = keyCorrespondent;
+
         self->_validationHandler = [[ValidationHandler alloc] init];
         self->_messageHandler = [[MessageHandler alloc] init];
         self->_dataManager = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:keyCorrespondent];
-        
-        // Update the class property
-        NSNumber * newNumberOfInstances = @([_numberOfInstancesCreated intValue] + 1);
-        [Correspondent setNumberOfInstancesCreated:newNumberOfInstances];
     }
     
     return self;
@@ -71,6 +94,12 @@ static NSNumber * _numberOfInstancesCreated = @0;
     *dataForResponse = description;
     
     return resultNoError;
+}
+
+- (void) sendResponseMessage:(NSPortMessage *)response{
+    NSDate * timeout = [NSDate dateWithTimeIntervalSinceNow:5.0];
+    [response sendBeforeDate:timeout];
+    NSLog(@"Sent feedback response");
 }
 
 @end

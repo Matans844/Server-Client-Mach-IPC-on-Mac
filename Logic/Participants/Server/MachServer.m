@@ -31,10 +31,13 @@
 
         switch(requestedServerFunctionality){
             case saveData:
-                messageStatus = [self saveReceivedDataFrom:message];
+                messageStatus = [self saveReceivedDataIn:message];
                 break;
             case getData:
-                messageStatus = [self sendBackReceivedData:message requestedData:&dataForResponse];
+                messageStatus = [self sendBackReceivedDataFrom:message.sendPort requestedData:&dataForResponse];
+                break;
+            case removeData:
+                messageStatus = [self removeReceivedDataFrom:message.sendPort];
                 break;
             case printStatus:
                 messageStatus = [self sendDescriptionOfData:&dataForResponse];
@@ -48,32 +51,27 @@
         response = [[self getMessageHandler] createMessageTo:message.sendPort withData:dataForResponse fromPort:[self getSelfPort] isArrayArrangementStructured:requestedServerFunctionality withFunctionality:requestedServerFunctionality withRequestResult:messageStatus];
     }
     
-    [self sendResponseMessage:response originalMessage:message];
+    response.msgid = message.msgid;
+    [self sendResponseMessage:response];
 }
 
-- (eRequestStatus) saveReceivedDataFrom:(NSPortMessage *)message {
+- (eRequestStatus) saveReceivedDataIn:(NSPortMessage *)message {
     BOOL success = [[self getDataManager] saveDataFromMessage:message];
     
     return success ? resultNoError : resultError;
 }
 
-- (eRequestStatus) sendBackReceivedData:(NSPortMessage *)message requestedData:(NSData * _Nullable * _Nullable)dataForResponse{
-    *dataForResponse = [[self getDataManager] getDataByCorrespondent:message.sendPort];
+- (eRequestStatus) sendBackReceivedDataFrom:(NSPort *)clientSender requestedData:(NSData * _Nullable * _Nullable)dataForResponse{
+    *dataForResponse = [[self getDataManager] getDataByCorrespondent:clientSender];
     
     return resultNoError;
 }
 
-- (void) sendResponseMessage:(NSPortMessage *)response originalMessage:(NSPortMessage *) message{
-    response.msgid = message.msgid;
-    NSDate * timeout = [NSDate dateWithTimeIntervalSinceNow:5.0];
-    [response sendBeforeDate:timeout];
-    NSLog(@"Sent feedback response");
+- (eRequestStatus) removeReceivedDataFrom:(NSPort *)clientSender{
+    BOOL success = [[self getDataManager] removeDataByCorrespondent:clientSender];
+    
+    return success ? resultNoError : resultError;
 }
-
-
-
-
-
 
 /*
 NSPort * responsePort = message.sendPort;

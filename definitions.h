@@ -35,7 +35,8 @@ typedef NS_ENUM(NSInteger, eRoleInCommunication){
 typedef NS_ENUM(NSInteger, eRequestedFunctionalityFromServer){
     saveData = 0,
     getData = 1,
-    printStatus = 2,
+    removeData = 2,
+    printStatus = 3,
 };
 
 typedef NS_ENUM(NSInteger, eUserChosenFunctionalityFromClient){

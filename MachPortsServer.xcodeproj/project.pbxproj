@@ -24,6 +24,7 @@
 		90D1DE1529441F9D00F92CF0 /* PortHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1329441E5B00F92CF0 /* PortHandler.m */; };
 		90D1DE192944B6B600F92CF0 /* NSMutableDictionaryWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */; };
 		90D1DE1B2944CEA200F92CF0 /* NSMutableDictionaryWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */; };
+		90D1DE202945267900F92CF0 /* MachClientUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1F2945267900F92CF0 /* MachClientUI.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +65,8 @@
 		90D1DE1329441E5B00F92CF0 /* PortHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortHandler.m; sourceTree = "<group>"; };
 		90D1DE172944B6B500F92CF0 /* NSMutableDictionaryWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSMutableDictionaryWrapper.h; sourceTree = "<group>"; };
 		90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSMutableDictionaryWrapper.m; sourceTree = "<group>"; };
+		90D1DE1E2945267900F92CF0 /* MachClientUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachClientUI.h; sourceTree = "<group>"; };
+		90D1DE1F2945267900F92CF0 /* MachClientUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachClientUI.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,7 @@
 				90D1DE1C2944D9D000F92CF0 /* ToDelete */,
 				9007A041294289ED00F0C5AB /* definitions.h */,
 				90079EBE293E780A00F0C5AB /* main.m */,
+				90D1DE1D2945262C00F92CF0 /* UI */,
 				90D1DE072943F63300F92CF0 /* Logic */,
 				9007A0242940F92900F0C5AB /* UnitTests */,
 				90079EBC293E780A00F0C5AB /* Products */,
@@ -243,6 +247,15 @@
 			path = ToDelete;
 			sourceTree = "<group>";
 		};
+		90D1DE1D2945262C00F92CF0 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE1E2945267900F92CF0 /* MachClientUI.h */,
+				90D1DE1F2945267900F92CF0 /* MachClientUI.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -338,6 +351,7 @@
 				9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
 				90D1DE192944B6B600F92CF0 /* NSMutableDictionaryWrapper.m in Sources */,
+				90D1DE202945267900F92CF0 /* MachClientUI.m in Sources */,
 				9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */,
 				90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */,
 				9007A03B2941420000F0C5AB /* Correspondent.m in Sources */,

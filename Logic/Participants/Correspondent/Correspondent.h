@@ -16,7 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Correspondent : NSObject
 
-@property (class) NSNumber * numberOfInstancesCreated;
+//Used to uniquely define correspondent name
+@property (class) NSNumber * numberOfServerInstancesCreated;
+@property (class) NSNumber * numberOfClientInstancesCreated;
 
 @property (atomic, readonly, getter=getSelfServiceName) NSString * serviceName;
 @property (atomic, readonly, getter=getSelfPort) NSPort * _Nullable port;
@@ -27,8 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (atomic, readonly, getter=getDataManager) DataManager * dataManager;
 @property (atomic, readonly, getter=getPortHandler) PortHandler * portHandler;
 
-+ (void) setNumberOfInstancesCreated:(NSNumber *)newNumberOfInstances;
-+ (NSNumber *) numberOfInstancesCreated;
++ (void) setNumberOfServerInstancesCreated:(NSNumber *)newNumberOfInstances;
++ (NSNumber *) numberOfServerInstancesCreated;
+
++ (void) setNumberOfClientInstancesCreated:(NSNumber *)newNumberOfInstances;
++ (NSNumber *) numberOfClientInstancesCreated;
+- (void) sendResponseMessage:(NSPortMessage *)response;
 
 - (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
