@@ -27,10 +27,11 @@ typedef NS_ENUM(NSInteger, eMessageComponentArrangementType){
 };
 
 typedef NS_ENUM(NSInteger, eRoleInCommunication){
-    server = 0,
-    client = 1,
+    serverSide = 0,
+    clientSide = 1,
 };
 
+// A better communication protocol between client and server would include a pre-communication setup step in which the client asks the server to send the client the services it offers.
 typedef NS_ENUM(NSInteger, eRequestedFunctionalityFromServer){
     saveData = 0,
     getData = 1,

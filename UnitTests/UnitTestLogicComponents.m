@@ -71,8 +71,8 @@
     [super setUp];
     _validationHandler = [[ValidationHandler alloc] init];
     _messageHandler = [[MessageHandler alloc] init];
-    _dataManagerForServer = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:server];
-    _dataManagerForClient = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:client];    
+    _dataManagerForServer = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:serverSide];
+    _dataManagerForClient = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:clientSide];    
 }
 
 - (void)tearDown {

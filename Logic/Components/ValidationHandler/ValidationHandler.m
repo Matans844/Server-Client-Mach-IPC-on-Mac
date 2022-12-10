@@ -39,12 +39,23 @@
 }
 
 - (BOOL) isMessageComponentArrangementValid:(NSArray *)components{
-    return [self isComponentsInCorrectSize:components] && [self isComponentsInArrangedStructure:components];
+    // Checking for size, arrangement, type.
+    // We are only checking value for the component arrangement flag.
+    return [self isComponentsInCorrectSize:components] && [self isComponentsInArrangedStructure:components] && [self isComponentsCellsInCorrectType:components];
 }
 
 - (BOOL) isMessageComponentsSizeValid:(NSArray *)components{
     return [self calculateComponentsSizeInBytes:components] <= MAX_SIZE_MSG;
+}
+
+- (BOOL) isComponentsCellsInCorrectType:(NSArray *)components{
+    // We are placing the enums (which are static entities) in an NSNumber wrapper
+    BOOL check1 = [components[indexOfData] isKindOfClass:[NSData class]];
+    BOOL check2 = [components[indexOfRequestedFunctionality] isKindOfClass:[NSNumber class]];
+    BOOL check3 = [components[indexOfRequestResult] isKindOfClass:[NSNumber class]];
+    BOOL check4 = [components[indexOfComponentArrangementFlag] isKindOfClass:[NSNumber class]];
     
+    return check1 && check2 && check3 && check4;
 }
 
 - (BOOL) isSenderActive:(NSPort *)senderPort{

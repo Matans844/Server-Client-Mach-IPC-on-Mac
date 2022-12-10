@@ -59,4 +59,18 @@ static NSNumber * _numberOfInstancesCreated = @0;
     return self;
 }
 
+- (eRequestStatus) sendDescriptionOfData:(NSString ** _Nullable)dataForResponse{
+    NSString * dataManagerDescription = [NSString stringWithFormat:@"%@", [self getDataManager]];
+    
+    // FUTURE:
+    // 1. We can add identifier here, defined in super class (Correspondent).
+    // 2. We can transfer this mehtod into the super class.
+    NSString * headline = [self getChosenCorrespondent] == serverSide ? @"Mach Server:\n" : @"Mach Client:\n";
+    NSString * description = [NSString stringWithFormat:@"%@%@", headline, dataManagerDescription];
+    
+    *dataForResponse = description;
+    
+    return resultNoError;
+}
+
 @end

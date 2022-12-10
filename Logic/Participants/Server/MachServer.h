@@ -13,9 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MachServer : Correspondent<NSPortDelegate>
 
 - (void) initiateEventLoop;
-- (void) save:(NSPortMessage *)message;
-- (void) send:(NSPortMessage *)message;
-- (void) printData;
+- (eRequestStatus) saveReceivedDataFrom:(NSPortMessage *)message;
+
+- (eRequestStatus) sendBackReceivedData:(NSPortMessage *)message requestedData:(NSData * _Nullable * _Nullable)dataForResponse;
+// - (eRequestStatus) sendBackReceivedData:(NSPortMessage *)message;
+
+// - (eRequestStatus) sendDescriptionOfData;
+//- (void) sendResponseMessage:(NSPortMessage *)message
+
+- (void) sendResponseMessage:(NSPortMessage *)response originalMessage:(NSPortMessage *) message;
+
 
 @end
 

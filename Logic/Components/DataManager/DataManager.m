@@ -131,7 +131,7 @@
 - (BOOL) saveDataFromMessage:(NSPortMessage *)message{
     NSPort * senderPort = message.sendPort;
     NSPort * receiverPort = message.receivePort;
-    NSPort * keyCorrespondentPort = [self getChosenCorrespondent] == server ? senderPort : receiverPort;
+    NSPort * keyCorrespondentPort = [self getChosenCorrespondent] == serverSide ? senderPort : receiverPort;
     BOOL result = FALSE;
     
     if ([self isStorageVacantForCorrespondent:keyCorrespondentPort]){

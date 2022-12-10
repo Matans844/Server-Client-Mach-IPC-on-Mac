@@ -17,37 +17,60 @@
 
 - (void) handlePortMessage:(NSPortMessage *)message
 {
+    eRequestStatus messageStatus = resultError;
+    NSPortMessage * response = nil;
+    id dataForResponse = nil;
+    
     if(![[self getValidationHandler] isMessageValid:message]){
-        NSLog(@"error");
+        NSLog(@"error\n");
+        // TODO: We need to create a message saying this is bad response.
+    }
+    else{
+        NSLog(@"Received message. Processing...\n");
+        eRequestedFunctionalityFromServer requestedServerFunctionality = [[self getMessageHandler] extractRequestedFunctionalityFrom:message];
+
+        switch(requestedServerFunctionality){
+            case saveData:
+                messageStatus = [self saveReceivedDataFrom:message];
+                break;
+            case getData:
+                messageStatus = [self sendBackReceivedData:message requestedData:&dataForResponse];
+                break;
+            case printStatus:
+                messageStatus = [self sendDescriptionOfData:&dataForResponse];
+                break;
+            default:
+                NSLog(@"error");
+                // TODO: Out of range error for the enum
+                break;
+        }
         
-        return;
+        response = [[self getMessageHandler] createMessageTo:message.sendPort withData:dataForResponse fromPort:[self getSelfPort] isArrayArrangementStructured:requestedServerFunctionality withFunctionality:requestedServerFunctionality withRequestResult:messageStatus];
     }
     
-    eRequestedFunctionalityFromServer requestedFunc = [[self getMessageHandler] extractRequestedFunctionalityFrom:message];
+    [self sendResponseMessage:response originalMessage:message];
+}
+
+- (eRequestStatus) saveReceivedDataFrom:(NSPortMessage *)message {
+    BOOL success = [[self getDataManager] saveDataFromMessage:message];
     
-    switch(requestedFunc){
-        case saveData:
-            [self save:message];
-            break;
-        case getData:
-            [self send:message];
-            break;
-        case printStatus:
-            [self printData];
-            break;
-        default:
-            NSLog(@"error");
-            break;
-    }
+    return success ? resultNoError : resultError;
 }
 
-- (void) save:(NSPortMessage *)message{
-    [[self getDataManager] saveDataFromMessage:message];
+- (eRequestStatus) sendBackReceivedData:(NSPortMessage *)message requestedData:(NSData * _Nullable * _Nullable)dataForResponse{
+    *dataForResponse = [[self getDataManager] getDataByCorrespondent:message.sendPort];
+    
+    return resultNoError;
 }
 
-- (void) send:(NSPortMessage *)message{
-    NSData * requestedData = [[self getDataManager] getDataByCorrespondent:message.sendPort];
+- (void) sendResponseMessage:(NSPortMessage *)response originalMessage:(NSPortMessage *) message{
+    response.msgid = message.msgid;
+    NSDate * timeout = [NSDate dateWithTimeIntervalSinceNow:5.0];
+    [response sendBeforeDate:timeout];
+    NSLog(@"Sent feedback response");
 }
+
+
 
 
 

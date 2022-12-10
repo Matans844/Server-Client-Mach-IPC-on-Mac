@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
+- (eRequestStatus) sendDescriptionOfData:(NSString ** _Nullable)dataForResponse
 
 @end
 
