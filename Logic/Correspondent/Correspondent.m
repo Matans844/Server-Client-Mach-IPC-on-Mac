@@ -57,4 +57,12 @@ static NSNumber * _numberOfInstancesCreated = @0;
     return self;
 }
 
+- (void) initiateLoopWithDelegate:(id<NSPortDelegate>  _Nullable __strong) delegateObject{
+    [self getSelfPort].delegate = delegateObject;
+    
+    NSRunLoop * runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addPort: [self getSelfPort] forMode:NSDefaultRunLoopMode];
+    [runLoop run];
+}
+
 @end

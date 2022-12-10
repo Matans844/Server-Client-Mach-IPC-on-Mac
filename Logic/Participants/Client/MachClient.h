@@ -6,10 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Correspondent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MachClient : NSObject
+@interface MachClient : Correspondent<NSPortDelegate>
 
 @end
 
