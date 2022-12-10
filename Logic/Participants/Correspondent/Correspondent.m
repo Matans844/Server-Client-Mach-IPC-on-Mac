@@ -59,13 +59,4 @@ static NSNumber * _numberOfInstancesCreated = @0;
     return self;
 }
 
-/*
-- (void) initiateEventLoop{
-    NSRunLoop * runLoop = [NSRunLoop currentRunLoop];
-    [runLoop addPort:[self getSelfPort] forMode:NSDefaultRunLoopMode];
-    runLoop ad
-    [runLoop run];
-}
- */
-
 @end

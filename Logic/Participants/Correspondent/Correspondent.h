@@ -33,9 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
 
-- (void) initiateEventLoop;
-
-
 @end
 
 NS_ASSUME_NONNULL_END

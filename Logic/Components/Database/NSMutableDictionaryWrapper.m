@@ -7,7 +7,7 @@
 
 #import "NSMutableDictionaryWrapper.h"
 
-@implementation NSMutableDictionaryWrapper : NSObject
+@implementation NSMutableDictionaryWrapper
 
 - (id) initWithName:(nonnull NSString *)name dictInstance:(nonnull NSMutableDictionary * )instance{
     self = [super init];

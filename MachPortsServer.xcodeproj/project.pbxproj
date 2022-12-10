@@ -87,7 +87,8 @@
 		90079EB2293E780A00F0C5AB = {
 			isa = PBXGroup;
 			children = (
-				9007A03C2942846400F0C5AB /* OnHold */,
+				90079EBD293E780A00F0C5AB /* MachPortsServer */,
+				90D1DE1C2944D9D000F92CF0 /* ToDelete */,
 				9007A041294289ED00F0C5AB /* definitions.h */,
 				90079EBE293E780A00F0C5AB /* main.m */,
 				90D1DE072943F63300F92CF0 /* Logic */,
@@ -170,15 +171,6 @@
 			path = ServiceManager;
 			sourceTree = "<group>";
 		};
-		9007A03C2942846400F0C5AB /* OnHold */ = {
-			isa = PBXGroup;
-			children = (
-				90079EBD293E780A00F0C5AB /* MachPortsServer */,
-				9007A035294139D700F0C5AB /* ServiceManager */,
-			);
-			path = OnHold;
-			sourceTree = "<group>";
-		};
 		9007A03D2942849000F0C5AB /* ValidationHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +233,14 @@
 				90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		90D1DE1C2944D9D000F92CF0 /* ToDelete */ = {
+			isa = PBXGroup;
+			children = (
+				9007A035294139D700F0C5AB /* ServiceManager */,
+			);
+			path = ToDelete;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

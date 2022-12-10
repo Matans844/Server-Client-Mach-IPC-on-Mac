@@ -58,6 +58,8 @@
 @property (atomic, retain, readonly, getter=getPortHandler) PortHandler * portHandler;
 // "Private" methods
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
+// - (eRequestedFunctionalityFromServer) extractRequestedFuncionalityFromComponents:(NSArray *)messageComponents;
+- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData *)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
 @end
 
 // ------------------------------------ //

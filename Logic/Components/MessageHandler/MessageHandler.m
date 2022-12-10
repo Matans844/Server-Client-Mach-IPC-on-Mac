@@ -7,6 +7,7 @@
 
 #import "MessageHandler.h"
 #import "PortHandler.h"
+// #import "definitions.h"
 
 #define DEFAULT_SERVICE_NAME_SENDER @"org.matan.messagemaker.defaultsender"
 #define DEFAULT_SERVICE_NAME_RECEIVER @"org.matan.messagemaker.defaultreceiver"
@@ -27,6 +28,8 @@
 
 // "Private" methods
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
+// - (eRequestedFunctionalityFromServer) extractRequestedFuncionalityFromComponents:(NSArray *)messageComponents;
+- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData *)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
 
 @end
 
@@ -47,48 +50,57 @@
     return self;
 }
 
-- (NSPortMessage *) createDefaultStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured{
-    return [self createStringMessage:string toPort:[self getDefaultPortNameReceiver] fromPort:[self getDefaultPortNameSender] isArrayArrangementStructured:isStructured];
+- (NSPortMessage *) createDefaultStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
+    return [self createStringMessage:string toPort:[self getDefaultPortNameReceiver] fromPort:[self getDefaultPortNameSender] isArrayArrangementStructured:isStructured withFunctionality:requestedFunction withRequestResult:requestStatus];
 }
 
-- (NSPortMessage *) createStringMessage:(NSString *)string toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured{
+- (NSPortMessage *) createDefaultGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
+    return [self createGarbageDataMessageWithSize:numberOfBytes toPort:[self getDefaultPortNameSender] fromPort:[self getDefaultPortNameSender] isArrayArrangementStructured:isStructured withFunctionality:requestedFunction withRequestResult:requestStatus];
+}
+
+- (NSPortMessage *) createStringMessage:(NSString *)string toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
     NSData * data = [string dataUsingEncoding:NSUTF8StringEncoding];
     
+    /*
     // If the message is not structured, data is placed in the first cell of the components array.
     // If message is structured, we need to unparse the messsage according to the agreed arrangement.
     NSArray * array = isStructured ? [self encodeDataIntoCompositeStructureArray:data] : @[data];
+    */
     
     // This creates a new machPort
     // NSPort * senderPort = [NSMachPort port];
     
-    return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
+    return [self createMessageTo:receiverPort withData:data fromPort:senderPort isArrayArrangementStructured:isStructured withFunctionality:requestedFunction withRequestResult:requestStatus];
 }
 
-- (NSPortMessage *) createDefaultGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured{
-    return [self createGarbageDataMessageWithSize:numberOfBytes toPort:[self getDefaultPortNameSender] fromPort:[self getDefaultPortNameSender] isArrayArrangementStructured:isStructured];
-}
-
-- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured{
+- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
     void * bytes = malloc(numberOfBytes);
     NSData * data = [NSData dataWithBytes:bytes length:numberOfBytes];
     
+    /*
     // Both data objects are entered into an array. The question is to which index.
     NSArray * array = isStructured ? [self encodeDataIntoCompositeStructureArray:data] : @[data];
+    */
     
-    return [self createMessageTo:receiverPort withArray:array fromPort:senderPort];
+    return [self createMessageTo:receiverPort withData:data fromPort:senderPort isArrayArrangementStructured:isStructured withFunctionality:requestedFunction withRequestResult:requestStatus];
 }
 
-- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort{
+- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSData *)data fromPort:(NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
+    
+    // If the message is not structured, data is placed in the first cell of the components array.
+    // If message is structured, we need to unparse the messsage according to the agreed arrangement.
+    NSArray * array = isStructured ? [self encodeDataIntoCompositeStructureArray:data withFunctionality:requestedFunction withRequestResult:requestStatus] : @[data];
+
     NSPortMessage * message = [[NSPortMessage alloc] initWithSendPort:senderPort receivePort:receiverPort components:array];
     
     return message;
 }
 
-- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData *)data{
+- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData *)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
     NSMutableArray * mutableArray = [NSMutableArray arrayWithCapacity:DEFAULT_STRUCTURED_COMPONENT_SIZE];
     mutableArray[indexOfData] = data;
-    mutableArray[indexOfRequestedFunctionality] = @"to_program_later_indicator_functionality_indicator";
-    mutableArray[indexOfError] = @"to_program_later_indicator_error";
+    mutableArray[indexOfRequestedFunctionality] = @(requestedFunction);
+    mutableArray[indexOfRequestResult] = @(requestStatus);
     mutableArray[indexOfComponentArrangementFlag] = [NSNumber numberWithInt:arrangedByStructuredArrangement];
     
     return [mutableArray copy];
@@ -96,6 +108,14 @@
 
 - (NSData *) extractDataFrom:(NSPortMessage *)message{
     return [self extractDataFromComponents:message.components];
+}
+
+- (eRequestedFunctionalityFromServer) extractRequestedFunctionalityFrom:(NSPortMessage *)message{
+    return [self extractRequestedFuncionalityFromComponents:message.components];
+}
+
+- (eRequestedFunctionalityFromServer) extractRequestedFuncionalityFromComponents:(NSArray *)messageComponents{
+    return (eRequestedFunctionalityFromServer) [messageComponents objectAtIndex:indexOfRequestedFunctionality];
 }
 
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents{
