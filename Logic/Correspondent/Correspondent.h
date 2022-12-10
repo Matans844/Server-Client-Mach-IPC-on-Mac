@@ -30,11 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) setNumberOfInstancesCreated:(NSNumber *)newNumberOfInstances;
 + (NSNumber *) numberOfInstancesCreated;
 
-- (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent NS_DESIGNATED_INITIALIZER;
+- (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
 
-- (void) initiateLoopWithDelegate:(id<NSPortDelegate>  _Nullable __strong) delegateObject;
-
+- (void) initiateEventLoop;
 
 
 @end

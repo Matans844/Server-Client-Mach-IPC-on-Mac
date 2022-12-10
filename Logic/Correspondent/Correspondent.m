@@ -31,7 +31,7 @@ static NSNumber * _numberOfInstancesCreated = @0;
     return _numberOfInstancesCreated;
 }
 
-- (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent{
+- (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject{
     self = [super init];
     if(self){
         NSString * instanceIdentifier = [[Correspondent numberOfInstancesCreated] stringValue];
@@ -43,6 +43,8 @@ static NSNumber * _numberOfInstancesCreated = @0;
         self->_serviceName = newServiceName;
         
         NSPort * servicePort = [localPortHandler initiatePortWithString:newServiceName];
+        servicePort.delegate = delegateObject;
+        self->_port = servicePort;
         
         self->_chosenCorrespondent = keyCorrespondent;
         self->_validationHandler = [[ValidationHandler alloc] init];
@@ -57,11 +59,10 @@ static NSNumber * _numberOfInstancesCreated = @0;
     return self;
 }
 
-- (void) initiateLoopWithDelegate:(id<NSPortDelegate>  _Nullable __strong) delegateObject{
-    [self getSelfPort].delegate = delegateObject;
-    
+- (void) initiateEventLoop{
     NSRunLoop * runLoop = [NSRunLoop currentRunLoop];
-    [runLoop addPort: [self getSelfPort] forMode:NSDefaultRunLoopMode];
+    [runLoop addPort:[self getSelfPort] forMode:NSDefaultRunLoopMode];
+    runLoop ad
     [runLoop run];
 }
 
