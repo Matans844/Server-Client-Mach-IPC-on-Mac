@@ -18,6 +18,11 @@
 // "Private" properties
 @property (atomic, retain, readonly, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
 @property (atomic, retain, readonly, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
+
+// Internal ad-hoc portHandler vs. Global portHandler for service?
+// We have a unique port handler for objects of this class to support default messages.
+// Default messages were mainly used in testing.
+// Since this is an ad-hoc use case, I used an ad-hoc internal private portHandler.
 @property (atomic, retain, readonly, getter=getPortHandler) PortHandler * portHandler;
 
 // "Private" methods
