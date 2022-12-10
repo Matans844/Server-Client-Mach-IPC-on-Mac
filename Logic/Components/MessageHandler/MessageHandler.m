@@ -15,8 +15,8 @@
 @interface MessageHandler()
 
 // "Private" properties
-@property (atomic, retain, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
-@property (atomic, retain, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
+@property (atomic, retain, readonly, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
+@property (atomic, retain, readonly, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
 
 // "Private" methods
 - (NSPort * _Nullable) initiatePortWithString:(NSString *)serviceName;
@@ -33,8 +33,8 @@
 - (id) init{
     self = [super init];
     if(self){
-        self.defaultPortNameSender = [self initiatePortWithString:DEFAULT_SERVICE_NAME_SENDER];
-        self.defaultPortNameReceiver = [self initiatePortWithString:DEFAULT_SERVICE_NAME_RECEIVER];
+        self -> _defaultPortNameSender = [self initiatePortWithString:DEFAULT_SERVICE_NAME_SENDER];
+        self -> _defaultPortNameReceiver = [self initiatePortWithString:DEFAULT_SERVICE_NAME_RECEIVER];
     }
     
     return self;

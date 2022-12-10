@@ -10,7 +10,7 @@
 #import "MessageHandler.h"
 #import "ValidationHandler.h"
 
-@interface UnitTestHelperClasses : XCTestCase
+@interface UnitTestLogicComponents : XCTestCase
 
 @property DataManager * dataManagerForServer;
 @property DataManager * dataManagerForClient;
@@ -28,10 +28,10 @@
 @interface DataManager (Testing)
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
-@property (atomic, retain, getter=getMessageManager) MessageHandler * messageManager;
-@property (atomic, retain, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
-@property (atomic, retain, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
-@property (atomic, retain, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
+@property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageManager;
+@property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
+@property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
+@property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
 // "Private" methods
 - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
 - (BOOL) isStorageVacantForHash:(NSData *)hashCode;
@@ -44,8 +44,8 @@
 
 @interface MessageHandler (Testing)
 // "Private" properties
-@property (atomic, retain, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
-@property (atomic, retain, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
+@property (atomic, retain, readonly, getter=getDefaultPortNameSender) NSPort * defaultPortNameSender;
+@property (atomic, retain, readonly, getter=getDefaultPortNameReceiver) NSPort * defaultPortNameReceiver;
 // "Private" methods
 - (NSPort * _Nullable) initiatePortWithString:(NSString *)serviceName;
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
@@ -53,7 +53,7 @@
 
 // ------------------------------------ //
 
-@implementation UnitTestHelperClasses
+@implementation UnitTestLogicComponents
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -61,8 +61,7 @@
     _validationHandler = [[ValidationHandler alloc] init];
     _messageHandler = [[MessageHandler alloc] init];
     _dataManagerForServer = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:server];
-    _dataManagerForClient = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:client];
-    
+    _dataManagerForClient = [[DataManager alloc] initWithMessageHandler:_messageHandler chosenCorrespondent:client];    
 }
 
 - (void)tearDown {

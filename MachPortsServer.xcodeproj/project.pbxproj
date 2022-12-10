@@ -10,7 +10,7 @@
 		90079EBF293E780A00F0C5AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EBE293E780A00F0C5AB /* main.m */; };
 		90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90079EC6293E786B00F0C5AB /* MachPortsServer.m */; };
 		9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
-		9007A0262940F92900F0C5AB /* UnitTestHelperClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A0252940F92900F0C5AB /* UnitTestHelperClasses.m */; };
+		9007A0262940F92900F0C5AB /* UnitTestLogicComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A0252940F92900F0C5AB /* UnitTestLogicComponents.m */; };
 		9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
 		9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A02C2940FE4500F0C5AB /* MessageHandler.m */; };
 		9007A033294103BE00F0C5AB /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A01B293FA62E00F0C5AB /* DataManager.m */; };
@@ -18,6 +18,8 @@
 		9007A03B2941420000F0C5AB /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03A2941420000F0C5AB /* Service.m */; };
 		9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03F294284C400F0C5AB /* ValidationHandler.m */; };
 		9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03F294284C400F0C5AB /* ValidationHandler.m */; };
+		90D1DE0B2943F6FF00F92CF0 /* MachServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0A2943F6FF00F92CF0 /* MachServer.m */; };
+		90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0F2943F76A00F92CF0 /* MachClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,8 +41,8 @@
 		90079EC6293E786B00F0C5AB /* MachPortsServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachPortsServer.m; sourceTree = "<group>"; };
 		9007A01A293FA62E00F0C5AB /* DataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		9007A01B293FA62E00F0C5AB /* DataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
-		9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTestDataManager.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9007A0252940F92900F0C5AB /* UnitTestHelperClasses.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTestHelperClasses.m; sourceTree = "<group>"; };
+		9007A0232940F92800F0C5AB /* UnitTestLogicComponents.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTestLogicComponents.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9007A0252940F92900F0C5AB /* UnitTestLogicComponents.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnitTestLogicComponents.m; sourceTree = "<group>"; };
 		9007A02B2940FE4500F0C5AB /* MessageHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageHandler.h; sourceTree = "<group>"; };
 		9007A02C2940FE4500F0C5AB /* MessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageHandler.m; sourceTree = "<group>"; };
 		9007A03629413A3000F0C5AB /* ServiceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceManager.h; sourceTree = "<group>"; };
@@ -50,6 +52,10 @@
 		9007A03E294284C400F0C5AB /* ValidationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValidationHandler.h; sourceTree = "<group>"; };
 		9007A03F294284C400F0C5AB /* ValidationHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValidationHandler.m; sourceTree = "<group>"; };
 		9007A041294289ED00F0C5AB /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
+		90D1DE092943F6FF00F92CF0 /* MachServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachServer.h; sourceTree = "<group>"; };
+		90D1DE0A2943F6FF00F92CF0 /* MachServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachServer.m; sourceTree = "<group>"; };
+		90D1DE0E2943F76A00F92CF0 /* MachClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachClient.h; sourceTree = "<group>"; };
+		90D1DE0F2943F76A00F92CF0 /* MachClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,10 +79,10 @@
 		90079EB2293E780A00F0C5AB = {
 			isa = PBXGroup;
 			children = (
-				9007A041294289ED00F0C5AB /* definitions.h */,
 				9007A03C2942846400F0C5AB /* OnHold */,
+				9007A041294289ED00F0C5AB /* definitions.h */,
 				90079EBE293E780A00F0C5AB /* main.m */,
-				9007A0342941263E00F0C5AB /* HelperClasses */,
+				90D1DE072943F63300F92CF0 /* Logic */,
 				9007A0242940F92900F0C5AB /* UnitTests */,
 				90079EBC293E780A00F0C5AB /* Products */,
 			);
@@ -86,7 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				90079EBB293E780A00F0C5AB /* MachPortsServer */,
-				9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */,
+				9007A0232940F92800F0C5AB /* UnitTestLogicComponents.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,7 +127,7 @@
 		9007A0242940F92900F0C5AB /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				9007A0252940F92900F0C5AB /* UnitTestHelperClasses.m */,
+				9007A0252940F92900F0C5AB /* UnitTestLogicComponents.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -135,14 +141,14 @@
 			path = MessageHandler;
 			sourceTree = "<group>";
 		};
-		9007A0342941263E00F0C5AB /* HelperClasses */ = {
+		9007A0342941263E00F0C5AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				9007A03D2942849000F0C5AB /* ValidationHandler */,
 				9007A013293F92BE00F0C5AB /* DataManager */,
 				9007A02A2940FDD500F0C5AB /* MessageHandler */,
 			);
-			path = HelperClasses;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		9007A035294139D700F0C5AB /* ServiceManager */ = {
@@ -173,6 +179,42 @@
 			path = ValidationHandler;
 			sourceTree = "<group>";
 		};
+		90D1DE072943F63300F92CF0 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				9007A0342941263E00F0C5AB /* Components */,
+				90D1DE082943F65900F92CF0 /* Participants */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		90D1DE082943F65900F92CF0 /* Participants */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE0C2943F70700F92CF0 /* Server */,
+				90D1DE0D2943F72400F92CF0 /* Client */,
+			);
+			path = Participants;
+			sourceTree = "<group>";
+		};
+		90D1DE0C2943F70700F92CF0 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE092943F6FF00F92CF0 /* MachServer.h */,
+				90D1DE0A2943F6FF00F92CF0 /* MachServer.m */,
+			);
+			path = Server;
+			sourceTree = "<group>";
+		};
+		90D1DE0D2943F72400F92CF0 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE0E2943F76A00F92CF0 /* MachClient.h */,
+				90D1DE0F2943F76A00F92CF0 /* MachClient.m */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -193,9 +235,9 @@
 			productReference = 90079EBB293E780A00F0C5AB /* MachPortsServer */;
 			productType = "com.apple.product-type.tool";
 		};
-		9007A0222940F92800F0C5AB /* UnitTestDataManager */ = {
+		9007A0222940F92800F0C5AB /* UnitTestLogicComponents */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9007A0272940F92900F0C5AB /* Build configuration list for PBXNativeTarget "UnitTestDataManager" */;
+			buildConfigurationList = 9007A0272940F92900F0C5AB /* Build configuration list for PBXNativeTarget "UnitTestLogicComponents" */;
 			buildPhases = (
 				9007A01F2940F92800F0C5AB /* Sources */,
 				9007A0202940F92800F0C5AB /* Frameworks */,
@@ -205,9 +247,9 @@
 			);
 			dependencies = (
 			);
-			name = UnitTestDataManager;
+			name = UnitTestLogicComponents;
 			productName = UnitTests;
-			productReference = 9007A0232940F92800F0C5AB /* UnitTestDataManager.xctest */;
+			productReference = 9007A0232940F92800F0C5AB /* UnitTestLogicComponents.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -241,7 +283,7 @@
 			projectRoot = "";
 			targets = (
 				90079EBA293E780A00F0C5AB /* MachPortsServer */,
-				9007A0222940F92800F0C5AB /* UnitTestDataManager */,
+				9007A0222940F92800F0C5AB /* UnitTestLogicComponents */,
 			);
 		};
 /* End PBXProject section */
@@ -267,7 +309,9 @@
 				9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
 				9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */,
+				90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */,
 				9007A03B2941420000F0C5AB /* Service.m in Sources */,
+				90D1DE0B2943F6FF00F92CF0 /* MachServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +322,7 @@
 				9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */,
 				9007A033294103BE00F0C5AB /* DataManager.m in Sources */,
 				9007A032294103BB00F0C5AB /* MessageHandler.m in Sources */,
-				9007A0262940F92900F0C5AB /* UnitTestHelperClasses.m in Sources */,
+				9007A0262940F92900F0C5AB /* UnitTestLogicComponents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,7 +501,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9007A0272940F92900F0C5AB /* Build configuration list for PBXNativeTarget "UnitTestDataManager" */ = {
+		9007A0272940F92900F0C5AB /* Build configuration list for PBXNativeTarget "UnitTestLogicComponents" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9007A0282940F92900F0C5AB /* Debug */,

@@ -17,9 +17,9 @@
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
 @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageManager;
-@property (atomic, retain, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
-@property (atomic, retain, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
-@property (atomic, retain, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
+@property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
+@property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
+@property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
 
 
 // "Private" methods
@@ -58,9 +58,9 @@
     if(self){
         self->_chosenCorrespondent = keyCorrespondent;
         self->_messageManager = [[MessageHandler alloc] init];
-        self.dictCorrespondentToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
-        self.dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
-        self.counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
+        self->_dictCorrespondentToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
+        self->_dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
+        self->_counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
     }
     
     return self;
