@@ -23,27 +23,12 @@
 @end
 
 // ------------------------------------ //
-// Interface section from classes:
+// Interface section from classes (through category):
 // This allows us to test private properties and/or methods.
 
 // ------------------------------------ //
 
 @interface DataManager (Testing)
-/*
- // "Private" properties
- @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
- @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
- @property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
- @property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
- @property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
- // "Private" methods
- - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
- - (BOOL) isStorageVacantForHash:(NSData *)hashCode;
- - (void) addToDictCorrespondentToHash:(NSPort *)chosenCorrespondent withHash:(NSData *)hashCode;
- - (void) addToDictHashToComponents:(NSData *)hashCode withData:(NSArray *)components;
- - (NSData *) getHashCodeFromCorrespondent:(NSPort *)chosenCorrespondent;
- - (NSString *) describeContent;
- */
 
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
@@ -334,7 +319,6 @@
     
     NSLog(@"\n\n%@", [_dataManagerForClient description]);
 }
-
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

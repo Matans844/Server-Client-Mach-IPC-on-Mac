@@ -152,7 +152,6 @@
 		9007A0342941263E00F0C5AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				90D1DE1A2944C66F00F92CF0 /* Categories */,
 				90D1DE162944B68600F92CF0 /* Database */,
 				90D1DE1129441E4000F92CF0 /* PortHandler */,
 				9007A03D2942849000F0C5AB /* ValidationHandler */,
@@ -192,7 +191,6 @@
 		90D1DE072943F63300F92CF0 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
-				9007A019293FA60B00F0C5AB /* Correspondent */,
 				9007A0342941263E00F0C5AB /* Components */,
 				90D1DE082943F65900F92CF0 /* Participants */,
 			);
@@ -202,6 +200,7 @@
 		90D1DE082943F65900F92CF0 /* Participants */ = {
 			isa = PBXGroup;
 			children = (
+				9007A019293FA60B00F0C5AB /* Correspondent */,
 				90D1DE0C2943F70700F92CF0 /* Server */,
 				90D1DE0D2943F72400F92CF0 /* Client */,
 			);
@@ -242,13 +241,6 @@
 				90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */,
 			);
 			path = Database;
-			sourceTree = "<group>";
-		};
-		90D1DE1A2944C66F00F92CF0 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
