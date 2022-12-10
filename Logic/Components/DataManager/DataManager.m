@@ -7,6 +7,7 @@
 
 #import "DataManager.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "NSMutableDictionaryWrapper.h"
 
 // ------------------------------------ //
 
@@ -17,9 +18,15 @@
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
 @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
+@property (atomic, retain, readonly, getter=getDictCorrespondentToHashWrapper) NSMutableDictionaryWrapper * dictCorrespondentToHash;
+@property (atomic, retain, readonly, getter=getDictHashToDataWrapper) NSMutableDictionaryWrapper * dictHashToData;
+@property (atomic, retain, readonly, getter=getCounterOfDataHashWrapper) NSMutableDictionaryWrapper * counterOfDataHash;
+
+/*
 @property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
 @property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
 @property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
+*/
 
 // "Private" methods
 - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
@@ -28,6 +35,10 @@
 - (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data;
 - (void) addToCounterDataHash:(NSData *)hashCode;
 - (NSData *) getHashCodeFromCorrespondent:(NSPort *)chosenCorrespondent;
+- (NSString *) describeContent;
+- (NSMutableDictionary<NSPort*, NSData*> *) getDictCorrespondentToHash;
+- (NSMutableDictionary<NSData*, NSData*> *) getDictHashToData;
+- (NSMutableDictionary<NSData*, NSNumber*> *) getCounterOfDataHash;
 
 @end
 
@@ -52,14 +63,35 @@
     return [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:TRUE error:nil];
 }
 
+- (NSMutableDictionary<NSPort*, NSData*> *) getDictCorrespondentToHash{
+    return [[self getDictCorrespondentToHashWrapper] getWrappedDictionary];
+}
+
+- (NSMutableDictionary<NSData*, NSData*> *) getDictHashToData{
+    return [[self getDictHashToDataWrapper] getWrappedDictionary];
+}
+
+- (NSMutableDictionary<NSData*, NSNumber*> *) getCounterOfDataHash{
+    return [[self getCounterOfDataHashWrapper] getWrappedDictionary];
+}
+
 - (id) initWithMessageHandler:(MessageHandler *)messageManager chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent{
     self = [super init];
     if(self){
         self->_chosenCorrespondent = keyCorrespondent;
         self->_messageHandler = [[MessageHandler alloc] init];
-        self->_dictCorrespondentToHash = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
-        self->_dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
-        self->_counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
+        
+        NSMutableDictionary * dictCorrespondentToHashInstance = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
+        NSMutableDictionary * dictHashToDataInstance = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
+        NSMutableDictionary * counterOfDataHashInstance = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
+                
+        self->_dictCorrespondentToHash = [[NSMutableDictionaryWrapper alloc] initWithName:@"Dictionary: Correspondent to Hash" dictInstance:dictCorrespondentToHashInstance];
+        self->_dictHashToData = [[NSMutableDictionaryWrapper alloc] initWithName:@"Dictionary: Hash to Data" dictInstance:dictHashToDataInstance];
+        self->_counterOfDataHash = [[NSMutableDictionaryWrapper alloc] initWithName:@"Dictionary: Hash to Count" dictInstance:counterOfDataHashInstance];
+        
+        
+        // self->_dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
+        // self->_counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
     }
     
     return self;
@@ -159,6 +191,23 @@
     }
     
     return result;
+}
+
+- (NSString *) describeContent{
+    NSString * headline = @"Content:";
+    NSString * descriptionDictCorrespondentToHash = [NSString stringWithFormat:@"%@", [self getDictCorrespondentToHashWrapper]];
+    NSString * descriptionDictHashToData = [NSString stringWithFormat:@"%@", [self getDictHashToDataWrapper]];
+    NSString * descriptionCounter = [NSString stringWithFormat:@"%@", [self getCounterOfDataHashWrapper]];;
+    
+    return [NSString stringWithFormat:@"%@\n1): %@2): %@3): %@", headline, descriptionDictCorrespondentToHash, descriptionDictHashToData, descriptionCounter];
+}
+
+- (NSString *) description{
+    NSString * headline = @"Data Manager Object: Contains 3 dictionaries.\n";
+    NSString * descriptionContent = [self describeContent];
+    NSString * endOfDescription = @"\n";
+    
+    return [NSString stringWithFormat:@"%@%@%@", headline, descriptionContent, endOfDescription];
 }
 
 @end

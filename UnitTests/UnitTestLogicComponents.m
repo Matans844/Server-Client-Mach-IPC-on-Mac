@@ -11,6 +11,7 @@
 #import "MessageHandler.h"
 #import "ValidationHandler.h"
 #import "PortHandler.h"
+#import "NSMutableDictionaryWrapper.h"
 
 @interface UnitTestLogicComponents : XCTestCase
 
@@ -28,18 +29,39 @@
 // ------------------------------------ //
 
 @interface DataManager (Testing)
+/*
+ // "Private" properties
+ @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
+ @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
+ @property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
+ @property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
+ @property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
+ // "Private" methods
+ - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
+ - (BOOL) isStorageVacantForHash:(NSData *)hashCode;
+ - (void) addToDictCorrespondentToHash:(NSPort *)chosenCorrespondent withHash:(NSData *)hashCode;
+ - (void) addToDictHashToComponents:(NSData *)hashCode withData:(NSArray *)components;
+ - (NSData *) getHashCodeFromCorrespondent:(NSPort *)chosenCorrespondent;
+ - (NSString *) describeContent;
+ */
+
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
 @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
-@property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
-@property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
-@property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
+@property (atomic, retain, readonly, getter=getDictCorrespondentToHashWrapper) NSMutableDictionaryWrapper * dictCorrespondentToHash;
+@property (atomic, retain, readonly, getter=getDictHashToDataWrapper) NSMutableDictionaryWrapper * dictHashToData;
+@property (atomic, retain, readonly, getter=getCounterOfDataHashWrapper) NSMutableDictionaryWrapper * counterOfDataHash;
 // "Private" methods
 - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
 - (BOOL) isStorageVacantForHash:(NSData *)hashCode;
 - (void) addToDictCorrespondentToHash:(NSPort *)chosenCorrespondent withHash:(NSData *)hashCode;
-- (void) addToDictHashToComponents:(NSData *)hashCode withData:(NSArray *)components;
+- (void) addToDictHashToData:(NSData *)hashCode withData:(NSData *)data;
+- (void) addToCounterDataHash:(NSData *)hashCode;
 - (NSData *) getHashCodeFromCorrespondent:(NSPort *)chosenCorrespondent;
+- (NSString *) describeContent;
+- (NSMutableDictionary<NSPort*, NSData*> *) getDictCorrespondentToHash;
+- (NSMutableDictionary<NSData*, NSData*> *) getDictHashToData;
+- (NSMutableDictionary<NSData*, NSNumber*> *) getCounterOfDataHash;
 @end
 
 // ------------------------------------ //
@@ -301,6 +323,16 @@
     NSData * hashCode = [_dataManagerForClient getHashCodeFromCorrespondent:receiverPort1];
     
     XCTAssertFalse([_dataManagerForClient isStorageVacantForHash:hashCode]);
+}
+
+- (void) testDataManagerDescriptionForClient{
+    NSPortMessage * message1Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameSender] fromPort:[_messageHandler getDefaultPortNameReceiver] isArrayArrangementStructured:YES];
+    NSPortMessage * message2Structured = [_messageHandler createStringMessage:@"test2" toPort:[_messageHandler getDefaultPortNameReceiver] fromPort:[_messageHandler getDefaultPortNameReceiver] isArrayArrangementStructured:YES];
+    
+    XCTAssertTrue([_dataManagerForClient saveDataFromMessage:message1Structured]);
+    XCTAssertTrue([_dataManagerForClient saveDataFromMessage:message2Structured]);
+    
+    NSLog(@"\n\n%@", [_dataManagerForClient description]);
 }
 
 

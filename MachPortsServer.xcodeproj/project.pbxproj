@@ -22,6 +22,8 @@
 		90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0F2943F76A00F92CF0 /* MachClient.m */; };
 		90D1DE1429441E5B00F92CF0 /* PortHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1329441E5B00F92CF0 /* PortHandler.m */; };
 		90D1DE1529441F9D00F92CF0 /* PortHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1329441E5B00F92CF0 /* PortHandler.m */; };
+		90D1DE192944B6B600F92CF0 /* NSMutableDictionaryWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */; };
+		90D1DE1B2944CEA200F92CF0 /* NSMutableDictionaryWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +62,8 @@
 		90D1DE0F2943F76A00F92CF0 /* MachClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachClient.m; sourceTree = "<group>"; };
 		90D1DE1229441E5B00F92CF0 /* PortHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PortHandler.h; sourceTree = "<group>"; };
 		90D1DE1329441E5B00F92CF0 /* PortHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortHandler.m; sourceTree = "<group>"; };
+		90D1DE172944B6B500F92CF0 /* NSMutableDictionaryWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSMutableDictionaryWrapper.h; sourceTree = "<group>"; };
+		90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSMutableDictionaryWrapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,8 @@
 		9007A0342941263E00F0C5AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				90D1DE1A2944C66F00F92CF0 /* Categories */,
+				90D1DE162944B68600F92CF0 /* Database */,
 				90D1DE1129441E4000F92CF0 /* PortHandler */,
 				9007A03D2942849000F0C5AB /* ValidationHandler */,
 				9007A013293F92BE00F0C5AB /* DataManager */,
@@ -227,6 +233,22 @@
 				90D1DE1329441E5B00F92CF0 /* PortHandler.m */,
 			);
 			path = PortHandler;
+			sourceTree = "<group>";
+		};
+		90D1DE162944B68600F92CF0 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE172944B6B500F92CF0 /* NSMutableDictionaryWrapper.h */,
+				90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		90D1DE1A2944C66F00F92CF0 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,6 +345,7 @@
 				9007A03829413A3000F0C5AB /* ServiceManager.m in Sources */,
 				9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
+				90D1DE192944B6B600F92CF0 /* NSMutableDictionaryWrapper.m in Sources */,
 				9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */,
 				90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */,
 				9007A03B2941420000F0C5AB /* Correspondent.m in Sources */,
@@ -334,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90D1DE1B2944CEA200F92CF0 /* NSMutableDictionaryWrapper.m in Sources */,
 				90D1DE1529441F9D00F92CF0 /* PortHandler.m in Sources */,
 				9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */,
 				9007A033294103BE00F0C5AB /* DataManager.m in Sources */,
