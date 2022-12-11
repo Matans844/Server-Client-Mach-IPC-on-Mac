@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/matan/Documents/ad_proj/MachPortsServer/MachIPC.xcodeproj">
    </FileRef>
 </Workspace>

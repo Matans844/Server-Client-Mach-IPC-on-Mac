@@ -41,7 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		90079EBB293E780A00F0C5AB /* MachPortsServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MachPortsServer; sourceTree = BUILT_PRODUCTS_DIR; };
+		90079EBB293E780A00F0C5AB /* MachIPC */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MachIPC; sourceTree = BUILT_PRODUCTS_DIR; };
 		90079EBE293E780A00F0C5AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		90079EC5293E786B00F0C5AB /* MachPortsServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachPortsServer.h; sourceTree = "<group>"; };
 		90079EC6293E786B00F0C5AB /* MachPortsServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachPortsServer.m; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 		90079EBC293E780A00F0C5AB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				90079EBB293E780A00F0C5AB /* MachPortsServer */,
+				90079EBB293E780A00F0C5AB /* MachIPC */,
 				9007A0232940F92800F0C5AB /* UnitTestLogicComponents.xctest */,
 			);
 			name = Products;
@@ -280,9 +280,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		90079EBA293E780A00F0C5AB /* MachPortsServer */ = {
+		90079EBA293E780A00F0C5AB /* MachIPC */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 90079EC2293E780A00F0C5AB /* Build configuration list for PBXNativeTarget "MachPortsServer" */;
+			buildConfigurationList = 90079EC2293E780A00F0C5AB /* Build configuration list for PBXNativeTarget "MachIPC" */;
 			buildPhases = (
 				90079EB7293E780A00F0C5AB /* Sources */,
 				90079EB8293E780A00F0C5AB /* Frameworks */,
@@ -292,9 +292,9 @@
 			);
 			dependencies = (
 			);
-			name = MachPortsServer;
+			name = MachIPC;
 			productName = MachPortsServer;
-			productReference = 90079EBB293E780A00F0C5AB /* MachPortsServer */;
+			productReference = 90079EBB293E780A00F0C5AB /* MachIPC */;
 			productType = "com.apple.product-type.tool";
 		};
 		9007A0222940F92800F0C5AB /* UnitTestLogicComponents */ = {
@@ -331,7 +331,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 90079EB6293E780A00F0C5AB /* Build configuration list for PBXProject "MachPortsServer" */;
+			buildConfigurationList = 90079EB6293E780A00F0C5AB /* Build configuration list for PBXProject "MachIPC" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -344,7 +344,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				90079EBA293E780A00F0C5AB /* MachPortsServer */,
+				90079EBA293E780A00F0C5AB /* MachIPC */,
 				9007A0222940F92800F0C5AB /* UnitTestLogicComponents */,
 			);
 		};
@@ -551,7 +551,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		90079EB6293E780A00F0C5AB /* Build configuration list for PBXProject "MachPortsServer" */ = {
+		90079EB6293E780A00F0C5AB /* Build configuration list for PBXProject "MachIPC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				90079EC0293E780A00F0C5AB /* Debug */,
@@ -560,7 +560,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		90079EC2293E780A00F0C5AB /* Build configuration list for PBXNativeTarget "MachPortsServer" */ = {
+		90079EC2293E780A00F0C5AB /* Build configuration list for PBXNativeTarget "MachIPC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				90079EC3293E780A00F0C5AB /* Debug */,
