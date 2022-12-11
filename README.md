@@ -77,7 +77,7 @@ There are 4 project folders:
 
 ### Status
 Number  | Name | Details | Implementation | Tested
-------------- | ------------- | -------------
+------------- | ------------- | ------------- | ------------- | -------------
 1  | Logic | Contains classes and files that support the IPC required functionality. | [x] | [ ]
 2  | UserInterface | Refers to the driver of the service, which is the client | [ ] | [ ]
 
@@ -135,16 +135,16 @@ Implementation details:
 3. Dictionary 2 translates the hash into the original message
 4. Dictinoary 3 counts the number of references made by key participant port to a hash. Only when no port refers to the same hash, we can delete the hash from dictionaries 1 and 2.
 
-##### Folder 1.7: MessageHandler
+#### Folder 1.7: MessageHandler
 * Contained class: MessageHandler
 * Usage: Dealing with messages. This includes extracting data (or metadata) from them, and creating them.
 
 ### Folder 2: Participants
-### Folder 2.1: Correspondent
+#### Folder 2.1: Correspondent
 * Contained class: Correspondent
 * Usage: Being super class for both client and server. 
 * Implementation detail: There are many common behaviors between the client and server. For example, the client wants to save data going to the server port, by server port, while the server wanted to save data coming in from sender port. This symmetry allows for code reuse.
 
-### Folder 2.2: Participants
+#### Folder 2.2: Participants
 Here both the MachClient an MachServer classes are implemented.
 
