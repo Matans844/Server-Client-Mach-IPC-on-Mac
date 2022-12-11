@@ -36,26 +36,6 @@
 {
     NSPort * responsePort = message.sendPort;
     if (responsePort != nil){
-        // sender is still active
-        
-        
-        /*
-        NSData * contentDataHash = [MachPortsServer doSha256:message.components];
-        NSData * isDataNew = self.dictMsgDataHashToMsgID[];
-        
-        
-        NSMutableDictionary * dictSenderPortToMsgID = self.dictSenderPortToMsgIDs[responsePort];
-        
-        if(dictSenderPortToMsgID != nil){
-            // sender has already sent something
-            
-            NSNumber * msgID = dictSenderPortToMsgID[responsePort];
-            if(msgID != nil){
-                
-            }
-        }
-        */
-        
         NSArray * components = message.components;
         if (components.count > 0){
             NSString * data = [[NSString alloc] initWithData:components[0] encoding:NSUTF8StringEncoding];

@@ -93,9 +93,7 @@
 		90079EB2293E780A00F0C5AB = {
 			isa = PBXGroup;
 			children = (
-				90079EBD293E780A00F0C5AB /* MachPortsServer */,
-				9007A041294289ED00F0C5AB /* definitions.h */,
-				90079EBE293E780A00F0C5AB /* main.m */,
+				90D1DE2A29461FC100F92CF0 /* Reference */,
 				90D1DE1D2945262C00F92CF0 /* UserInterface */,
 				90D1DE072943F63300F92CF0 /* Logic */,
 				9007A0242940F92900F0C5AB /* UnitTests */,
@@ -182,6 +180,7 @@
 		90D1DE072943F63300F92CF0 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				9007A041294289ED00F0C5AB /* definitions.h */,
 				9007A0342941263E00F0C5AB /* Components */,
 				90D1DE082943F65900F92CF0 /* Participants */,
 			);
@@ -267,6 +266,15 @@
 				90D1DE1F2945267900F92CF0 /* MachClientUserInterfaceExample.m */,
 			);
 			path = ConsoleExample;
+			sourceTree = "<group>";
+		};
+		90D1DE2A29461FC100F92CF0 /* Reference */ = {
+			isa = PBXGroup;
+			children = (
+				90079EBE293E780A00F0C5AB /* main.m */,
+				90079EBD293E780A00F0C5AB /* MachPortsServer */,
+			);
+			path = Reference;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
