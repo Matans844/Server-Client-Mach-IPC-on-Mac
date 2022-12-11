@@ -14,8 +14,7 @@
 // "Private" properties
 
 // "Private" methods
-- (eRequestStatus) verifyServerGotData:(NSPortMessage *)receivedMessage;
-- (void) verifyServerSavedData:(NSPortMessage *)message;
+- (eRequestStatus) isReceivedMessageDataValid:(NSPortMessage *)receivedMessage;
 
 @end
 
@@ -97,25 +96,6 @@
         // The encoding of the two functionality enums allows us to successfully cast:
         // User requests for client functionality that invoke messaging to the server for server functionality have the same encoding.
         eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality = (eServerDependentClientFunctionality) requestedServerFunctionality;
-        
-        // Sanity check for the two main requirements in the project.
-        if(userRequestedServerDependentClientFunctionality == tellServerGetData){
-            requestStatus = [self verifyServerGotData:message];
-        }
-        else if(userRequestedServerDependentClientFunctionality == tellServerSaveData){
-            /*
-             This is a bit tricky and not stable:
-             We ask to send another message to the server.
-             We should get a response message from the server with the data.
-             This means we enter this handler again, but only now we use the more stable verifier ([self verifyServerGotData])
-             This method compares the data received from the server with the data we have in our data manager.
-             We know this works if and only if we see the handler printed two Operation succcessful messages
-             */
-            [self verifyServerSavedData:message];
-        }
-        else{
-            requestStatus = resultNoError;
-        }
     }
     
     if(requestStatus != resultNoError){
@@ -128,16 +108,12 @@
     
 }
 
-- (eRequestStatus) verifyServerGotData:(NSPortMessage *)receivedMessage{
+- (eRequestStatus) isReceivedMessageDataValid:(NSPortMessage *)receivedMessage{
     NSData * receivedData = [[self getMessageHandler] extractDataFrom:receivedMessage];
     NSData * originalData = [[self getDataManager] getDataByCorrespondent:receivedMessage.sendPort];
     eRequestStatus result = [self compareData:receivedData otherData:originalData] ? resultNoError : resultError;
     
     return result;
-}
-
-- (void) verifyServerSavedData:(NSPortMessage *)message{
-    [self sendRequestToReceiveDataSavedAt:message.sendPort];
 }
 
 @end
