@@ -32,7 +32,7 @@
     if(![[self getValidationHandler] isMessageValid:message]){
         
         [ErrorHandler exitProgramOnError];
-        // TODO: In the meantime, I can create a message saying it is bad response, but then I need to add another enum value to both client and server functionalities.
+        // TODO: In the meantime, I can create a message saying it is bad response, but then I need to do two things: (1) Add another enum value to both client and server functionalities. (2) Implement this functionality at both participants.
         // response = [[self getMessageHandler] createMessageTo:message.sendPort withData:nil fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverNothing withRequestResult:requestStatus];
         
     }

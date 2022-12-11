@@ -40,23 +40,21 @@ typedef NS_ENUM(NSInteger, eRoleInCommunication){
 
 // TODO: A better communication protocol between client and server would include a pre-communication setup step in which the client asks the server to send the client the services it offers.
 typedef NS_ENUM(NSInteger, eRequestedFunctionalityFromServer){
-    serverNothing = 0,
-    serverSaveData = 1,
-    serverGetData = 2,
-    serverRemoveData = 3,
-    serverPrintStatus = 4,
+    serverSaveData = 0,
+    serverGetData = 1,
+    serverRemoveData = 2,
+    serverPrintStatus = 3,
 };
 
 typedef NS_ENUM(NSInteger, eUserChosenFunctionalityFromClient){
-    clientNothing = 0,
-    tellServerSaveData = 1,
-    tellServerGetData = 2,
-    tellServerRemoveData = 3,
-    tellServerPrintStatus = 4,
-    clientFindServer = 5,
-    clientCheckData = 6,
-    clientPrintStatus = 7,
-    clientRemoveData = 8,
+    tellServerSaveData = 0,
+    tellServerGetData = 1,
+    tellServerRemoveData = 2,
+    tellServerPrintStatus = 3,
+    clientFindServer = 4,
+    clientCheckData = 5,
+    clientPrintStatus = 6,
+    clientRemoveData = 7,
 };
 
 typedef NS_ENUM(NSInteger, eServerDependentClientFunctionality){
