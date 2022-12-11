@@ -40,7 +40,7 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
     return _numberOfServerInstancesCreated;
 }
 
-- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong)delegateObject{
+- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent{
     self = [super init];
     if(self){
         NSString * baseServiceName;
@@ -77,7 +77,7 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
         PortHandler * localPortHandler = [[PortHandler alloc] init];
         self -> _portHandler = localPortHandler;
         NSPort * servicePort = [localPortHandler initiatePortWithString:newServiceName];
-        servicePort.delegate = delegateObject;
+        // servicePort.delegate = delegateObject;
         self->_port = servicePort;
 
         self->_validationHandler = [[ValidationHandler alloc] init];
@@ -89,17 +89,16 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
 }
 
 - (eRequestStatus) sendDescriptionOfData:(NSString * _Nullable * _Nullable)dataForResponse{
-    NSString * dataManagerDescription = [NSString stringWithFormat:@"%@", [self getDataManager]];
-    
-    // FUTURE:
-    // 1. We can add identifier here, defined in super class (Correspondent).
-    // 2. We can transfer this mehtod into the super class.
-    NSString * headline = [self getChosenCorrespondent] == serverSide ? @"Mach Server:\n" : @"Mach Client:\n";
-    NSString * description = [NSString stringWithFormat:@"%@%@", headline, dataManagerDescription];
-    
-    *dataForResponse = description;
+    *dataForResponse = [self description];
     
     return resultNoError;
+}
+
+- (NSString *) description{
+    NSString * headline = [self getChosenCorrespondent] == serverSide ? @"Mach Server:\n" : @"Mach Client:\n";
+    NSString * dataManagerDescription = [NSString stringWithFormat:@"%@", [self getDataManager]];
+    
+    return [NSString stringWithFormat:@"%@%@", headline, dataManagerDescription];
 }
 
 - (void) sendPreparedMessage:(NSPortMessage *)filledMessage{

@@ -23,14 +23,16 @@
 
 @implementation MachClient
 
-- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable)delegateObject{
-    self = [super initWithCorrespondentType:keyCorrespondent withPortDelegate:<#delegateObject#>];
+
+- (id) init{
+    self = [super initWithCorrespondentType:clientSide];
     if(self){
-        self->_dictServerPortToLastDataReceived = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
+        [self getSelfPort].delegate = self;
     }
     
     return self;
 }
+
 
 - (void) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData{
     NSPortMessage * requestToServer = [[self getMessageHandler] createMessageTo:serverPort withData:messageData fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverSaveData withRequestResult:initRequest];
@@ -73,7 +75,6 @@
     eRequestStatus messageStatusFromeServer = (eRequestStatus) [[self getMessageHandler] extractDataFrom:message withIndexCellType:indexOfRequestResult];
     eRequestStatus requestStatus = resultError;
     NSData * receivedData = [[self getMessageHandler] extractDataFrom:message];
-    [[self getDictServerPortToLastDataReceived] setObject:receivedData forKey:message.sendPort];
 
     if (messageStatusFromeServer != resultNoError){
         
@@ -107,6 +108,7 @@
              We ask to send another message to the server.
              We should get a response message from the server with the data.
              This means we enter this handler again, but only now we use the more stable verifier ([self verifyServerGotData])
+             This method compares the data received from the server with the data we have in our data manager.
              We know this works if and only if we see the handler printed two Operation succcessful messages
              */
             [self verifyServerSavedData:message];

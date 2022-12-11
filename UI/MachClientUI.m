@@ -12,7 +12,7 @@
 - (id) initWithClientLogicObject:(MachClient *)clientInstance{
     self = [super init];
     if(self){
-        self->_clientObject = [[MachClient alloc] initWithCorrespondentType:clientSide];
+        self->_clientObject = [[MachClient alloc] initWithCorrespondentType:clientSide withPortDelegate:self];
     }
     
     return self;

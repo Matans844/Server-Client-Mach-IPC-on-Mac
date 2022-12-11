@@ -9,6 +9,15 @@
 
 @implementation MachServer
 
+- (id) init{
+    self = [super initWithCorrespondentType:serverSide];
+    if(self){
+        [self getSelfPort].delegate = self;
+    }
+    
+    return self;
+}
+
 - (void) initiateEventLoop{
     NSRunLoop * runLoop = [NSRunLoop currentRunLoop];
     [runLoop addPort:[self getSelfPort] forMode:NSDefaultRunLoopMode];
@@ -53,7 +62,9 @@
                 requestStatus = [self removeDataByChosenCorrespondent:message.sendPort];
                 break;
             case serverPrintStatus:
-                requestStatus = [self sendDescriptionOfData:&dataForResponse];
+                // I can just print the information in the server console.
+                // requestStatus = [self sendDescriptionOfData:&dataForResponse];
+                NSLog(@"%@", [self description]);
                 break;
             default:
                 

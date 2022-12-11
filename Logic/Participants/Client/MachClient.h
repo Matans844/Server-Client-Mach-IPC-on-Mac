@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MachClient : Correspondent<NSPortDelegate>
 
-@property (atomic, readonly, getter=getDictServerPortToLastDataReceived) NSMutableDictionary<NSPort*, NSData*> * dictServerPortToLastDataReceived;
-
 - (void) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData;
 - (void) sendRequestToRemoveSavedDataAt:(NSPort *)serverPort;
 - (void) sendRequestToReceiveDataSavedAt:(NSPort *)serverPort;

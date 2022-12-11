@@ -33,8 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) setNumberOfClientInstancesCreated:(NSNumber *)newNumberOfInstances;
 + (NSNumber *) numberOfClientInstancesCreated;
 
-- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong)delegateObject;
-- (id) init NS_UNAVAILABLE;
+// - (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong)delegateObject;
+- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent;
+- (id) init;
+
 - (eRequestStatus) sendDescriptionOfData:(NSString * _Nullable * _Nullable)dataForResponse;
 - (eRequestStatus) removeDataByChosenCorrespondent:(NSPort *)keyCorrespondent;
 - (void) sendPreparedMessage:(NSPortMessage *)filledMessage;
