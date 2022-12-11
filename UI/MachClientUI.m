@@ -26,7 +26,7 @@
 
 - (void) exampleGetData{
     NSPort * serverPort = [[self getClient] findServerByName:DEFAULT_SERVER_SERVICE_NAME];
-    [[self getClient] sendRequestToReceiveDataSavedAt:serverPort];
+    [[self getClient] sendRequestToGetDataSavedAt:serverPort];
 }
 
 - (void) exampleVerifyData{

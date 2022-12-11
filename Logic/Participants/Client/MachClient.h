@@ -21,13 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property(atomic, readwrite, getter=getLastMessageReceived, setter=setLastMessagedReceived:) NSPortMessage * lastMessageReceived;
 
 - (eRequestStatus) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData;
+- (NSData *) sendRequestToGetDataSavedAt:(NSPort *)serverPort;
 - (eRequestStatus) sendRequestToRemoveSavedDataAt:(NSPort *)serverPort;
-- (eRequestStatus) sendRequestToReceiveDataSavedAt:(NSPort *)serverPort;
 - (eRequestStatus) sendRequestServerPrintData:(NSPort *)serverPort;
-
-- (eRequestStatus) printSelfData:(NSPort *)serverPort;
-- (BOOL) compareData:(NSData *)receivedData otherData:(NSData *)originalData;
 - (NSPort *) findServerByName:(NSString *)serverName;
+- (BOOL) checkDataAtServer:(NSPort *)serverPort;
+- (eRequestStatus) printSelfData;
+- (eRequestStatus) removeDataSentTo:(NSString *)serverName;
 
 @end
 
