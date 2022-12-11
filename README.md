@@ -61,7 +61,7 @@ The logic parts supports multi-client and multi-server communication.
 4. Client can print its own description, with its contents.
 
 ## Project Details
-## Implementation Details
+### Implementation Details
 * Server is listening to messages from its port. It handles incoming messages via placing itself as delegate.
 * Client is also delegate to its port. When it sends messages to the server (to complete server dependent functionality), it is blocking for a response.
 * The client makes requests to the server. A user makes requests to the client
