@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MachClientUI : NSObject
+@interface MachClientUserInterfaceExample : NSObject
 
 @property (atomic, retain, readonly, getter=getClient) MachClient * clientObject;
 
