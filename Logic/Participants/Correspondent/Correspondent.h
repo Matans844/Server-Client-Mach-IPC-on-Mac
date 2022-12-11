@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (atomic, readonly, getter=getSelfServiceName) NSString * serviceName;
 @property (atomic, readonly, getter=getSelfPort) NSPort * _Nullable port;
-@property (atomic, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
+@property (atomic, readonly, getter=getChosenCorrespondent) eRoleInCommunication chosenCorrespondent;
 @property (atomic, readonly, getter=getValidationHandler) ValidationHandler * validationHandler;
 @property (atomic, readonly, getter=getMessageHandler) MessageHandler * messageHandler;
 @property (atomic, readonly, getter=getDataManager) DataManager * dataManager;

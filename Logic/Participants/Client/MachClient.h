@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) sendRequestToReceiveDataSavedAt:(NSPort *)serverPort;
 - (BOOL) compareData:(NSData *)receivedData otherData:(NSData *)originalData;
 - (NSPort *) findServerByName:(NSString *)serverName;
-// - (void) executeAfterServer:(eServerDependentClientFunctionality)chosenClientFunctionality;
 
 @end
 

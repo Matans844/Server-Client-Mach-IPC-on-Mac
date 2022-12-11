@@ -7,6 +7,20 @@
 
 #import "MachClient.h"
 
+// ------------------------------------ //
+
+@interface MachClient()
+
+// "Private" properties
+
+// "Private" methods
+- (eRequestStatus) verifyServerGotData:(NSPortMessage *)receivedMessage;
+- (void) verifyServerSavedData:(NSPortMessage *)message;
+
+@end
+
+// ------------------------------------ //
+
 @implementation MachClient
 
 - (void) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData{
@@ -46,42 +60,11 @@
     return [[self getPortHandler] getPortByName:serverName];
 }
 
-
-- (void) executeUserRequestedFunctionalityBeforeServer:(eUserChosenFunctionalityFromClient)chosenClientFunctionality{
-    switch(chosenClientFunctionality){
-        case clientNothing:
-            break;
-        case tellServerSaveData:
-            break;
-        case tellServerGetData:
-            break;
-        case tellServerRemoveData:
-            break;
-        case tellServerPrintStatus:
-            break;
-        case clientFindServer:
-            break;
-        case clientCheckData:
-            break;
-        case clientPrintStatus:
-            break;
-        case clientRemoveData:
-            break;
-        default:
-            
-            NSLog(@"error\n");
-            // TODO: Out of range error for enum
-            exit(ERROR_CODE_TO_DO);
-            
-            break;
-    }
-}
-
 - (void) handlePortMessage:(NSPortMessage *)message{
-    eRequestStatus messageStatus = (eRequestStatus) [[self getMessageHandler] extractDataFrom:message withIndexCellType:indexOfRequestResult];
+    eRequestStatus messageStatusFromeServer = (eRequestStatus) [[self getMessageHandler] extractDataFrom:message withIndexCellType:indexOfRequestResult];
     eRequestStatus requestStatus = resultError;
 
-    if (messageStatus != resultNoError){
+    if (messageStatusFromeServer != resultNoError){
         
         NSLog(@"error\n");
         // TODO: Define Error type
@@ -97,25 +80,39 @@
     }
     else{
         // Only relevant if message is valid.
-        NSLog(@"Received confirmation...\n");
         eRequestedFunctionalityFromServer requestedServerFunctionality = [[self getMessageHandler] extractRequestedFunctionalityFrom:message];
         
         // The encoding of the enums for functionality allows us to do this
         // User requests for client functionality that invoke messaging to the server for server functionality have the same encoding.
         eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality = (eServerDependentClientFunctionality) requestedServerFunctionality;
         
-        switch(userRequestedServerDependentClientFunctionality){
-            case toldServerSaveData:
-                [self verifyServerSavedData:message];
-                break;
-            case toldServerGetData:
-                requestStatus = [self verifyServerGotData:message];
-                break;
-            case toldServerRemoveData:
-                requestStatus = resultNoError;
-            case toldServer
+        // Sanity check for the two main requirements in the project.
+        if(userRequestedServerDependentClientFunctionality == tellServerGetData){
+            requestStatus = [self verifyServerGotData:message];
+        }
+        else if(userRequestedServerDependentClientFunctionality == tellServerSaveData){
+            /*
+             This is a bit tricky and not stable:
+             We ask to send another message to the server.
+             We should get a response message from the server with the data.
+             This means we enter this handler again, but only now we use the more stable verifier ([self verifyServerGotData])
+             We know this works if and only if we see the handler printed two Operation succcessful messages
+             */
+            [self verifyServerSavedData:message];
+        }
+        else{
+            requestStatus = resultNoError;
         }
     }
+    
+    if(requestStatus != resultNoError){
+        NSLog(@"Received feedback... Operation unsuccessful\n");
+    }
+    else{
+        NSLog(@"Received feedback... Operation successful\n");
+    }
+    //TODO: Use a dictionary to translate the eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality enum to print a more informative message - The actual completed operation.
+    
 }
 
 - (eRequestStatus) verifyServerGotData:(NSPortMessage *)receivedMessage{
@@ -126,8 +123,8 @@
     return result;
 }
 
-- (void) verifyServerSavedData:(NSPortMessage *)receivedMessage{
-    [self sendRequestToReceiveDataSavedAt:receivedMessage.sendPort];
+- (void) verifyServerSavedData:(NSPortMessage *)message{
+    [self sendRequestToReceiveDataSavedAt:message.sendPort];
 }
 
 @end

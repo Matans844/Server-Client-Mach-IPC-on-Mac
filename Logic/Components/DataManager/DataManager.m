@@ -16,7 +16,7 @@
 // Answer: No. Use delegates that track changing the port value.
 
 // "Private" properties
-@property (atomic, assign, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
+@property (atomic, assign, readonly, getter=getChosenCorrespondent) eRoleInCommunication chosenCorrespondent;
 @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
 @property (atomic, retain, readonly, getter=getDictCorrespondentToHashWrapper) NSMutableDictionaryWrapper * dictCorrespondentToHash;
 @property (atomic, retain, readonly, getter=getDictHashToDataWrapper) NSMutableDictionaryWrapper * dictHashToData;
@@ -75,7 +75,7 @@
     return [[self getCounterOfDataHashWrapper] getWrappedDictionary];
 }
 
-- (id) initWithMessageHandler:(MessageHandler *)messageManager chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent{
+- (id) initWithMessageHandler:(MessageHandler *)messageManager chosenCorrespondent:(eRoleInCommunication)keyCorrespondent{
     self = [super init];
     if(self){
         self->_chosenCorrespondent = keyCorrespondent;
