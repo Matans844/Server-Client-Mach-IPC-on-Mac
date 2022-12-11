@@ -15,6 +15,7 @@
 #define START_OF_INSTANCES_COUNT 0
 #define WAITING_PERIOD_FOR_MESSAGE_SENDING 5.0
 
+#define DEFAULT_SERVER_SERVICE_NAME @"org.matan.appdome_ipcp_project.server_num_0"
 #define SERVER_SERVICE_BASE_NAME @"org.matan.appdome_ipcp_project.server_num_"
 #define CLIENT_SERVICE_BASE_NAME @"org.matan.appdome_ipcp_project.client_num_"
 

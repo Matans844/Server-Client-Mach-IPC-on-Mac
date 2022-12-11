@@ -12,10 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MachClientUI : NSObject
 
-@property (atomic, retain, readonly, getter=getSelfName) MachClient * clientObject;
+@property (atomic, retain, readonly, getter=getClient) MachClient * clientObject;
 
 - (id) initWithClientLogicObject:(MachClient *)clientInstance NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
+
+- (void) dispatcherExample:(eUserChosenFunctionalityFromClient)chosenClientFunctionality;
 
 @end
 

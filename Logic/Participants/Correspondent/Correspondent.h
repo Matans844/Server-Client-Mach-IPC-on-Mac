@@ -34,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSNumber *) numberOfClientInstancesCreated;
 
 - (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent;
-//- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
 - (eRequestStatus) sendDescriptionOfData:(NSString * _Nullable * _Nullable)dataForResponse;
 - (eRequestStatus) removeDataByChosenCorrespondent:(NSPort *)keyCorrespondent;
