@@ -15,13 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) initiateEventLoop;
 - (eRequestStatus) saveReceivedDataIn:(NSPortMessage *)message;
 - (eRequestStatus) sendBackReceivedDataFrom:(NSPort *)clientSender requestedData:(NSData * _Nullable * _Nullable)dataForResponse;
-- (eRequestStatus) removeReceivedDataFrom:(NSPort *)clientSender;
-
-
-// - (eRequestStatus) sendBackReceivedData:(NSPortMessage *)message;
-// - (eRequestStatus) sendDescriptionOfData;
-//- (void) sendResponseMessage:(NSPortMessage *)message
-
 
 @end
 

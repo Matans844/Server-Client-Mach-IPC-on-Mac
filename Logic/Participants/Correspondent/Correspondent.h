@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (atomic, readonly, getter=getSelfServiceName) NSString * serviceName;
 @property (atomic, readonly, getter=getSelfPort) NSPort * _Nullable port;
-
 @property (atomic, readonly, getter=getChosenCorrespondent) enum eRoleInCommunication chosenCorrespondent;
 @property (atomic, readonly, getter=getValidationHandler) ValidationHandler * validationHandler;
 @property (atomic, readonly, getter=getMessageHandler) MessageHandler * messageHandler;
@@ -31,14 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void) setNumberOfServerInstancesCreated:(NSNumber *)newNumberOfInstances;
 + (NSNumber *) numberOfServerInstancesCreated;
-
 + (void) setNumberOfClientInstancesCreated:(NSNumber *)newNumberOfInstances;
 + (NSNumber *) numberOfClientInstancesCreated;
-- (void) sendResponseMessage:(NSPortMessage *)response;
 
-- (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
+- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
-- (eRequestStatus) sendDescriptionOfData:(NSString ** _Nullable)dataForResponse
+- (eRequestStatus) sendDescriptionOfData:(NSString * _Nullable * _Nullable)dataForResponse;
+- (eRequestStatus) removeDataByChosenCorrespondent:(NSPort *)keyCorrespondent;
+- (void) sendPreparedMessage:(NSPortMessage *)filledMessage;
 
 @end
 

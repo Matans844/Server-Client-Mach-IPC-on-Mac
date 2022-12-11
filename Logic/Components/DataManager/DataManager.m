@@ -124,7 +124,7 @@
         [[self getCounterOfDataHash] setObject:@([currentHashCodeCount intValue] + 1) forKey:hashCode];
     }
     else{
-        [[self getCounterOfDataHash] setObject:@(1) forKey:hashCode];
+        [[self getCounterOfDataHash] setObject:@(START_OF_COUNTER_COUNT) forKey:hashCode];
     }
 }
 
@@ -164,7 +164,7 @@
     return [[self getDictCorrespondentToHash] objectForKey:chosenCorrespondent];
 }
 
-- (BOOL) removeDataByCorrespondent:(NSPort *)chosenCorrespondent{
+- (BOOL) removeDataByKeyCorrespondent:(NSPort *)chosenCorrespondent{
     NSData * hashCode = [[self getDictCorrespondentToHash] objectForKey:chosenCorrespondent];
     BOOL result = FALSE;
     

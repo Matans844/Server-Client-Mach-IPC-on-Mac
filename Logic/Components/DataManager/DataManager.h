@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL) saveDataFromMessage:(NSPortMessage *)message;
 - (NSData * _Nullable) getDataByCorrespondent: (NSPort *)chosenCorrespondent;
-- (BOOL) removeDataByCorrespondent: (NSPort *)chosenCorrespondent;
+- (BOOL) removeDataByKeyCorrespondent: (NSPort *)chosenCorrespondent;
 
 @end
 

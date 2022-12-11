@@ -27,9 +27,10 @@
 @property (atomic, retain, readonly, getter=getPortHandler) PortHandler * portHandler;
 
 // "Private" methods
-- (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
+// - (NSData *) extractDataFromComponents:(NSArray *)messageComponents;
+- (NSData *) extractDataFromComponents:(NSArray *)messageComponents withIndexCellType:(eMessageComponentCellType)indexOfType;
 // - (eRequestedFunctionalityFromServer) extractRequestedFuncionalityFromComponents:(NSArray *)messageComponents;
-- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData *)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
+- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData * _Nullable)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
 
 @end
 
@@ -85,7 +86,7 @@
     return [self createMessageTo:receiverPort withData:data fromPort:senderPort isArrayArrangementStructured:isStructured withFunctionality:requestedFunction withRequestResult:requestStatus];
 }
 
-- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSData *)data fromPort:(NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
+- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSData * _Nullable)data fromPort:(NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
     
     // If the message is not structured, data is placed in the first cell of the components array.
     // If message is structured, we need to unparse the messsage according to the agreed arrangement.
@@ -96,7 +97,7 @@
     return message;
 }
 
-- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData *)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
+- (NSArray *) encodeDataIntoCompositeStructureArray:(NSData * _Nullable)data withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus{
     NSMutableArray * mutableArray = [NSMutableArray arrayWithCapacity:DEFAULT_STRUCTURED_COMPONENT_SIZE];
     mutableArray[indexOfData] = data;
     mutableArray[indexOfRequestedFunctionality] = @(requestedFunction);
@@ -107,7 +108,11 @@
 }
 
 - (NSData *) extractDataFrom:(NSPortMessage *)message{
-    return [self extractDataFromComponents:message.components];
+    return [self extractDataFromComponents:message.components withIndexCellType:indexOfData];
+}
+
+- (NSData *) extractDataFrom:(NSPortMessage *)message withIndexCellType:(eMessageComponentCellType)indexOfType{
+    return [self extractDataFromComponents:message.components withIndexCellType:indexOfType];
 }
 
 - (eRequestedFunctionalityFromServer) extractRequestedFunctionalityFrom:(NSPortMessage *)message{
@@ -118,8 +123,8 @@
     return (eRequestedFunctionalityFromServer) [messageComponents objectAtIndex:indexOfRequestedFunctionality];
 }
 
-- (NSData *) extractDataFromComponents:(NSArray *)messageComponents{
-    return [messageComponents objectAtIndex:indexOfData];
+- (NSData *) extractDataFromComponents:(NSArray *)messageComponents withIndexCellType:(eMessageComponentCellType)indexOfType{
+    return [messageComponents objectAtIndex:indexOfType];
 }
 
 @end

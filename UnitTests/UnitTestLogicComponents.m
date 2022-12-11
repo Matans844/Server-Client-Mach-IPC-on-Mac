@@ -210,7 +210,7 @@
     XCTAssertTrue([_dataManagerForServer saveDataFromMessage:message2Structured]);
     XCTAssertFalse([_dataManagerForServer isStorageVacantForCorrespondent:senderPort]);
     
-    XCTAssertTrue([_dataManagerForServer removeDataByCorrespondent:senderPort]);
+    XCTAssertTrue([_dataManagerForServer removeDataByKeyCorrespondent:senderPort]);
     XCTAssertTrue([_dataManagerForServer isStorageVacantForCorrespondent:senderPort]);
 }
 
@@ -224,7 +224,7 @@
     XCTAssertTrue([_dataManagerForClient saveDataFromMessage:message2Structured]);
     XCTAssertFalse([_dataManagerForClient isStorageVacantForCorrespondent:receiverPort]);
     
-    XCTAssertTrue([_dataManagerForClient removeDataByCorrespondent:receiverPort]);
+    XCTAssertTrue([_dataManagerForClient removeDataByKeyCorrespondent:receiverPort]);
     XCTAssertTrue([_dataManagerForClient isStorageVacantForCorrespondent:receiverPort]);
 }
 
@@ -260,7 +260,7 @@
     
     // We can delete the second message.
     // This does not affect the first message.
-    XCTAssertTrue([_dataManagerForServer removeDataByCorrespondent:senderPort2]);
+    XCTAssertTrue([_dataManagerForServer removeDataByKeyCorrespondent:senderPort2]);
     XCTAssertTrue([_dataManagerForServer isStorageVacantForCorrespondent:senderPort2]);
     XCTAssertFalse([_dataManagerForServer isStorageVacantForCorrespondent:senderPort1]);
     
@@ -302,7 +302,7 @@
     
     // We can delete the second message.
     // This does not affect the first message.
-    XCTAssertTrue([_dataManagerForClient removeDataByCorrespondent:receiverPort2]);
+    XCTAssertTrue([_dataManagerForClient removeDataByKeyCorrespondent:receiverPort2]);
     XCTAssertTrue([_dataManagerForClient isStorageVacantForCorrespondent:receiverPort2]);
     XCTAssertFalse([_dataManagerForClient isStorageVacantForCorrespondent:receiverPort1]);
     

@@ -21,8 +21,8 @@
 
 @implementation Correspondent
 
-static NSNumber * _numberOfServerInstancesCreated = @0;
-static NSNumber * _numberOfClientInstancesCreated = @0;
+static NSNumber * _numberOfServerInstancesCreated = @(START_OF_INSTANCES_COUNT);
+static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
 
 + (void) setNumberOfServerInstancesCreated:(NSNumber *)newNumberOfInstances{
     _numberOfServerInstancesCreated = newNumberOfInstances;
@@ -40,28 +40,34 @@ static NSNumber * _numberOfClientInstancesCreated = @0;
     return _numberOfServerInstancesCreated;
 }
 
-- (id) initWithName:(NSString *)baseServiceName chosenCorrespondent:(enum eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject{
+- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong) delegateObject{
     self = [super init];
     if(self){
+        NSString * baseServiceName;
         NSString * instanceIdentifier;
         NSNumber * newNumberOfInstances;
         
         switch(keyCorrespondent){
             case serverSide:
+                baseServiceName = SERVER_SERVICE_BASE_NAME;
                 instanceIdentifier = [[Correspondent numberOfServerInstancesCreated] stringValue];
                 // update class property
                 newNumberOfInstances = @([_numberOfServerInstancesCreated intValue] + 1);
                 [Correspondent setNumberOfServerInstancesCreated:newNumberOfInstances];
                 break;
             case clientSide:
+                baseServiceName = CLIENT_SERVICE_BASE_NAME;
                 instanceIdentifier = [[Correspondent numberOfClientInstancesCreated] stringValue];
                 // update class property
                 newNumberOfInstances = @([_numberOfClientInstancesCreated intValue] + 1);
                 [Correspondent setNumberOfClientInstancesCreated:newNumberOfInstances];
                 break;
             default:
-                NSLog(@"error");
+                
+                NSLog(@"error\n");
                 // TODO: Out of range error for the enum
+                exit(ERROR_CODE_TO_DO);
+                
                 break;
         }
         
@@ -82,7 +88,7 @@ static NSNumber * _numberOfClientInstancesCreated = @0;
     return self;
 }
 
-- (eRequestStatus) sendDescriptionOfData:(NSString ** _Nullable)dataForResponse{
+- (eRequestStatus) sendDescriptionOfData:(NSString * _Nullable * _Nullable)dataForResponse{
     NSString * dataManagerDescription = [NSString stringWithFormat:@"%@", [self getDataManager]];
     
     // FUTURE:
@@ -96,10 +102,23 @@ static NSNumber * _numberOfClientInstancesCreated = @0;
     return resultNoError;
 }
 
-- (void) sendResponseMessage:(NSPortMessage *)response{
-    NSDate * timeout = [NSDate dateWithTimeIntervalSinceNow:5.0];
-    [response sendBeforeDate:timeout];
-    NSLog(@"Sent feedback response");
+- (void) sendPreparedMessage:(NSPortMessage *)filledMessage{
+    // The message has all its fields filled.
+    // Recipient is already there.
+    NSDate * timeout = [NSDate dateWithTimeIntervalSinceNow:WAITING_PERIOD_FOR_MESSAGE_SENDING];
+    if(![filledMessage sendBeforeDate:timeout]){
+        
+        NSLog(@"Send failed\n");
+        //TODO: Error code
+        exit(ERROR_CODE_TO_DO);
+
+    }
+}
+
+- (eRequestStatus) removeDataByChosenCorrespondent:(NSPort *)keyCorrespondent{
+    BOOL success = [[self getDataManager] removeDataByKeyCorrespondent:keyCorrespondent];
+    
+    return success ? resultNoError : resultError;
 }
 
 @end
