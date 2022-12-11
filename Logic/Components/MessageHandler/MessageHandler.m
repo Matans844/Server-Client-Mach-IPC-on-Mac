@@ -151,12 +151,23 @@
 
 - (eRequestedFunctionalityFromServer) extractRequestedFunctionalityFrom:(NSPortMessage *)message
 {
-    return [self extractRequestedFuncionalityFromComponents:message.components];
+    NSData * receivedData = [message.components objectAtIndex:indexOfRequestedFunctionality];
+    
+    //TODO: I want to add a method in the Encoding Handler class so that I can decode object that were encoded, given that I know the type.
+    NSNumber * decodingDataObject = (NSNumber *) receivedData;
+    
+    
+    return (eRequestedFunctionalityFromServer) [decodingDataObject integerValue];
 }
 
-- (eRequestedFunctionalityFromServer) extractRequestedFuncionalityFromComponents:(NSArray *)messageComponents
+- (eRequestStatus) extractRequestStatusFrom:(NSPortMessage *)message
 {
-    return (eRequestedFunctionalityFromServer) [messageComponents objectAtIndex:indexOfRequestedFunctionality];
+    NSData * receivedData = [message.components objectAtIndex:indexOfRequestResult];
+    
+    //TODO: I want to add a method in the Encoding Handler class so that I can decode object that were encoded, given that I know the type.
+    NSNumber * decodingDataObject = (NSNumber *) receivedData;
+    
+    return (eRequestStatus) [decodingDataObject integerValue];
 }
 
 - (NSData *) extractDataFromComponents:(NSArray *)messageComponents

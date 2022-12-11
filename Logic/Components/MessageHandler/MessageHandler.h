@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSData *) extractDataFrom:(NSPortMessage *)message
            withIndexCellType:(eMessageComponentCellType)indexOfType;
 - (eRequestedFunctionalityFromServer) extractRequestedFunctionalityFrom:(NSPortMessage *)message;
+- (eRequestStatus) extractRequestStatusFrom:(NSPortMessage *)message;
 
 @end
 

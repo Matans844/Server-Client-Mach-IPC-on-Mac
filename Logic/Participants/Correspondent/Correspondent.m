@@ -101,17 +101,31 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
     return [NSString stringWithFormat:@"%@%@", headline, dataManagerDescription];
 }
 
-- (void) sendPreparedMessage:(NSPortMessage *)filledMessage{
+- (void) sendPreparedMessage:(NSPortMessage *)filledMessage withBlock:(BOOL * _Nullable)pointerToBlockFlag andRunLoop:(NSRunLoop * _Nullable)runLoop{
     // The message has all its fields filled.
     // Recipient is already there.
     NSDate * timeout = [NSDate dateWithTimeIntervalSinceNow:WAITING_PERIOD_FOR_MESSAGE_SENDING];
     if(![filledMessage sendBeforeDate:timeout]){
-        
-        NSLog(@"Send failed\n");
-        //TODO: Error code
-        exit(ERROR_CODE_TO_DO);
-
+        [ErrorHandler exitProgramOnError];
     }
+    
+    if(pointerToBlockFlag){
+        if(!runLoop){
+            [ErrorHandler exitProgramOnError];
+        }
+        BOOL isBlocked = *pointerToBlockFlag;
+        while (isBlocked){
+            // [runLoop runUntilDate: [NSDate dateWithTimeIntervalSinceNow:0.1]];
+            [runLoop runUntilDate: [NSDate dateWithTimeIntervalSinceNow:WAITING_PERIOD_FOR_BLOCKING_MESSAGE_SENDING]];
+        }
+    }
+}
+
+- (NSRunLoop *) createRunLoopWithPortToListen:(NSPort *)portToListen{
+    NSRunLoop * runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addPort:portToListen forMode:NSDefaultRunLoopMode];
+    
+    return runLoop;
 }
 
 - (eRequestStatus) removeDataByChosenCorrespondent:(NSPort *)keyCorrespondent{

@@ -31,12 +31,10 @@
     
     if(![[self getValidationHandler] isMessageValid:message]){
         
-        NSLog(@"error\n");
-        // TODO: In the meantime, I can create a message saying it is bad response, but I need to follow up on this.
+        [ErrorHandler exitProgramOnError];
+        // TODO: In the meantime, I can create a message saying it is bad response, but then I need to add another enum value to both client and server functionalities.
+        // response = [[self getMessageHandler] createMessageTo:message.sendPort withData:nil fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverNothing withRequestResult:requestStatus];
         
-        response = [[self getMessageHandler] createMessageTo:message.sendPort withData:nil fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverNothing withRequestResult:requestStatus];
-        
-        exit(ERROR_CODE_TO_DO);
     }
     else{
         // Only relevant if message is valid.
@@ -44,52 +42,48 @@
         eRequestedFunctionalityFromServer requestedServerFunctionality = [[self getMessageHandler] extractRequestedFunctionalityFrom:message];
 
         switch(requestedServerFunctionality){
-            case serverNothing:
-                
-                NSLog(@"error\n");
-                // TODO: Error Handler
-                exit(ERROR_CODE_TO_DO);
-                
-                break;
-                
             case serverSaveData:
-                requestStatus = [self saveReceivedDataIn:message];
+                requestStatus = [self clientRequestSaveData:message];
                 break;
             case serverGetData:
-                requestStatus = [self sendBackReceivedDataFrom:message.sendPort requestedData:&dataForResponse];
+                requestStatus = [self clientRequestGetData:message requestedData:&dataForResponse];
                 break;
             case serverRemoveData:
-                requestStatus = [self removeDataByChosenCorrespondent:message.sendPort];
+                requestStatus = [self clientRequestRemoveData:message];
                 break;
             case serverPrintStatus:
-                // I can just print the information in the server console.
-                // requestStatus = [self sendDescriptionOfData:&dataForResponse];
-                NSLog(@"%@", [self description]);
+                requestStatus = [self clientRequestPrintSelfData];
                 break;
             default:
-                
-                NSLog(@"error\n");
-                // TODO: Out of range error for enum
-                exit(ERROR_CODE_TO_DO);
-                
-                break;
+                [ErrorHandler exitProgramOnError];
+                // break;
         }
         
         response = [[self getMessageHandler] createMessageTo:message.sendPort withData:dataForResponse fromPort:[self getSelfPort] isArrayArrangementStructured:requestedServerFunctionality withFunctionality:requestedServerFunctionality withRequestResult:requestStatus];
     }
     
     response.msgid = message.msgid;
-    [self sendPreparedMessage:response];
+    [self sendPreparedMessage:response withBlock:nil andRunLoop:nil];
 }
 
-- (eRequestStatus) saveReceivedDataIn:(NSPortMessage *)message {
+- (eRequestStatus) clientRequestSaveData:(NSPortMessage *)message {
     BOOL success = [[self getDataManager] saveDataFromMessage:message];
     
     return success ? resultNoError : resultError;
 }
 
-- (eRequestStatus) sendBackReceivedDataFrom:(NSPort *)clientSender requestedData:(NSData * _Nullable * _Nullable)dataForResponse{
-    *dataForResponse = [[self getDataManager] getDataByCorrespondent:clientSender];
+- (eRequestStatus) clientRequestGetData:(NSPortMessage *)message requestedData:(NSData * _Nullable * _Nullable)dataForResponse{
+    *dataForResponse = [[self getDataManager] getDataByCorrespondent:message.sendPort];
+    
+    return resultNoError;
+}
+
+- (eRequestStatus) clientRequestRemoveData:(NSPortMessage *)message{
+    return [self removeDataByChosenCorrespondent:message.sendPort];
+}
+
+- (eRequestStatus) clientRequestPrintSelfData{
+    NSLog(@"%@", [self description]);
     
     return resultNoError;
 }

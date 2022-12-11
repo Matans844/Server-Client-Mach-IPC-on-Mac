@@ -15,6 +15,7 @@
 
 // "Private" methods
 - (eRequestStatus) isReceivedMessageDataValid:(NSPortMessage *)receivedMessage;
+- (eRequestStatus) sendPreparedMessageAndGetStatus:(NSPortMessage *)preparedMessage;
 
 @end
 
@@ -22,44 +23,58 @@
 
 @implementation MachClient
 
-
 - (id) init{
     self = [super initWithCorrespondentType:clientSide];
     if(self){
+        responseReceived = NO;
         [self getSelfPort].delegate = self;
     }
     
     return self;
 }
 
+- (void) handlePortMessage:(NSPortMessage *)message
+{
+    responseReceived = YES;
+    [self setLastMessagedReceived:message];
+}
 
-- (void) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData{
+- (eRequestStatus) sendPreparedMessageAndGetStatus:(NSPortMessage *)preparedMessage{
+    [self sendPreparedMessage:preparedMessage withBlock:&responseReceived andRunLoop:[self createRunLoopWithPortToListen:[self getSelfPort]]];
+    NSPortMessage * receivedMessage = [self getLastMessageReceived];
+    
+    return [[self getMessageHandler] extractRequestStatusFrom:receivedMessage];
+}
+
+- (eRequestStatus) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData{
     NSPortMessage * requestToServer = [[self getMessageHandler] createMessageTo:serverPort withData:messageData fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverSaveData withRequestResult:initRequest];
-    
-    BOOL isOutgoingDataSavedAtClient = [[self getDataManager] saveDataFromMessage:requestToServer];
-    
-    if(!isOutgoingDataSavedAtClient){
         
-        NSLog(@"error\n");
-        // TODO: Define Error type
-        exit(ERROR_CODE_TO_DO);
-        
+    if(![[self getDataManager] saveDataFromMessage:requestToServer]){
+        [ErrorHandler exitProgramOnError];
     }
     
-    [self sendPreparedMessage:requestToServer];
+    return [self sendPreparedMessageAndGetStatus:requestToServer];
+
 }
 
-- (void) sendRequestToRemoveSavedDataAt:(NSPort *)serverPort{
+- (eRequestStatus) sendRequestToRemoveSavedDataAt:(NSPort *)serverPort{
     NSPortMessage * requestToServer = [[self getMessageHandler] createMessageTo:serverPort withData:nil fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverRemoveData withRequestResult:initRequest];
     
-    [self sendPreparedMessage:requestToServer];
+    if(![[self getDataManager] saveDataFromMessage:requestToServer]){
+        [ErrorHandler exitProgramOnError];
+    }
+
+    return [self sendPreparedMessageAndGetStatus:requestToServer];
 }
 
-- (void) sendRequestToReceiveDataSavedAt:(NSPort *)serverPort{
+- (eRequestStatus) sendRequestToReceiveDataSavedAt:(NSPort *)serverPort{
     NSPortMessage * requestToServer = [[self getMessageHandler] createMessageTo:serverPort withData:nil fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverGetData withRequestResult:initRequest];
     
-    [self sendPreparedMessage:requestToServer];
+    if(![[self getDataManager] saveDataFromMessage:requestToServer]){
+        [ErrorHandler exitProgramOnError];
+    }
     
+    return [self sendPreparedMessageAndGetStatus:requestToServer];
 }
 
 - (BOOL) compareData:(NSData *)receivedData otherData:(NSData *)originalData{
@@ -70,6 +85,18 @@
     return [[self getPortHandler] getPortByName:serverName];
 }
 
+- (eRequestStatus) isReceivedMessageDataValid:(NSPortMessage *)receivedMessage{
+    NSData * receivedData = [[self getMessageHandler] extractDataFrom:receivedMessage];
+    NSData * originalData = [[self getDataManager] getDataByCorrespondent:receivedMessage.sendPort];
+    eRequestStatus result = [self compareData:receivedData otherData:originalData] ? resultNoError : resultError;
+    
+    return result;
+}
+
+@end
+
+
+/*
 - (void) handlePortMessage:(NSPortMessage *)message{
     eRequestStatus messageStatusFromeServer = (eRequestStatus) [[self getMessageHandler] extractDataFrom:message withIndexCellType:indexOfRequestResult];
     eRequestStatus requestStatus = resultError;
@@ -107,13 +134,4 @@
     //TODO: Use a dictionary to translate the eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality enum to print a more informative message - The actual completed operation.
     
 }
-
-- (eRequestStatus) isReceivedMessageDataValid:(NSPortMessage *)receivedMessage{
-    NSData * receivedData = [[self getMessageHandler] extractDataFrom:receivedMessage];
-    NSData * originalData = [[self getDataManager] getDataByCorrespondent:receivedMessage.sendPort];
-    eRequestStatus result = [self compareData:receivedData otherData:originalData] ? resultNoError : resultError;
-    
-    return result;
-}
-
-@end
+ */

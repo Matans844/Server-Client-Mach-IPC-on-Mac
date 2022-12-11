@@ -8,12 +8,14 @@
 #ifndef definitions_h
 #define definitions_h
 
-#define ERROR_CODE_TO_DO 1
+#import "ErrorHandler.h"
+
 #define MAX_SIZE_MSG 1024
 #define DEFAULT_STRUCTURED_COMPONENT_SIZE 4
 #define START_OF_COUNTER_COUNT 1
 #define START_OF_INSTANCES_COUNT 0
 #define WAITING_PERIOD_FOR_MESSAGE_SENDING 5.0
+#define WAITING_PERIOD_FOR_BLOCKING_MESSAGE_SENDING 0.1
 
 #define DEFAULT_SERVER_SERVICE_NAME @"org.matan.appdome_ipcp_project.server_num_0"
 #define SERVER_SERVICE_BASE_NAME @"org.matan.appdome_ipcp_project.server_num_"
