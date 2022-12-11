@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (id) initWithClientLogicObject:(MachClient *)clientInstance NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
 
-- (void) dispatcherExample:(eUserChosenFunctionalityFromClient)chosenClientFunctionality;
+- (void) exampleSaveData;
+- (void) exampleGetData;
+- (void) exampleVerifyData;
 
 @end
 

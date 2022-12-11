@@ -8,25 +8,19 @@
 #import "DataManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "NSMutableDictionaryWrapper.h"
+#import "EncodingHandler.h"
 
 // ------------------------------------ //
 
 @interface DataManager()
-// Idea: Can NSMapTable help with weak references to deactivated clients?
-// Answer: No. Use delegates that track changing the port value.
 
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) eRoleInCommunication chosenCorrespondent;
 @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
+@property (atomic, retain, readonly, getter=getEncodingHandler) EncodingHandler * encodingHandler;
 @property (atomic, retain, readonly, getter=getDictCorrespondentToHashWrapper) NSMutableDictionaryWrapper * dictCorrespondentToHash;
 @property (atomic, retain, readonly, getter=getDictHashToDataWrapper) NSMutableDictionaryWrapper * dictHashToData;
 @property (atomic, retain, readonly, getter=getCounterOfDataHashWrapper) NSMutableDictionaryWrapper * counterOfDataHash;
-
-/*
-@property (atomic, retain, readonly, getter=getDictCorrespondentToHash) NSMutableDictionary<NSPort*, NSData*> * dictCorrespondentToHash;
-@property (atomic, retain, readonly, getter=getDictHashToData) NSMutableDictionary<NSData*, NSData*> * dictHashToData;
-@property (atomic, retain, readonly, getter=getCounterOfDataHash) NSMutableDictionary<NSData*, NSNumber*> * counterOfDataHash;
-*/
 
 // "Private" methods
 - (BOOL) isStorageVacantForCorrespondent:(NSPort *)chosenCorrespondent;
@@ -46,6 +40,7 @@
 
 @implementation DataManager : NSObject
 
+/*
 + (NSData *) doSha256:(NSData *)dataIn{
     NSMutableData * macOut = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
     CC_SHA256(dataIn.bytes, (CC_LONG) dataIn.length, macOut.mutableBytes);
@@ -62,6 +57,7 @@
 + (NSData *) encodeData:(NSData *)data{
     return [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:TRUE error:nil];
 }
+ */
 
 - (NSMutableDictionary<NSPort*, NSData*> *) getDictCorrespondentToHash{
     return [[self getDictCorrespondentToHashWrapper] getWrappedDictionary];
@@ -80,6 +76,7 @@
     if(self){
         self->_chosenCorrespondent = keyCorrespondent;
         self->_messageHandler = [[MessageHandler alloc] init];
+        self->_encodingHandler = [[EncodingHandler alloc] init];
         
         NSMutableDictionary * dictCorrespondentToHashInstance = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
         NSMutableDictionary * dictHashToDataInstance = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
@@ -88,10 +85,6 @@
         self->_dictCorrespondentToHash = [[NSMutableDictionaryWrapper alloc] initWithName:@"Dictionary: Correspondent to Hash" dictInstance:dictCorrespondentToHashInstance];
         self->_dictHashToData = [[NSMutableDictionaryWrapper alloc] initWithName:@"Dictionary: Hash to Data" dictInstance:dictHashToDataInstance];
         self->_counterOfDataHash = [[NSMutableDictionaryWrapper alloc] initWithName:@"Dictionary: Hash to Count" dictInstance:counterOfDataHashInstance];
-        
-        
-        // self->_dictHashToData = [[NSMutableDictionary<NSData*, NSData*> alloc] init];
-        // self->_counterOfDataHash = [[NSMutableDictionary<NSData*, NSNumber*> alloc] init];
     }
     
     return self;
@@ -139,7 +132,7 @@
         // There are new key correspondents for the data.
         // We update the correspondent to hash dictionary.
         NSData * messageData = [[self getMessageManager] extractDataFrom:message];
-        NSData * hashCode = [DataManager encodeDataAndCalculateHash:messageData];
+        NSData * hashCode = [[self getEncodingHandler] encodeDataAndCalculateHash:messageData];
         [self addToDictCorrespondentToHash:keyCorrespondentPort withHash:hashCode];
         [self addToCounterDataHash:hashCode];
         

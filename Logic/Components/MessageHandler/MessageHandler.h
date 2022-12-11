@@ -14,24 +14,40 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id) init;
 
-- (NSPortMessage *) createDefaultStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
-//- (NSPortMessage *) createDefaultStringMessage:(NSString *)string isArrayArrangementStructured:(BOOL)isStructured;
+- (NSPortMessage *) createDefaultStringMessage:(NSString *)string
+                  isArrayArrangementStructured:(BOOL)isStructured
+                             withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction
+                             withRequestResult:(eRequestStatus)requestStatus;
 
-- (NSPortMessage *) createStringMessage:(NSString *)string toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
-// - (NSPortMessage *) createStringMessage:(NSString *)string toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured;
+- (NSPortMessage *) createStringMessage:(NSString *)string
+                                 toPort:(nonnull NSPort *)receiverPort
+                               fromPort:(nonnull NSPort *)senderPort
+           isArrayArrangementStructured:(BOOL)isStructured
+                      withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction
+                      withRequestResult:(eRequestStatus)requestStatus;
 
-- (NSPortMessage *) createDefaultGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
-//- (NSPortMessage *) createDefaultGarbageDataMessageWithSize:(NSUInteger)numberOfBytes isArrayArrangementStructured:(BOOL)isStructured;
+- (NSPortMessage *) createDefaultGarbageDataMessageWithSize:(NSUInteger)numberOfBytes
+                               isArrayArrangementStructured:(BOOL)isStructured
+                                          withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction
+                                          withRequestResult:(eRequestStatus)requestStatus;
 
-- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
-//- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes toPort:(nonnull NSPort *)receiverPort fromPort:(nonnull NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured;
+- (NSPortMessage *) createGarbageDataMessageWithSize:(NSUInteger)numberOfBytes
+                                              toPort:(nonnull NSPort *)receiverPort
+                                            fromPort:(nonnull NSPort *)senderPort
+                        isArrayArrangementStructured:(BOOL)isStructured
+                                   withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction
+                                   withRequestResult:(eRequestStatus)requestStatus;
 
-- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSData * _Nullable)data fromPort:(NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction withRequestResult:(eRequestStatus)requestStatus;
-// - (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withArray:(NSArray *)array fromPort:(NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured;
-// - (NSPortMessage *) createMessageTo:(NSPort *)receiverPort withData:(NSData *)data fromPort:(NSPort *)senderPort isArrayArrangementStructured:(BOOL)isStructured;
+- (NSPortMessage *) createMessageTo:(NSPort *)receiverPort
+                           withData:(NSData * _Nullable)data
+                           fromPort:(NSPort *)senderPort
+       isArrayArrangementStructured:(BOOL)isStructured
+                  withFunctionality:(eRequestedFunctionalityFromServer)requestedFunction
+                  withRequestResult:(eRequestStatus)requestStatus;
 
 - (NSData *) extractDataFrom:(NSPortMessage *)message;
-- (NSData *) extractDataFrom:(NSPortMessage *)message withIndexCellType:(eMessageComponentCellType)indexOfType;
+- (NSData *) extractDataFrom:(NSPortMessage *)message
+           withIndexCellType:(eMessageComponentCellType)indexOfType;
 - (eRequestedFunctionalityFromServer) extractRequestedFunctionalityFrom:(NSPortMessage *)message;
 
 @end

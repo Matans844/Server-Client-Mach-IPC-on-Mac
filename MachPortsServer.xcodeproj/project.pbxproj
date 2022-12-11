@@ -25,6 +25,7 @@
 		90D1DE192944B6B600F92CF0 /* NSMutableDictionaryWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */; };
 		90D1DE1B2944CEA200F92CF0 /* NSMutableDictionaryWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */; };
 		90D1DE202945267900F92CF0 /* MachClientUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1F2945267900F92CF0 /* MachClientUI.m */; };
+		90D1DE242945891300F92CF0 /* EncodingHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE232945891300F92CF0 /* EncodingHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +68,8 @@
 		90D1DE182944B6B500F92CF0 /* NSMutableDictionaryWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSMutableDictionaryWrapper.m; sourceTree = "<group>"; };
 		90D1DE1E2945267900F92CF0 /* MachClientUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachClientUI.h; sourceTree = "<group>"; };
 		90D1DE1F2945267900F92CF0 /* MachClientUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachClientUI.m; sourceTree = "<group>"; };
+		90D1DE222945891300F92CF0 /* EncodingHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EncodingHandler.h; sourceTree = "<group>"; };
+		90D1DE232945891300F92CF0 /* EncodingHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EncodingHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +160,7 @@
 		9007A0342941263E00F0C5AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				90D1DE21294588FC00F92CF0 /* EncodingHandler */,
 				90D1DE162944B68600F92CF0 /* Database */,
 				90D1DE1129441E4000F92CF0 /* PortHandler */,
 				9007A03D2942849000F0C5AB /* ValidationHandler */,
@@ -256,6 +260,15 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		90D1DE21294588FC00F92CF0 /* EncodingHandler */ = {
+			isa = PBXGroup;
+			children = (
+				90D1DE222945891300F92CF0 /* EncodingHandler.h */,
+				90D1DE232945891300F92CF0 /* EncodingHandler.m */,
+			);
+			path = EncodingHandler;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -345,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */,
+				90D1DE242945891300F92CF0 /* EncodingHandler.m in Sources */,
 				90D1DE1429441E5B00F92CF0 /* PortHandler.m in Sources */,
 				9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */,
 				9007A03829413A3000F0C5AB /* ServiceManager.m in Sources */,

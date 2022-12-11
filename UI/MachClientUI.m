@@ -18,6 +18,16 @@
     return self;
 }
 
+- (void) exampleSaveData{
+    NSPort * serverPort = [[self getClient] findServerByName:DEFAULT_SERVER_SERVICE_NAME];
+    NSData * dataForMessage = [DataManager encodeData:@"test1"];
+    [[self getClient] sendRequestToSaveDataAt:serverPort withData:@"test1"];
+}
+
+- (void) exampleGetData;
+- (void) exampleVerifyData;
+
+/*
 - (void) dispatcherExample:(eUserChosenFunctionalityFromClient)chosenClientFunctionality{
     switch(chosenClientFunctionality){
         case clientNothing:
@@ -55,5 +65,6 @@
             break;
     }
 }
+ */
 
 @end
