@@ -101,7 +101,7 @@ A description of logical classes by their folder is folloewed, as the folder des
 #### Folder 1.1ErrorHandler
 * Contained class: ErrorHandler.
 * Usage: "Fill holes" in execution flow with a class method from a single source. 
-# Implementation detail: Upon defining error codes, each hole will be occupied by a relevant error code.
+* Implementation detail: Upon defining error codes, each hole will be occupied by a relevant error code.
 
 #### Folder 1.2: EncodingHandler
 * Contained class: EncodingHandler
