@@ -68,7 +68,7 @@
     
     [self sendPreparedMessageAndGetStatus:requestToServer];
     
-    // If we get here, everything was successful (errors are checked in the function above)
+    // If we get here, everything was successful (errors are checked in the function sendPreparedMessageAndGetStatus)
     NSData * dataRecievedFromServer = [[self getMessageHandler] extractDataFrom:[self getLastMessageReceived]];
     
     return dataRecievedFromServer;
@@ -112,44 +112,3 @@
 }
 
 @end
-
-
-/*
-- (void) handlePortMessage:(NSPortMessage *)message{
-    eRequestStatus messageStatusFromeServer = (eRequestStatus) [[self getMessageHandler] extractDataFrom:message withIndexCellType:indexOfRequestResult];
-    eRequestStatus requestStatus = resultError;
-    NSData * receivedData = [[self getMessageHandler] extractDataFrom:message];
-
-    if (messageStatusFromeServer != resultNoError){
-        
-        NSLog(@"error\n");
-        // TODO: Define Error type
-        exit(ERROR_CODE_TO_DO);
-        
-    }
-    else if(![[self getValidationHandler] isMessageValid:message]){
-        
-        NSLog(@"error\n");
-        // TODO: Define Error type
-        exit(ERROR_CODE_TO_DO);
-        
-    }
-    else{
-        // Only relevant if message is valid.
-        eRequestedFunctionalityFromServer requestedServerFunctionality = [[self getMessageHandler] extractRequestedFunctionalityFrom:message];
-        
-        // The encoding of the two functionality enums allows us to successfully cast:
-        // User requests for client functionality that invoke messaging to the server for server functionality have the same encoding.
-        eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality = (eServerDependentClientFunctionality) requestedServerFunctionality;
-    }
-    
-    if(requestStatus != resultNoError){
-        NSLog(@"Received feedback... Operation unsuccessful\n");
-    }
-    else{
-        NSLog(@"Received feedback... Operation successful\n");
-    }
-    //TODO: Use a dictionary to translate the eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality enum to print a more informative message - The actual completed operation.
-    
-}
- */

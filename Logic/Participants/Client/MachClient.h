@@ -12,12 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MachClient : Correspondent<NSPortDelegate>
 
-// Methods that require functionality that relies on messaging the server are blocking until response
+// My implementation for methods that rely on server response is done using blocking. Such blocking occurs via this block variable.
 {
     BOOL responseReceived;
 }
 
-// @property(atomic, readwrite) BOOL responseReceived;
 @property(atomic, readwrite, getter=getLastMessageReceived, setter=setLastMessagedReceived:) NSPortMessage * lastMessageReceived;
 
 - (eRequestStatus) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData;

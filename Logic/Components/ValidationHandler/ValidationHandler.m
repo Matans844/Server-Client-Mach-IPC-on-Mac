@@ -13,12 +13,13 @@
 @interface ValidationHandler()
 
 // "Private" properties
-// [This is a very lonely space]
+
 // "Private" methods
 - (BOOL) isComponentsInCorrectSize:(NSArray *)components;
 - (BOOL) isComponentsInArrangedStructure:(NSArray *)components;
 - (BOOL) isMessageComponentArrangementValid:(NSArray *)components;
 - (BOOL) isMessageComponentsSizeValid:(NSArray *)components;
+- (BOOL) isComponentsCellsInCorrectType:(NSArray *)components;
 - (BOOL) isSenderActive:(NSPort *)senderPort;
 - (BOOL) isMessageComponentsValid:(NSArray *)components;
 - (NSUInteger) calculateComponentsSizeInBytes:(NSArray *)components;

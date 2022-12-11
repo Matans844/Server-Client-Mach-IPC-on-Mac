@@ -21,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id) initWithName:(nonnull NSString *)name dictInstance:(nonnull NSMutableDictionary * )instance NS_DESIGNATED_INITIALIZER;
 - (id) init NS_UNAVAILABLE;
-
 - (NSString *) describeContent;
 
 @end

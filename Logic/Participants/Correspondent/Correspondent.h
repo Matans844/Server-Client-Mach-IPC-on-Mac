@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Correspondent : NSObject
 
-//Used to uniquely define correspondent name
+//Used to uniquely define correspondent names
 @property (class) NSNumber * numberOfServerInstancesCreated;
 @property (class) NSNumber * numberOfClientInstancesCreated;
 
@@ -33,12 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) setNumberOfClientInstancesCreated:(NSNumber *)newNumberOfInstances;
 + (NSNumber *) numberOfClientInstancesCreated;
 
-// - (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong)delegateObject;
 - (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent;
-
 - (eRequestStatus) sendDescriptionOfData:(NSString * _Nullable * _Nullable)dataForResponse;
 - (eRequestStatus) removeDataByChosenCorrespondent:(NSPort *)keyCorrespondent;
-// - (void) sendPreparedMessage:(NSPortMessage *)filledMessage;
 - (void) sendPreparedMessage:(NSPortMessage *)filledMessage withBlock:(BOOL * _Nullable)pointerToBlockFlag andRunLoop:(NSRunLoop * _Nullable)runLoop;
 - (NSRunLoop *) createRunLoopWithPortToListen:(NSPort *)port;
 

@@ -116,7 +116,7 @@
                   withRequestResult:(eRequestStatus)requestStatus
 {
     // If the message is not structured, data is placed in the first cell of the components array.
-    // If message is structured, we need to unparse the messsage according to the agreed arrangement.
+    // If message is structured, we need to encode the messsage according to the agreed arrangement.
     NSArray * array = isStructured ? [self encodeDataIntoCompositeStructureArray:data
                                                                withFunctionality:requestedFunction
                                                                withRequestResult:requestStatus] : @[data];

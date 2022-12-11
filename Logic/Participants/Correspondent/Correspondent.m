@@ -77,7 +77,6 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
         PortHandler * localPortHandler = [[PortHandler alloc] init];
         self -> _portHandler = localPortHandler;
         NSPort * servicePort = [localPortHandler initiatePortWithString:newServiceName];
-        // servicePort.delegate = delegateObject;
         self->_port = servicePort;
 
         self->_validationHandler = [[ValidationHandler alloc] init];
