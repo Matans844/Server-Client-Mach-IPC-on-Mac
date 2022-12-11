@@ -17,6 +17,8 @@
 		9007A03B2941420000F0C5AB /* Correspondent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03A2941420000F0C5AB /* Correspondent.m */; };
 		9007A040294284C400F0C5AB /* ValidationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03F294284C400F0C5AB /* ValidationHandler.m */; };
 		9007A0422942955F00F0C5AB /* ValidationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9007A03F294284C400F0C5AB /* ValidationHandler.m */; };
+		909758C529463FCF0067B2E3 /* main_ForClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 909758C429463FCF0067B2E3 /* main_ForClient.m */; };
+		909758C82946404D0067B2E3 /* MachPortsClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 909758C72946404D0067B2E3 /* MachPortsClient.m */; };
 		90D1DE0B2943F6FF00F92CF0 /* MachServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0A2943F6FF00F92CF0 /* MachServer.m */; };
 		90D1DE102943F76A00F92CF0 /* MachClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE0F2943F76A00F92CF0 /* MachClient.m */; };
 		90D1DE1429441E5B00F92CF0 /* PortHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D1DE1329441E5B00F92CF0 /* PortHandler.m */; };
@@ -56,6 +58,9 @@
 		9007A03E294284C400F0C5AB /* ValidationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ValidationHandler.h; sourceTree = "<group>"; };
 		9007A03F294284C400F0C5AB /* ValidationHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ValidationHandler.m; sourceTree = "<group>"; };
 		9007A041294289ED00F0C5AB /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
+		909758C429463FCF0067B2E3 /* main_ForClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main_ForClient.m; sourceTree = "<group>"; };
+		909758C62946404D0067B2E3 /* MachPortsClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachPortsClient.h; sourceTree = "<group>"; };
+		909758C72946404D0067B2E3 /* MachPortsClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachPortsClient.m; sourceTree = "<group>"; };
 		90D1DE092943F6FF00F92CF0 /* MachServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachServer.h; sourceTree = "<group>"; };
 		90D1DE0A2943F6FF00F92CF0 /* MachServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MachServer.m; sourceTree = "<group>"; };
 		90D1DE0E2943F76A00F92CF0 /* MachClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MachClient.h; sourceTree = "<group>"; };
@@ -113,6 +118,7 @@
 		90079EBD293E780A00F0C5AB /* MachPortsServer */ = {
 			isa = PBXGroup;
 			children = (
+				90079EBE293E780A00F0C5AB /* main.m */,
 				90079EC5293E786B00F0C5AB /* MachPortsServer.h */,
 				90079EC6293E786B00F0C5AB /* MachPortsServer.m */,
 			);
@@ -271,10 +277,20 @@
 		90D1DE2A29461FC100F92CF0 /* Reference */ = {
 			isa = PBXGroup;
 			children = (
-				90079EBE293E780A00F0C5AB /* main.m */,
+				90D1DE2B29463E9D00F92CF0 /* MachPortsClient */,
 				90079EBD293E780A00F0C5AB /* MachPortsServer */,
 			);
 			path = Reference;
+			sourceTree = "<group>";
+		};
+		90D1DE2B29463E9D00F92CF0 /* MachPortsClient */ = {
+			isa = PBXGroup;
+			children = (
+				909758C429463FCF0067B2E3 /* main_ForClient.m */,
+				909758C62946404D0067B2E3 /* MachPortsClient.h */,
+				909758C72946404D0067B2E3 /* MachPortsClient.m */,
+			);
+			path = MachPortsClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -366,11 +382,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				90079EC7293E786B00F0C5AB /* MachPortsServer.m in Sources */,
+				909758C529463FCF0067B2E3 /* main_ForClient.m in Sources */,
 				90D1DE242945891300F92CF0 /* EncodingHandler.m in Sources */,
 				90D1DE1429441E5B00F92CF0 /* PortHandler.m in Sources */,
 				9007A01C293FA62E00F0C5AB /* DataManager.m in Sources */,
 				9007A02D2940FE4500F0C5AB /* MessageHandler.m in Sources */,
 				90079EBF293E780A00F0C5AB /* main.m in Sources */,
+				909758C82946404D0067B2E3 /* MachPortsClient.m in Sources */,
 				90D1DE282945F5EE00F92CF0 /* ErrorHandler.m in Sources */,
 				90D1DE192944B6B600F92CF0 /* NSMutableDictionaryWrapper.m in Sources */,
 				90D1DE202945267900F92CF0 /* MachClientUserInterfaceExample.m in Sources */,
