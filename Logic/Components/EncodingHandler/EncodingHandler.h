@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSData *) doSha256:(NSData *)dataIn;
 - (NSData *) encodeData:(NSData *)data;
 - (NSData *) encodeDataAndCalculateHash:(NSData *)messageData;
+- (NSData *) encodeStringToData:(NSString *)string;
 
 @end
 

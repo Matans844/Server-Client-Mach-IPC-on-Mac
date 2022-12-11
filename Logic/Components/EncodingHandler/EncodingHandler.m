@@ -27,4 +27,8 @@
     return [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:TRUE error:nil];
 }
 
+- (NSData *) encodeStringToData:(NSString *)string{
+    return [string dataUsingEncoding:NSUTF8StringEncoding];
+}
+
 @end

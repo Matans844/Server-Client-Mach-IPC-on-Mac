@@ -23,6 +23,15 @@
 
 @implementation MachClient
 
+- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable)delegateObject{
+    self = [super initWithCorrespondentType:keyCorrespondent withPortDelegate:<#delegateObject#>];
+    if(self){
+        self->_dictServerPortToLastDataReceived = [[NSMutableDictionary<NSPort*, NSData*> alloc] init];
+    }
+    
+    return self;
+}
+
 - (void) sendRequestToSaveDataAt:(NSPort *)serverPort withData:(NSData *)messageData{
     NSPortMessage * requestToServer = [[self getMessageHandler] createMessageTo:serverPort withData:messageData fromPort:[self getSelfPort] isArrayArrangementStructured:YES withFunctionality:serverSaveData withRequestResult:initRequest];
     
@@ -63,6 +72,8 @@
 - (void) handlePortMessage:(NSPortMessage *)message{
     eRequestStatus messageStatusFromeServer = (eRequestStatus) [[self getMessageHandler] extractDataFrom:message withIndexCellType:indexOfRequestResult];
     eRequestStatus requestStatus = resultError;
+    NSData * receivedData = [[self getMessageHandler] extractDataFrom:message];
+    [[self getDictServerPortToLastDataReceived] setObject:receivedData forKey:message.sendPort];
 
     if (messageStatusFromeServer != resultNoError){
         
@@ -82,7 +93,7 @@
         // Only relevant if message is valid.
         eRequestedFunctionalityFromServer requestedServerFunctionality = [[self getMessageHandler] extractRequestedFunctionalityFrom:message];
         
-        // The encoding of the enums for functionality allows us to do this
+        // The encoding of the two functionality enums allows us to successfully cast:
         // User requests for client functionality that invoke messaging to the server for server functionality have the same encoding.
         eServerDependentClientFunctionality userRequestedServerDependentClientFunctionality = (eServerDependentClientFunctionality) requestedServerFunctionality;
         

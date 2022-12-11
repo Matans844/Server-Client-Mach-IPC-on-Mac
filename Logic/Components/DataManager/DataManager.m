@@ -8,7 +8,6 @@
 #import "DataManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "NSMutableDictionaryWrapper.h"
-#import "EncodingHandler.h"
 
 // ------------------------------------ //
 
@@ -17,7 +16,6 @@
 // "Private" properties
 @property (atomic, assign, readonly, getter=getChosenCorrespondent) eRoleInCommunication chosenCorrespondent;
 @property (atomic, retain, readonly, getter=getMessageManager) MessageHandler * messageHandler;
-@property (atomic, retain, readonly, getter=getEncodingHandler) EncodingHandler * encodingHandler;
 @property (atomic, retain, readonly, getter=getDictCorrespondentToHashWrapper) NSMutableDictionaryWrapper * dictCorrespondentToHash;
 @property (atomic, retain, readonly, getter=getDictHashToDataWrapper) NSMutableDictionaryWrapper * dictHashToData;
 @property (atomic, retain, readonly, getter=getCounterOfDataHashWrapper) NSMutableDictionaryWrapper * counterOfDataHash;
@@ -39,25 +37,6 @@
 // ------------------------------------ //
 
 @implementation DataManager : NSObject
-
-/*
-+ (NSData *) doSha256:(NSData *)dataIn{
-    NSMutableData * macOut = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256(dataIn.bytes, (CC_LONG) dataIn.length, macOut.mutableBytes);
-    
-    return macOut;
-}
-
-+ (NSData *) encodeDataAndCalculateHash:(NSData *)messageData{
-    NSData * serializedData = [DataManager encodeData:messageData];
-    
-    return [DataManager doSha256:serializedData];
-}
-
-+ (NSData *) encodeData:(NSData *)data{
-    return [NSKeyedArchiver archivedDataWithRootObject:data requiringSecureCoding:TRUE error:nil];
-}
- */
 
 - (NSMutableDictionary<NSPort*, NSData*> *) getDictCorrespondentToHash{
     return [[self getDictCorrespondentToHashWrapper] getWrappedDictionary];

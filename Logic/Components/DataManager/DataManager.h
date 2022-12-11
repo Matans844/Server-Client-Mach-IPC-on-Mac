@@ -7,16 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import "MessageHandler.h"
+#import "EncodingHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DataManager : NSObject
 
-/*
-+ (NSData *) doSha256:(NSData *)dataIn;
-+ (NSData *) encodeData:(NSData *)data;
-+ (NSData *) encodeDataAndCalculateHash:(NSData *)messageData;
-*/
+@property (atomic, readonly, getter=getEncodingHandler) EncodingHandler * encodingHandler;
 
 - (id) initWithMessageHandler:(MessageHandler * _Nullable)messageManager
           chosenCorrespondent:(eRoleInCommunication)keyCorrespondent NS_DESIGNATED_INITIALIZER;

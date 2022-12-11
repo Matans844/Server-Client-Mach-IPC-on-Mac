@@ -20,12 +20,18 @@
 
 - (void) exampleSaveData{
     NSPort * serverPort = [[self getClient] findServerByName:DEFAULT_SERVER_SERVICE_NAME];
-    NSData * dataForMessage = [DataManager encodeData:@"test1"];
-    [[self getClient] sendRequestToSaveDataAt:serverPort withData:@"test1"];
+    NSData * dataForMessage = [[[[self getClient] getDataManager] getEncodingHandler] encodeStringToData:@"test1"];
+    [[self getClient] sendRequestToSaveDataAt:serverPort withData:dataForMessage];
 }
 
-- (void) exampleGetData;
-- (void) exampleVerifyData;
+- (void) exampleGetData{
+    NSPort * serverPort = [[self getClient] findServerByName:DEFAULT_SERVER_SERVICE_NAME];
+    [[self getClient] sendRequestToReceiveDataSavedAt:serverPort];
+}
+
+- (void) exampleVerifyData{
+    
+}
 
 /*
 - (void) dispatcherExample:(eUserChosenFunctionalityFromClient)chosenClientFunctionality{

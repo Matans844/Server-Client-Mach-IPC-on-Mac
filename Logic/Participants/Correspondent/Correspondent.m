@@ -40,7 +40,7 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
     return _numberOfServerInstancesCreated;
 }
 
-- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent{
+- (id) initWithCorrespondentType:(eRoleInCommunication)keyCorrespondent withPortDelegate:(id<NSPortDelegate> _Nullable __strong)delegateObject{
     self = [super init];
     if(self){
         NSString * baseServiceName;
@@ -77,7 +77,7 @@ static NSNumber * _numberOfClientInstancesCreated = @(START_OF_INSTANCES_COUNT);
         PortHandler * localPortHandler = [[PortHandler alloc] init];
         self -> _portHandler = localPortHandler;
         NSPort * servicePort = [localPortHandler initiatePortWithString:newServiceName];
-        servicePort.delegate = self;
+        servicePort.delegate = delegateObject;
         self->_port = servicePort;
 
         self->_validationHandler = [[ValidationHandler alloc] init];
