@@ -29,7 +29,7 @@ Server and client requirements are implemented in logic.
 #### Bonus 1
 Not implemented. Implementation plan was to subscribe the Kernel to mach kernel signals for a specific process termination. Even after getting the signal, the server should wait a certain amount a time, to see if client respawns. Reference for implementaion.
 References:
-1. [Observing Process Lifetimes Without Polling](https://www.btaz.com/mac-os-x/find-the-process-listening-to-port-on-mac-os-x/).
+1. [Observing Process Lifetimes Without Polling]([https://www.btaz.com/mac-os-x/find-the-process-listening-to-port-on-mac-os-x/](https://developer.apple.com/library/archive/technotes/tn2050/_index.html#//apple_ref/doc/uid/DTS10003081-CH1-SUBSECTION10).
 2. [Finding PID for process listening on a given mach port 1](https://stackoverflow.com/questions/9347665/which-pid-listens-on-a-given-mach-port). 
 3. [Finding PID for process listening on a given mach port 2](https://www.btaz.com/mac-os-x/find-the-process-listening-to-port-on-mac-os-x/). 
 
@@ -69,7 +69,7 @@ The logic parts supports multi-client and multi-server communication.
 
 ### Structure
 There are 4 project folders:
-1. Referenc: Contains an IPC implementation from [Dutt's book](https://www.amazon.com/Interprocess-Communication-macOS-Apple-Methods/dp/1484270444).
+1. Reference: Contains an IPC implementation from [Dutt's book](https://www.amazon.com/Interprocess-Communication-macOS-Apple-Methods/dp/1484270444).
 2. Logic: Contains the logical components with which the required functioality is implemented.
 3. UserInterface: This part should be used to expose the logical components to inputs, while allowing it to show outputs. It is currently not implemented.
 4. UnitTests: Contains tests for different components of the code. It is currently outdated and matches an earlier version of the code.
