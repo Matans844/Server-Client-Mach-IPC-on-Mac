@@ -12,7 +12,7 @@ Implementing Client-Server Inter-Process Communication (IPC) using mach messagin
 6. Sent / Received dataa up to 1024 bytes.
 
 ### Client requirements
-1. Find te server.
+1. Find the server.
 2. Send data to server.
 3. Recieve data back from server.
 4. Check that received data is the same as the data sent.
