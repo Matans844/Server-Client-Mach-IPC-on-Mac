@@ -9,7 +9,7 @@ Implementing Client-Server Inter-Process Communication (IPC) using mach messagin
 3. Visible to other processes.
 4. Cannot be blocked by a single client.
 5. Communication through mach messaging.
-6. Sent / Received dataa up to 1024 bytes.
+6. Sent / Received data up to 1024 bytes.
 
 ### Client requirements
 1. Find the server.
